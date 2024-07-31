@@ -1,0 +1,192 @@
+.section-support {
+    border: 7px dashed #e8eefc;
+    padding: 30px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.section-support-bg {
+    background: url('/web-assets/image/support-bg.jpg') center no-repeat;
+    height: 150px;
+    background-size: contain;
+}
+
+.section-support-contact {
+    text-align: center;
+    padding: 0 10px;
+    margin-top: 30px;
+}
+
+.support-contact-title {
+    font-size: 17px;
+    margin-bottom: 20px;
+    color: #233762;
+}
+
+.support-contact-item {
+    margin-bottom: 25px;
+}
+
+.contact-item-title {
+    font-weight: 700;
+    display: block;
+    margin-bottom: 10px;
+    color: #f60;
+    text-transform: uppercase;
+}
+
+.support-contact-item a {
+    display: block;
+    color: #233762;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* footer */
+
+.page-footer-content {
+    padding-top: 10px;
+    padding-bottom: 50px;
+    margin: 0 auto;
+}
+
+.footer-links {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+    padding: 20px 0;
+}
+
+.links-item-header {
+    border-right: 2px solid #ddd;
+    padding-right: 20px;
+}
+
+.footer-links-item:last-child .links-item-header {
+    border-right: 0;
+    padding-right: 0;
+}
+
+.links-item-title {
+
+    padding: 7 0px;
+    margin-right: 5px;
+    font-weight: 700;
+    color: #1266dd;
+    font-size: 15px;
+}
+
+.links-item-sublink li {
+    margin: 5px 0;
+}
+
+.links-item-sublink li a {
+    color: #1266dd;
+    font-size: 13px;
+    width: 100%;
+}
+
+.footer-links-item a:hover {
+    color: #ff6600;
+}
+
+.footer-col {
+    padding-right: 30px;
+    width: 22%;
+    float: left;
+}
+
+.footer-col.footer-col-first {
+    width: 34%;
+    float: left;
+}
+
+.footer-col-first img {
+    width: 100%;
+}
+
+.footer-col-title {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.footer-col-list>li a {
+    line-height: 15px;
+    font-size: 14px;
+    margin: 5px 0;
+    display: block;
+    padding: 5px 0;
+    color: #333;
+}
+
+.footer-col-list>li a:hover {
+    text-decoration: underline;
+}
+
+.social-link a>i {
+    margin-right: 5px;
+    width: 35px;
+    height: 35px;
+}
+
+.social-fb i {
+    background-image: url('/web-assets/image/icon_facebook.svg');
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.social-yt i {
+    background-image: url('/web-assets/image/icon_youtube.svg');
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.social-zl i {
+    background-image: url('/web-assets/image/icon_zalo.svg');
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.social-tw i {
+    background-image: url('/web-assets/image/icon_twitter.svg');
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.payment-icon {
+    background-image: url('/web-assets/image/method-payment-icon.jpg');
+    display: inline-block;
+    background-size: 324px 33px;
+    background-repeat: no-repeat;
+}
+
+.icon-visa {
+    background-position: -108px 0;
+    width: 54px;
+    height: 33px;
+}
+
+.icon-mastercard {
+    background-position: -162px 0;
+    width: 54px;
+    height: 33px;
+}
+
+.icon-internet-banking {
+    background-position: -216px 0;
+    width: 54px;
+    height: 33px;
+}
+
+.icon-tienmat {
+    background-position: 0 0;
+    width: 54px;
+    height: 33px;
+}

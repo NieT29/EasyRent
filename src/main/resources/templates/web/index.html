@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: #content-wrapper}, ~{:: #js})}">
+<head>
+
+    <title>Phòng Trọ Vip</title>
+    <th:block id="css"></th:block>
+</head>
+<body>
+
+<th:block id="content-wrapper">
+    <main class="container mt-3">
+        <div style="height: 60px; margin-bottom: 10px;">
+            <section class="filter-top-inner">
+                <section class="filter-top">
+                    <div class="filter-top-body d-flex align-items-center">
+                        <div class="filter-item post-estate-type d-flex">
+                            <span>Phòng trọ, nhà trọ</span>
+                        </div>
+                        <div class="filter-item post-location">
+                            <span>Toàn quốc</span>
+                        </div>
+                        <div class="filter-item post-price">
+                            <span>Chọn giá</span>
+                        </div>
+                        <div class="filter-item post-acreage">
+                            <span>Chọn diện tích</span>
+                        </div>
+                        <div class="filter-item filter-submit">
+                            <span>Tìm kiếm</span>
+                        </div>
+                    </div>
+                </section>
+            </section>
+        </div>
+
+        <header class="mb-3">
+            <h1 class="mt-0 mx-0 mb-1 text-center fs-3 fw-bolder">Tìm kiếm chỗ thuê ưng ý</h1>
+            <p class="m-0" style="color: #65676b;">Kênh thông tin Phòng trọ số 1 Việt Nam - Website đăng tin cho thuê
+                phòng trọ, nhà nguyên căn, căn hộ, ở ghép nhanh, hiệu quả với 100.000+ tin đăng và 2.500.000 lượt xem
+                mỗi tháng.</p>
+        </header>
+
+        <section class="section-top-location text-center mb-4">
+            <div class="section-header mb-3">
+                <h2 class="section-header-title m-0">Khu vực nổi bật</h2>
+            </div>
+            <div class="location-city">
+                <a href="" class="location-city-item city-1">
+                    <div class="city-bg"></div>
+                    <span class="location-city-name">Phòng trọ Hà Nội</span>
+                </a>
+                <a href="" class="location-city-item city-2">
+                    <div class="city-bg"></div>
+                    <span class="location-city-name">Phòng trọ Hồ Chí Minh</span>
+                </a>
+                <a href="" class="location-city-item city-3">
+                    <div class="city-bg"></div>
+                    <span class="location-city-name">Phòng trọ Đà Nẵng</span>
+                </a>
+            </div>
+        </section>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-8">
+                    <section class="section-left section-post-list">
+                        <div class="post-list-header mb-3">
+                                    <span class="post-list-header-title m-0 p-0" th:text="'Tổng '+ ${pageRoomList.totalElements} + ' Kết quả'">
+                                        Tổng 999 kết quả
+                                    </span>
+                        </div>
+
+                        <div class="section-post-sort ">
+                            <span>Sắp xếp: </span>
+                            <a  th:classappend="${orderBy.equals('mac-dinh') ? 'post-sort-link-active' : ''}"
+                                class="post-sort-link"
+                                th:attr="href=@{'/?' + (${gia_tu != null ? 'gia_tu=' + gia_tu + '&' : ''}) + (${gia_den != null ? 'gia_den=' + gia_den + '&' : ''}) + (${dien_tich_tu != null ? 'dien_tich_tu=' + dien_tich_tu + '&' : ''}) + (${dien_tich_den != null ? 'dien_tich_den=' + dien_tich_den + '&' : ''}) + 'orderBy=mac-dinh'}">
+                                Mặc định
+                            </a>
+                            <a  th:classappend="${orderBy.equals('moi-nhat') ? 'post-sort-link-active' : ''}"
+                                class="post-sort-link"
+                                th:attr="href=@{'/?' + (${gia_tu != null ? 'gia_tu=' + gia_tu + '&' : ''}) + (${gia_den != null ? 'gia_den=' + gia_den + '&' : ''}) + (${dien_tich_tu != null ? 'dien_tich_tu=' + dien_tich_tu + '&' : ''}) + (${dien_tich_den != null ? 'dien_tich_den=' + dien_tich_den + '&' : ''}) + 'orderBy=moi-nhat'}">
+                                Mới nhất
+                            </a>
+                            <a  th:classappend="${orderBy.equals('co-video') ? 'post-sort-link-active' : ''}"
+                                class="post-sort-link"
+                                th:attr="href=@{'/?' + (${gia_tu != null ? 'gia_tu=' + gia_tu + '&' : ''}) + (${gia_den != null ? 'gia_den=' + gia_den + '&' : ''}) + (${dien_tich_tu != null ? 'dien_tich_tu=' + dien_tich_tu + '&' : ''}) + (${dien_tich_den != null ? 'dien_tich_den=' + dien_tich_den + '&' : ''}) + 'orderBy=co-video'}">
+                                Có video
+                            </a>
+                        </div>
+
+                        <ul>
+                            <li  th:each="room : ${pageRoomList}" >
+                                <div class="post-left-item d-flex"
+                                     th:classappend="${(room.serviceType.priority == 1 ? ' post-left-item-vip-highlight' : '') +
+                                                            (room.serviceType.priority == 2 ? ' post-left-item-vip' : '')}"
+                                >
+                                    <div class="post-left-thumb me-3">
+                                        <img class="post-thumb-img"
+                                             th:src="${room.imageRooms.get(0).img_path}" alt=""
+                                             th:classappend="${(room.serviceType.priority == 1 ? ' post-thumb-img-vip-highlight' : '') +
+                                                                    (room.serviceType.priority == 2 ? ' post-thumb-img-vip' : '')}"
+                                        >
+                                        <span class="post-count-img" th:text="${room.imageRooms.size()} + ' ảnh'"></span>
+                                        <span class="post-favorite">
+                                                <i class="fa-regular fa-heart"></i>
+                                            </span>
+                                        <span th:if="${room.videoRooms.size() > 0}" class="post-has-video"></span>
+                                    </div>
+                                    <div class="post-left-infor  d-flex flex-column justify-content-around w-100">
+                                        <h3 class="left-infor-title">
+                                            <a class="infor-title-a"
+                                               th:classappend="${(room.serviceType.priority == 1 ? ' infor-title-a-vip-highlight' : '') +
+                                                                    (room.serviceType.priority == 2 ? ' infor-title-a-vip' : '')}"
+                                               th:href="@{/posts/{id}/{slug} (id=${room.id}, slug=${room.slug})}"
+                                               th:text="${room.getTitle()}"
+                                            >
+                                            </a>
+                                        </h3>
+                                        <div class="d-flex align-items-center justify-content-between ">
+                                            <div>
+                                                <span class="left-infor-price" th:text="${@moneyUtils.formatMoney(room.price)}">
+                                                    3.5 triệu/tháng
+                                                </span>
+                                                <span class="left-infor-acreage" >
+                                                    <th:block th:text="${@acreageUtils.formatArea(room.acreage)}">28m</th:block>
+                                                </span>
+                                                <span class="left-infor-location">
+                                                        <a href="" th:text="${room.district.name} + ', ' + ${room.province.name}">
+                                                        </a>
+                                                </span>
+                                            </div>
+                                            <span class="left-infor-time" th:text="${@timeUtils.timeAgo(room.createdAt)}">
+                                                    29 phút trước
+                                                </span>
+                                        </div>
+                                        <div class="">
+                                            <p class="left-infor-description m-0"
+                                               th:text="${room.description.length() > 150 ? #strings.substring(room.description, 0, 150) + '...' : room.description}"
+                                            >
+                                                Đường Hương Lộ 80 - Bình Hưng Hoà B - Bình Tân giáp Tân Phú thuận tiện di
+                                                chuyển qua quận lân cận, KCN Vĩnh Lộc và các Trường học. Xung quanh có nhiều
+                                                cửa…
+                                            </p>
+                                        </div>
+                                        <div class="left-infor-author m-0 d-flex justify-content-between">
+                                            <div>
+                                                <img th:src="${room.user.avatar}" alt="">
+                                                <span class="left-infor-author-name" th:text="${room.user.name}">
+                                                        Phương Thuý
+                                                    </span>
+                                            </div>
+                                            <div th:if="${room.serviceType.showPhone}">
+                                                <a rel="nofollow" target="_blank" th:href="'tel:' + ${room.user.phoneNumber}" class="btn-quick-call" th:text="'Gọi ' + ${room.user.phoneNumber}">Gọi 0938864405</a>
+                                                <a rel="nofollow" target="_blank" th:href="'https://zalo.me/' + ${room.user.phoneNumber}" class="btn-quick-zalo">Nhắn Zalo</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </section>
+                    <div class="mb-5" th:if="${pageRoomList.getTotalPages() != 1}">
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
+                                    <a class="page-link" th:href="|/?page=${currentPage - 1}&orderBy=${orderBy}${gia_tu != null ? '&gia_tu=' + gia_tu : ''}${gia_den != null ? '&gia_den=' + gia_den : ''}${dien_tich_tu != null ? '&dien_tich_tu=' + dien_tich_tu : ''}${dien_tich_den != null ? '&dien_tich_den=' + dien_tich_den : ''}|">
+                                        <i class="fa-solid fa-angles-left"></i>
+                                        Trang trước
+                                    </a>
+                                </li>
+                                <li class="page-item"
+                                    th:each="number : ${pageNumbers}"
+                                    th:classappend="${currentPage == number ? 'active' : ''}"
+                                >
+                                    <span th:if="${number == -1}" class="page-link">...</span>
+                                    <a th:if="${number != -1}" class="page-link" th:href="|/?page=${number}&orderBy=${orderBy}${gia_tu != null ? '&gia_tu=' + gia_tu : ''}${gia_den != null ? '&gia_den=' + gia_den : ''}${dien_tich_tu != null ? '&dien_tich_tu=' + dien_tich_tu : ''}${dien_tich_den != null ? '&dien_tich_den=' + dien_tich_den : ''}|" th:text="${number}"></a>
+                                </li>
+                                <li class="page-item" th:classappend="${currentPage == pageRoomList.getTotalPages() ? 'disabled' : ''}">
+                                    <a class="page-link" th:href="|/?page=${currentPage + 1}&orderBy=${orderBy}${gia_tu != null ? '&gia_tu=' + gia_tu : ''}${gia_den != null ? '&gia_den=' + gia_den : ''}${dien_tich_tu != null ? '&dien_tich_tu=' + dien_tich_tu : ''}${dien_tich_den != null ? '&dien_tich_den=' + dien_tich_den : ''}|">
+                                        Trang sau
+                                        <i class="fa-solid fa-angles-right"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+                </div>
+                <div class="col-4">
+                    <div class="section-right">
+                        <div class="section-right-header mt-0 mb-2">
+                            <span class="m-0 p-0 fw-bolder">Xem theo giá</span>
+                        </div>
+                        <div>
+                            <ul class="list-link list-link-price m-0">
+                                <li><a th:href="@{/?gia_den=1000000}">Dưới 1 triệu</a></li>
+                                <li><a th:href="@{/?gia_tu=1000000&gia_den=2000000}">Từ 1 - 2 triệu</a></li>
+                                <li><a th:href="@{/?gia_tu=2000000&gia_den=3000000}">Từ 2 - 3 triệu</a></li>
+                                <li><a th:href="@{/?gia_tu=3000000&gia_den=5000000}">Từ 3 - 5 triệu</a></li>
+                                <li><a th:href="@{/?gia_tu=5000000&gia_den=7000000}">Từ 5 - 7 triệu</a></li>
+                                <li><a th:href="@{/?gia_tu=7000000&gia_den=10000000}">Từ 7 - 10 triệu</a></li>
+                                <li><a th:href="@{/?gia_tu=10000000&gia_den=15000000}">Từ 10 - 15 triệu</a></li>
+                                <li><a th:href="@{/?gia_tu=15000000}">Trên 15 triệu</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="section-right">
+                        <div class="section-right-header mt-0 mb-2">
+                            <span class="m-0 p-0 fw-bolder">Xem theo diện tích</span>
+                        </div>
+                        <div>
+                            <ul class="list-link list-link-acreage m-0">
+                                <li>
+                                    <a th:href="@{/?dien_tich_den=20}">
+                                        Dưới 20 m<sup>2</sup>
+                                    </a>
+
+                                </li>
+                                <li>
+                                    <a th:href="@{/?dien_tich_tu=20&dien_tich_den=30}">
+                                        Từ 20 - 30 m<sup>2</sup>
+                                    </a>
+
+                                </li>
+                                <li>
+                                    <a th:href="@{/?dien_tich_tu=30&dien_tich_den=50}">
+                                        Từ 30 - 50 m<sup>2</sup>
+                                    </a>
+
+                                </li>
+                                <li>
+                                    <a th:href="@{/?dien_tich_tu=50&dien_tich_den=70}">
+                                        Từ 50 - 70 m<sup>2</sup>
+                                    </a>
+
+                                </li>
+                                <li>
+                                    <a th:href="@{/?dien_tich_tu=70&dien_tich_den=90}">
+                                        Từ 70 - 90 m<sup>2</sup>
+                                    </a>
+
+                                </li>
+                                <li>
+                                    <a th:href="@{/?dien_tich_tu=90}">
+                                        Trên 90 m<sup>2</sup>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="section-right">
+                        <div class="section-right-header mt-0 mb-3">
+                            <span class="m-0 p-0 fw-bolder">Danh mục cho thuê</span>
+                        </div>
+
+                        <div>
+                            <ul class="list-link list-link-category m-0">
+                                <li>
+                                    <a href="">Cho thuê phòng trọ</a>
+                                    <span class="link-category-count">(999)</span>
+                                </li>
+                                <li>
+                                    <a href="">Cho thuê nhà nguyên căn</a>
+                                    <span class="link-category-count">(999)</span>
+                                </li>
+                                <li>
+                                    <a href="">Cho thuê căn hộ</a>
+                                    <span class="link-category-count">(999)</span>
+                                </li>
+                                <li>
+                                    <a href="">Cho thuê mặt bằng</a>
+                                    <span class="link-category-count">(999)</span>
+                                </li>
+                                <li>
+                                    <a href="">Tìm người ở ghép</a>
+                                    <span class="link-category-count">(999)</span>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="section-right">
+                        <div class="section-right-header mt-0 mb-3">
+                            <span class="m-0 p-0 fw-bolder">Tin mới đăng</span>
+                        </div>
+                        <ul class="list-post-rigth">
+                            <li class="post-right-item py-2 border-bottom" th:each="roomsNew : ${roomListNew}">
+                                <a th:href="@{/posts/{id}/{slug} (id=${roomsNew.id}, slug=${roomsNew.slug})}"
+                                   class="d-flex post-right-link w-100">
+                                    <div class="post-right-img">
+                                        <img th:src="${roomsNew.imageRooms.get(0).img_path}" alt="">
+                                    </div>
+                                    <div class="post-right-infor d-flex flex-grow-1 flex-column justify-content-between ms-3">
+                                            <span class="right-infor-title"
+                                                  th:text="${roomsNew.title.length() > 50 ? #strings.substring(roomsNew.title, 0, 50) + '...' : roomsNew.title}"
+                                                  th:style="'color:' + ${roomsNew.serviceType.titleColor}"
+                                            >
+                                                Phòng Trọ Cao Cấp Sạch Sẽ - An Ninh Ngay Luỹ…
+                                            </span>
+                                        <div class="d-flex justify-content-between">
+                                                <span class="right-infor-price"
+                                                      th:text="${@moneyUtils.formatMoney(roomsNew.price)}"
+                                                >
+                                                    3,5 triệu/tháng
+                                                </span>
+                                            <span class="right-infor-time"
+                                                  th:text="${@timeUtils.timeAgo(roomsNew.createdAt)}"
+                                            >
+                                                    5 giờ trước
+                                                </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="section-right">
+                        <div class="section-right-header mt-0 mb-3">
+                            <span class="m-0 p-0 fw-bolder">Bài viết mới</span>
+                        </div>
+                        <div>
+                            <ul class="list-link list-link-category m-0">
+                                <li>
+                                    <a href="">Quy trình đăng ký tạm trú cho người thuê phòng trọ mới nhất</a>
+
+                                </li>
+                                <li>
+                                    <a href="">Quy trình đăng ký tạm trú cho người thuê phòng trọ mới nhất</a>
+
+                                </li>
+                                <li>
+                                    <a href="">Quy trình đăng ký tạm trú cho người thuê phòng trọ mới nhất</a>
+
+                                </li>
+                                <li>
+                                    <a href="">Quy trình đăng ký tạm trú cho người thuê phòng trọ mới nhất</a>
+
+                                </li>
+                                <li>
+                                    <a href="">Quy trình đăng ký tạm trú cho người thuê phòng trọ mới nhất</a>
+
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="section-right">
+                        <div class="section-right-header mt-0 mb-3">
+                            <span class="m-0 p-0 fw-bolder">Có thể bạn quan tâm</span>
+                        </div>
+                        <div>
+                            <ul class="list-link list-link-category m-0">
+                                <li>
+                                    <a href="">Mẫu hợp đồng cho thuê phòng trọ</a>
+                                </li>
+                                <li>
+                                    <a href="">Cẩn thận các kiểu lừa đảo khi thuê phòng trọ</a>
+                                </li>
+                                <li>
+                                    <a href="">Kinh nghiệm thuê phòng trọ Sinh Viên</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+</th:block>
+
+<th:block id="js"></th:block>
+</body>
+</html>

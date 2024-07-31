@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: #content-wrapper}, ~{:: #js})}">
+<head>
+
+    <title>Chi tiết phòng</title>
+    <th:block id="css">
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    </th:block>
+</head>
+<body>
+
+<th:block id="content-wrapper">
+    <main class="container mt-3">
+        <div class="">
+            <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="#" th:text="${room.category.name}">Cho thuê phòng trọ</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#" th:text="${room.province.name}">Hồ Chí Minh</a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#" th:text="${room.district.name}">Quận 11</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page"
+                        th:text="${room.title.length() > 40 ? #strings.substring(room.title, 0, 40) + '...' : room.title}"
+                    >
+                        PHÒNG TRỌ CAO CẤP
+                    </li>
+                </ol>
+            </nav>
+        </div>
+
+        <div>
+            <div class="row">
+                <div class="col-8">
+                    <div class="swiper mySwiper detail-slide">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide" th:each="videoRoom : ${room.videoRooms}">
+                                <video controls th:src="${videoRoom.video_path}" class="w-100 h-100" ></video>
+                            </div>
+                            <div class="swiper-slide" th:each="imgRoom : ${room.imageRooms}">
+                                <img th:src="${imgRoom.img_path}" alt=""/>
+                            </div>
+                        </div>
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-pagination text-white"></div>
+                    </div>
+
+                    <div class="post-detail container pt-4">
+                        <header class="detail-header">
+                            <h1 th:text="${room.title}"
+                                th:style="'color:' + ${room.serviceType.titleColor}"
+                            >
+                                TRỐNG SẴN PHÒNG DUPLEX GẦN ĐH UAH QUẬN 1
+                            </h1>
+                            <div class="detail-address" th:text="${room.exactAddress}">
+                                Địa chỉ: Thạch Thị Thanh, Phường Tân Định, Quận 1, Hồ Chí Minh
+                            </div>
+                            <div class="detail-attributes d-flex">
+                                <div class="attributes-item attributes-price">
+                                    <i></i>
+                                    <span th:text="${@moneyUtils.formatMoney(room.price)}">8 triệu/tháng</span>
+                                </div>
+                                <div class="attributes-item attributes-acreage">
+                                    <i></i>
+                                    <span th:text="${@acreageUtils.formatArea(room.acreage)}">350m</span>
+                                </div>
+                                <div class="attributes-item attributes-published">
+                                    <i></i>
+                                    <span th:text="${@timeUtils.timeAgo(room.createdAt)}">1 giờ trước</span>
+                                </div>
+                                <div class="attributes-item attributes-hashtag">
+                                    <i></i>
+                                    <span th:text="${room.id}">111</span>
+                                </div>
+                            </div>
+                        </header>
+
+                        <section class="detail-description mb-4">
+                            <div class="section-detail-header">
+                                <h3>Thông tin mô tả</h3>
+                            </div>
+                            <div class="section-detail-content">
+                                <p th:text="${room.description}">Có ban công rộng, ra vào vân tay</p>
+                            </div>
+                        </section>
+
+                        <section class="detail-overview mb-4">
+                            <div class="section-detail-header">
+                                <h3>Đặc điểm tin đăng</h3>
+                            </div>
+                            <div class="section-detail-content">
+                                <table class="table table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <td class="name">Mã tin:</td>
+                                        <td th:text="'#' + ${room.id}">#111</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="name">Chuyên mục:</td>
+                                        <td>
+                                            <a class="table-td-address"
+                                               title="Phòng trọ Quận 1"
+                                               href=""
+                                            >
+                                                <strong th:text="${room.category.name} + ' ' + ${room.district.name}">
+                                                    Cho thuê phòng trọ Quận 1
+                                                </strong>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="name">Khu vực:</td>
+                                        <td th:text="${room.category.name} + ' ' + ${room.province.name}">
+                                            Cho thuê phòng trọ Hồ Chí Minh
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="name">Loại tin rao:</td>
+                                        <td th:text="${room.category.type}">Phòng trọ, nhà trọ</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="name">Đối tượng thuê:</td>
+                                        <td th:text="${room.subjectRent.value}">Nữ</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="name">Gói tin:</td>
+                                        <td>
+                                            <span th:style="'color:' + ${room.serviceType.titleColor}"
+                                                  th:text="${room.serviceType.name}">
+                                                Tin miễn phí
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="name">Ngày đăng:</td>
+                                        <td>
+                                            <time th:text="${@timeUtils.formatDateTime(room.createdAt)}">Thứ 5, 00:22 25/07/2024</time>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="name">Ngày hết hạn:</td>
+                                        <td>
+                                            <time th:text="${@timeUtils.formatDateTime(room.expiresAt)}">Thứ 3, 00:22 30/07/2024</time>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section class="detail-contact mb-4">
+                            <div class="section-detail-header">
+                                <h3>Thông tin liên hệ</h3>
+                            </div>
+                            <div class="section-detail-content">
+                                <table class="table table-striped">
+                                    <tbody>
+                                    <tr>
+                                        <td class="name">Liên hệ:</td>
+                                        <td th:text="${room.user.name}">Lân Vĩnh Phát</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="name">Điện thoại:</td>
+                                        <td th:text="${room.user.phoneNumber}">0373456273</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="name">Zalo:</td>
+                                        <td th:text="${room.user.phoneNumber}">0373456273</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </section>
+
+                        <section class="detail-map mb-4">
+                            <div class="section-detail-header">
+                                <h3>Bản đồ</h3>
+                                <address th:text="'Địa chỉ: ' + ${room.exactAddress}">
+                                    Địa chỉ: Thạch Thị Thanh, Phường Tân Định, Quận 1, Hồ Chí
+                                    Minh
+                                </address>
+                            </div>
+                            <div class="section-detail-content">
+                                <div id="map" class="map">
+                                    <iframe
+                                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.9394077946485!2d106.64256376692497!3d10.771792023850779!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752ebd727d424f%3A0x55aa0fffe84158fc!2zMTdRIEzhuqFjIExvbmcgUXXDom4!5e0!3m2!1svi!2s!4v1722448161741!5m2!1svi!2s"
+                                            style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                                    </iframe>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+                    <div>
+                        <section class="section-left section-post-list">
+                            <div class="post-list-header mb-3">
+                                <h2 class="m-0 p-0" th:text="${room.category.name} + ' ' + ${room.district.name} + ', ' + ${room.province.name}">
+                                    Cho thuê căn hộ dịch vụ Quận 1, Hồ Chí Minh
+                                </h2>
+
+                            </div>
+                            <ul>
+                                <p th:if="${relateRooms.size() == 0}" class="text-center text-danger m-0"> Khu vực này hiện chưa có tin đăng khác</p>
+                                <li  th:each="room : ${relateRooms}" >
+                                    <div class="post-left-item d-flex"
+                                         th:classappend="${(room.serviceType.priority == 1 ? ' post-left-item-vip-highlight' : '') +
+                                                            (room.serviceType.priority == 2 ? ' post-left-item-vip' : '')}"
+                                    >
+                                        <div class="post-left-thumb me-3">
+                                            <img class="post-thumb-img"
+                                                 th:src="${room.imageRooms.get(0).img_path}" alt=""
+                                                 th:classappend="${(room.serviceType.priority == 1 ? ' post-thumb-img-vip-highlight' : '') +
+                                                                    (room.serviceType.priority == 2 ? ' post-thumb-img-vip' : '')}"
+                                            >
+                                            <span class="post-count-img" th:text="${room.imageRooms.size()} + ' ảnh'"></span>
+                                            <span class="post-favorite">
+                                                <i class="fa-regular fa-heart"></i>
+                                            </span>
+                                            <span th:if="${room.videoRooms.size() > 0}" class="post-has-video"></span>
+                                        </div>
+                                        <div class="post-left-infor  d-flex flex-column justify-content-around w-100">
+                                            <h3 class="left-infor-title">
+                                                <a class="infor-title-a"
+                                                   th:classappend="${(room.serviceType.priority == 1 ? ' infor-title-a-vip-highlight' : '') +
+                                                                    (room.serviceType.priority == 2 ? ' infor-title-a-vip' : '')}"
+                                                   th:href="@{/posts/{id}/{slug} (id=${room.id}, slug=${room.slug})}"
+                                                   th:text="${room.getTitle()}"
+                                                >
+                                                </a>
+                                            </h3>
+                                            <div class="d-flex align-items-center justify-content-between ">
+                                                <div>
+                                                <span class="left-infor-price" th:text="${@moneyUtils.formatMoney(room.price)}">
+                                                    3.5 triệu/tháng
+                                                </span>
+                                                    <span class="left-infor-acreage" >
+                                                    <th:block th:text="${@acreageUtils.formatArea(room.acreage)}">28m</th:block>
+                                                </span>
+                                                    <span class="left-infor-location">
+                                                        <a href="" th:text="${room.district.name} + ', ' + ${room.province.name}">
+                                                        </a>
+                                                </span>
+                                                </div>
+                                                <span class="left-infor-time" th:text="${@timeUtils.timeAgo(room.createdAt)}">
+                                                    29 phút trước
+                                                </span>
+                                            </div>
+                                            <div class="">
+                                                <p class="left-infor-description m-0"
+                                                   th:text="${room.description.length() > 150 ? #strings.substring(room.description, 0, 150) + '...' : room.description}"
+                                                >
+                                                    Đường Hương Lộ 80 - Bình Hưng Hoà B - Bình Tân giáp Tân Phú thuận tiện di
+                                                    chuyển qua quận lân cận, KCN Vĩnh Lộc và các Trường học. Xung quanh có nhiều
+                                                    cửa…
+                                                </p>
+                                            </div>
+                                            <div class="left-infor-author m-0 d-flex justify-content-between">
+                                                <div>
+                                                    <img th:src="${room.user.avatar}" alt="">
+                                                    <span class="left-infor-author-name" th:text="${room.user.name}">
+                                                        Phương Thuý
+                                                    </span>
+                                                </div>
+                                                <div th:if="${room.serviceType.showPhone}">
+                                                    <a rel="nofollow" target="_blank" th:href="'tel:' + ${room.user.phoneNumber}" class="btn-quick-call" th:text="'Gọi ' + ${room.user.phoneNumber}">Gọi 0938864405</a>
+                                                    <a rel="nofollow" target="_blank" th:href="'https://zalo.me/' + ${room.user.phoneNumber}" class="btn-quick-zalo">Nhắn Zalo</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+
+                <div class="col-4">
+                    <div class="section-author-right">
+                        <figure class="author-right-avatar">
+                            <img th:src="${room.user.avatar}"/>
+                        </figure>
+                        <span class="author-right-name" th:text="${room.user.name}">Lân Vĩnh Phát</span>
+                        <div class="d-flex flex-column">
+                            <a class="btn-author author-right-phone" rel="nofollow" th:href="'tel:' + ${room.user.phoneNumber}">
+                                <i></i>
+                                <span th:text="${room.user.phoneNumber}">0373456273</span>
+                            </a>
+                            <a class="btn-author author-right-zalo" target="_blank" rel="nofollow"
+                               th:href="'https://zalo.me/' + ${room.user.phoneNumber}">
+                                <i></i>
+                                Nhắn Zalo
+                            </a>
+                            <span class="btn-author author-right-favorite" data-post-id="660822">
+                    <i class="fa-regular fa-heart"></i>
+                    <span class="right-favorite-text">Yêu thích</span>
+                  </span>
+                        </div>
+                    </div>
+
+                    <div class="section-right">
+                        <div class="section-right-header mt-0 mb-3">
+                            <span class="m-0 p-0 fw-bolder">Tin mới đăng</span>
+                        </div>
+                        <ul class="list-post-rigth">
+                            <li class="post-right-item py-2 border-bottom" th:each="roomsNew : ${roomListNew}">
+                                <a th:href="@{/posts/{id}/{slug} (id=${roomsNew.id}, slug=${roomsNew.slug})}"
+                                   class="d-flex post-right-link w-100">
+                                    <div class="post-right-img">
+                                        <img th:src="${roomsNew.imageRooms.get(0).img_path}" alt="">
+                                    </div>
+                                    <div class="post-right-infor d-flex flex-grow-1 flex-column justify-content-between ms-3">
+                                            <span class="right-infor-title"
+                                                  th:text="${roomsNew.title.length() > 50 ? #strings.substring(roomsNew.title, 0, 50) + '...' : roomsNew.title}"
+                                                  th:style="'color:' + ${roomsNew.serviceType.titleColor}"
+                                            >
+                                                Phòng Trọ Cao Cấp Sạch Sẽ - An Ninh Ngay Luỹ…
+                                            </span>
+                                        <div class="d-flex justify-content-between">
+                                                <span class="right-infor-price"
+                                                      th:text="${@moneyUtils.formatMoney(roomsNew.price)}"
+                                                >
+                                                    3,5 triệu/tháng
+                                                </span>
+                                            <span class="right-infor-time"
+                                                  th:text="${@timeUtils.timeAgo(roomsNew.createdAt)}"
+                                            >
+                                                    5 giờ trước
+                                                </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="section-right">
+                        <div class="section-right-header mt-0 mb-3">
+                            <span class="m-0 p-0 fw-bolder" th:text="'Khu vực ' + ${room.province.name}">Khu vực Hồ Chí Minh</span>
+                        </div>
+
+                        <div>
+                            <ul class="list-link list-link-category m-0">
+                                <li th:each="entry : ${roomsInSameProvince}">
+                                    <a href="#" th:text="${room.category.name + ' ' + entry.key.name}"></a>
+                                    <span class="link-category-count" th:text="'(' + ${entry.value} + ')'"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="section-right">
+                        <div class="section-right-header mt-0 mb-3">
+                            <span class="m-0 p-0 fw-bolder">Có thể bạn quan tâm</span>
+                        </div>
+                        <div>
+                            <ul class="list-link list-link-category m-0">
+                                <li>
+                                    <a href="">Mẫu hợp đồng cho thuê phòng trọ</a>
+                                </li>
+                                <li>
+                                    <a href="">Cẩn thận các kiểu lừa đảo khi thuê phòng trọ</a>
+                                </li>
+                                <li>
+                                    <a href="">Kinh nghiệm thuê phòng trọ Sinh Viên</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</th:block>
+
+<th:block id="js">
+    <script th:inline="javascript">
+        const roomAddress = [[${room.exactAddress}]]
+    </script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            loop: true,
+            pagination: {
+                el: ".swiper-pagination",
+                type: "fraction",
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+        });
+    </script>
+    <!--    <script>-->
+    <!--        function geocodeAddress(address) {-->
+    <!--            const url = `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(address)}&apiKey=aCRq1_xL90rvV-l1C8Gjimw5N52eRrHphEt6HM7gjWY`;-->
+
+    <!--            fetch(url)-->
+    <!--                .then(response => response.json())-->
+    <!--                .then(data => {-->
+    <!--                    if (data.items.length > 0) {-->
+    <!--                        const { lat, lng } = data.items[0].position;-->
+    <!--                        initMap(lat, lng);-->
+    <!--                    } else {-->
+    <!--                        console.error('Không tìm thấy tọa độ cho địa chỉ này');-->
+    <!--                    }-->
+    <!--                })-->
+    <!--                .catch(error => console.error('Lỗi khi gọi API geocoding:', error));-->
+    <!--        }-->
+
+    <!--        function initMap(lat, lng) {-->
+    <!--            var map = L.map('map').setView([lat, lng], 15);-->
+
+    <!--            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {-->
+    <!--                maxZoom: 19,-->
+    <!--                attribution: '© OpenStreetMap'-->
+    <!--            }).addTo(map);-->
+
+    <!--            L.marker([lat, lng]).addTo(map)-->
+    <!--                .bindPopup('Địa chỉ bài đăng')-->
+    <!--                .openPopup();-->
+    <!--        }-->
+
+    <!--        geocodeAddress(roomAddress);-->
+    <!--    </script>-->
+
+
+
+
+</th:block>
+</body>
+</html>

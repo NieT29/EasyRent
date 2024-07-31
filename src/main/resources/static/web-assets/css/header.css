@@ -1,0 +1,71 @@
+.logo-top {
+    width: 240px;
+    height: 70px;
+}
+
+.user-welcome .btn {
+    background-color: transparent;
+    margin-right: 5px;
+    border: 0;
+    color: #333;
+    position: relative;
+    height: 40px;
+    padding: 0 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-welcome .btn:hover .btn-text{
+    text-decoration: underline;
+}
+
+.user-welcome .btn-add-post {
+    background-color: #f73859;
+    color: #fff;
+    margin-right: 0;
+    margin-left: 10px;
+}
+
+/* nav */
+
+#header {
+    position: relative;
+    width: 100%;
+}
+
+#main-menu {
+    width: 100%;
+    background-color: #1266dd;
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+#main-menu {
+    background-color: #1266dd;
+}
+
+#main-menu ul>li a {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 12px;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+#main-menu ul>li a:hover {
+    background-color: #f73859;
+}
+
+#main-menu .nav-menu a.active-menu {
+    background-color: #f73859;
+}
