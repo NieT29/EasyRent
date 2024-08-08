@@ -53,7 +53,7 @@
                     <div class="post-detail container pt-4">
                         <header class="detail-header">
                             <h1 th:text="${room.title}"
-                                th:style="'color:' + ${room.serviceType.titleColor}"
+                                th:style="'color:' + ${roomAttributesMap[room.id].titleColor}"
                             >
                                 TRỐNG SẴN PHÒNG DUPLEX GẦN ĐH UAH QUẬN 1
                             </h1>
@@ -71,7 +71,10 @@
                                 </div>
                                 <div class="attributes-item attributes-published">
                                     <i></i>
-                                    <span th:text="${@timeUtils.timeAgo(room.createdAt)}">1 giờ trước</span>
+                                    <th:block th:each="orderService : ${room.orderServices}">
+                                        <span   th:if="${orderService.status.toString() == 'ACTIVE'}"
+                                                th:text="${@timeUtils.timeAgo(orderService.orderDate)}">1 giờ trước</span>
+                                    </th:block>
                                 </div>
                                 <div class="attributes-item attributes-hashtag">
                                     <i></i>
@@ -96,63 +99,67 @@
                             <div class="section-detail-content">
                                 <table class="table table-striped">
                                     <tbody>
-                                    <tr>
-                                        <td class="name">Mã tin:</td>
-                                        <td th:text="'#' + ${room.id}">#111</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="name">Chuyên mục:</td>
-                                        <td>
-                                            <a class="table-td-address"
-                                               title="Phòng trọ Quận 1"
-                                               href=""
-                                            >
-                                                <strong th:text="${room.category.name} + ' ' + ${room.district.name}">
-                                                    Cho thuê phòng trọ Quận 1
-                                                </strong>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="name">Khu vực:</td>
-                                        <td th:text="${room.category.name} + ' ' + ${room.province.name}">
-                                            Cho thuê phòng trọ Hồ Chí Minh
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="name">Loại tin rao:</td>
-                                        <td th:text="${room.category.type}">Phòng trọ, nhà trọ</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="name">Đối tượng thuê:</td>
-                                        <td th:text="${room.subjectRent.value}">Nữ</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="name">Gói tin:</td>
-                                        <td>
-                                            <span th:style="'color:' + ${room.serviceType.titleColor}"
-                                                  th:text="${room.serviceType.name}">
-                                                Tin miễn phí
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="name">Ngày đăng:</td>
-                                        <td>
-                                            <time th:text="${@timeUtils.formatDateTime(room.createdAt)}">Thứ 5, 00:22 25/07/2024</time>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="name">Ngày hết hạn:</td>
-                                        <td>
-                                            <time th:text="${@timeUtils.formatDateTime(room.expiresAt)}">Thứ 3, 00:22 30/07/2024</time>
-                                        </td>
-                                    </tr>
+                                        <tr>
+                                            <td class="name">Mã tin:</td>
+                                            <td th:text="'#' + ${room.id}">#111</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="name">Chuyên mục:</td>
+                                            <td>
+                                                <a class="table-td-address"
+                                                   th:href="@{|/${room.category.slug}-${room.province.name}/${room.district.name}|}"
+                                                >
+                                                    <strong th:text="${room.category.name} + ' ' + ${room.district.name}">
+                                                        Cho thuê phòng trọ Quận 1
+                                                    </strong>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="name">Khu vực:</td>
+                                            <td th:text="${room.category.name} + ' ' + ${room.province.name}">
+                                                Cho thuê phòng trọ Hồ Chí Minh
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="name">Loại tin rao:</td>
+                                            <td th:text="${room.category.type}">Phòng trọ, nhà trọ</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="name">Đối tượng thuê:</td>
+                                            <td th:text="${room.subjectRent.value}">Nữ</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="name">Gói tin:</td>
+                                            <td>
+                                                <span th:style="'color:' + ${roomAttributesMap[room.id].titleColor}"
+                                                      th:text="${roomAttributesMap[room.id].name}"
+                                                      >
+                                                    Tin miễn phí
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <th:block th:each="orderService : ${room.orderServices}">
+                                            <tr>
+                                                <td class="name">Ngày đăng:</td>
+                                                <td>
+                                                    <time   th:if="${orderService.status.toString() == 'ACTIVE'}"
+                                                            th:text="${@timeUtils.formatDateTime(orderService.orderDate)}">Thứ 3, 00:22 30/07/2024
+                                                    </time>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="name">Ngày hết hạn:</td>
+                                                <td>
+                                                    <time   th:if="${orderService.status.toString() == 'ACTIVE'}"
+                                                            th:text="${@timeUtils.formatDateTime(orderService.endDate)}">Thứ 3, 00:22 30/07/2024</time>
+                                                </td>
+                                            </tr>
+                                        </th:block>
                                     </tbody>
                                 </table>
                             </div>
                         </section>
-
                         <section class="detail-contact mb-4">
                             <div class="section-detail-header">
                                 <h3>Thông tin liên hệ</h3>
@@ -186,11 +193,8 @@
                                 </address>
                             </div>
                             <div class="section-detail-content">
-                                <div id="map" class="map">
-                                    <iframe
-                                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d489.9394077946485!2d106.64256376692497!3d10.771792023850779!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752ebd727d424f%3A0x55aa0fffe84158fc!2zMTdRIEzhuqFjIExvbmcgUXXDom4!5e0!3m2!1svi!2s!4v1722448161741!5m2!1svi!2s"
-                                            style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-                                    </iframe>
+                                <div id="map" >
+
                                 </div>
                             </div>
                         </section>
@@ -208,14 +212,14 @@
                                 <p th:if="${relateRooms.size() == 0}" class="text-center text-danger m-0"> Khu vực này hiện chưa có tin đăng khác</p>
                                 <li  th:each="room : ${relateRooms}" >
                                     <div class="post-left-item d-flex"
-                                         th:classappend="${(room.serviceType.priority == 1 ? ' post-left-item-vip-highlight' : '') +
-                                                            (room.serviceType.priority == 2 ? ' post-left-item-vip' : '')}"
+                                         th:classappend="${(roomAttributesMap[room.id].priority == 1 ? ' post-left-item-vip-highlight' : '') +
+                                                            (roomAttributesMap[room.id].priority == 2 ? ' post-left-item-vip' : '')}"
                                     >
                                         <div class="post-left-thumb me-3">
                                             <img class="post-thumb-img"
                                                  th:src="${room.imageRooms.get(0).img_path}" alt=""
-                                                 th:classappend="${(room.serviceType.priority == 1 ? ' post-thumb-img-vip-highlight' : '') +
-                                                                    (room.serviceType.priority == 2 ? ' post-thumb-img-vip' : '')}"
+                                                 th:classappend="${(roomAttributesMap[room.id].priority == 1 ? ' post-thumb-img-vip-highlight' : '') +
+                                                                    (roomAttributesMap[room.id].priority == 2 ? ' post-thumb-img-vip' : '')}"
                                             >
                                             <span class="post-count-img" th:text="${room.imageRooms.size()} + ' ảnh'"></span>
                                             <span class="post-favorite">
@@ -226,8 +230,8 @@
                                         <div class="post-left-infor  d-flex flex-column justify-content-around w-100">
                                             <h3 class="left-infor-title">
                                                 <a class="infor-title-a"
-                                                   th:classappend="${(room.serviceType.priority == 1 ? ' infor-title-a-vip-highlight' : '') +
-                                                                    (room.serviceType.priority == 2 ? ' infor-title-a-vip' : '')}"
+                                                   th:classappend="${(roomAttributesMap[room.id].priority == 1 ? ' infor-title-a-vip-highlight' : '') +
+                                                                    (roomAttributesMap[room.id].priority == 2 ? ' infor-title-a-vip' : '')}"
                                                    th:href="@{/posts/{id}/{slug} (id=${room.id}, slug=${room.slug})}"
                                                    th:text="${room.getTitle()}"
                                                 >
@@ -246,9 +250,11 @@
                                                         </a>
                                                 </span>
                                                 </div>
-                                                <span class="left-infor-time" th:text="${@timeUtils.timeAgo(room.createdAt)}">
-                                                    29 phút trước
-                                                </span>
+                                                <th:block th:each="orderService : ${room.orderServices}">
+                                                    <span   class="left-infor-time"
+                                                            th:if="${orderService.status.toString() == 'ACTIVE'}"
+                                                            th:text="${@timeUtils.timeAgo(orderService.orderDate)}">1 giờ trước</span>
+                                                </th:block>
                                             </div>
                                             <div class="">
                                                 <p class="left-infor-description m-0"
@@ -266,7 +272,7 @@
                                                         Phương Thuý
                                                     </span>
                                                 </div>
-                                                <div th:if="${room.serviceType.showPhone}">
+                                                <div th:if="${roomAttributesMap[room.id].showPhone}">
                                                     <a rel="nofollow" target="_blank" th:href="'tel:' + ${room.user.phoneNumber}" class="btn-quick-call" th:text="'Gọi ' + ${room.user.phoneNumber}">Gọi 0938864405</a>
                                                     <a rel="nofollow" target="_blank" th:href="'https://zalo.me/' + ${room.user.phoneNumber}" class="btn-quick-zalo">Nhắn Zalo</a>
                                                 </div>
@@ -317,7 +323,7 @@
                                     <div class="post-right-infor d-flex flex-grow-1 flex-column justify-content-between ms-3">
                                             <span class="right-infor-title"
                                                   th:text="${roomsNew.title.length() > 50 ? #strings.substring(roomsNew.title, 0, 50) + '...' : roomsNew.title}"
-                                                  th:style="'color:' + ${roomsNew.serviceType.titleColor}"
+                                                  th:style="'color:' + ${roomAttributesMap[roomsNew.id].titleColor}"
                                             >
                                                 Phòng Trọ Cao Cấp Sạch Sẽ - An Ninh Ngay Luỹ…
                                             </span>
@@ -327,11 +333,11 @@
                                                 >
                                                     3,5 triệu/tháng
                                                 </span>
-                                            <span class="right-infor-time"
-                                                  th:text="${@timeUtils.timeAgo(roomsNew.createdAt)}"
-                                            >
-                                                    5 giờ trước
-                                                </span>
+                                            <th:block th:each="orderService : ${roomsNew.orderServices}">
+                                                    <span   class="right-infor-time"
+                                                            th:if="${orderService.status.toString() == 'ACTIVE'}"
+                                                            th:text="${@timeUtils.timeAgo(orderService.orderDate)}">1 giờ trước</span>
+                                            </th:block>
                                         </div>
                                     </div>
                                 </a>
@@ -382,8 +388,14 @@
 <th:block id="js">
     <script th:inline="javascript">
         const roomAddress = [[${room.exactAddress}]]
+        const slugcate = [[${room.category.slug}]]
+        const districtname = [[${room.district.name}]]
+        console.log(slugcate)
+        console.log(districtname)
     </script>
+
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
     <script>
         var swiper = new Swiper(".mySwiper", {
             loop: true,
@@ -397,40 +409,39 @@
             },
         });
     </script>
-    <!--    <script>-->
-    <!--        function geocodeAddress(address) {-->
-    <!--            const url = `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(address)}&apiKey=aCRq1_xL90rvV-l1C8Gjimw5N52eRrHphEt6HM7gjWY`;-->
 
-    <!--            fetch(url)-->
-    <!--                .then(response => response.json())-->
-    <!--                .then(data => {-->
-    <!--                    if (data.items.length > 0) {-->
-    <!--                        const { lat, lng } = data.items[0].position;-->
-    <!--                        initMap(lat, lng);-->
-    <!--                    } else {-->
-    <!--                        console.error('Không tìm thấy tọa độ cho địa chỉ này');-->
-    <!--                    }-->
-    <!--                })-->
-    <!--                .catch(error => console.error('Lỗi khi gọi API geocoding:', error));-->
-    <!--        }-->
+        <script>
+            function geocodeAddress(address) {
+                const url = `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(address)}&apiKey=aCRq1_xL90rvV-l1C8Gjimw5N52eRrHphEt6HM7gjWY`;
 
-    <!--        function initMap(lat, lng) {-->
-    <!--            var map = L.map('map').setView([lat, lng], 15);-->
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.items.length > 0) {
+                            const { lat, lng } = data.items[0].position;
+                            initMap(lat, lng);
+                        } else {
+                            console.error('Không tìm thấy tọa độ cho địa chỉ này');
+                        }
+                    })
+                    .catch(error => console.error('Lỗi khi gọi API geocoding:', error));
+            }
 
-    <!--            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {-->
-    <!--                maxZoom: 19,-->
-    <!--                attribution: '© OpenStreetMap'-->
-    <!--            }).addTo(map);-->
+            function initMap(lat, lng) {
+                var map = L.map('map').setView([lat, lng], 15);
 
-    <!--            L.marker([lat, lng]).addTo(map)-->
-    <!--                .bindPopup('Địa chỉ bài đăng')-->
-    <!--                .openPopup();-->
-    <!--        }-->
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '© OpenStreetMap'
+                }).addTo(map);
 
-    <!--        geocodeAddress(roomAddress);-->
-    <!--    </script>-->
+                L.marker([lat, lng]).addTo(map)
+                    .bindPopup('Địa chỉ bài đăng')
+                    .openPopup();
+            }
 
-
+            geocodeAddress(roomAddress);
+        </script>
 
 
 </th:block>

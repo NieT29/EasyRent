@@ -3,7 +3,7 @@
       th:replace="~{web/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: #content-wrapper}, ~{:: #js})}">
 <head>
 
-    <title>Phòng Trọ Vip</title>
+    <title>Cho thuê phòng trọ</title>
     <th:block id="css"></th:block>
 </head>
 <body>
@@ -66,32 +66,58 @@
                 <div class="col-8">
                     <section class="section-left section-post-list">
                         <p th:if="${pageRoomList.totalElements == 0}" class="text-center text-danger m-4">Hiện tại chưa có tin đăng trong khu vực này</p>
+
                         <th:block th:if="${pageRoomList.totalElements > 0}">
                             <div class="post-list-header mb-3">
-                                    <span class="post-list-header-title m-0 p-0" th:text="'Tổng '+ ${pageRoomList.totalElements} + ' Kết quả'">
-                                        Tổng 999 kết quả
-                                    </span>
+                            <span class="post-list-header-title m-0 p-0" th:text="'Tổng '+ ${pageRoomList.totalElements} + ' Kết quả'">
+                                Tổng 999 kết quả
+                            </span>
                             </div>
 
                             <div class="section-post-sort ">
                                 <span>Sắp xếp: </span>
-                                <a  th:classappend="${orderBy.equals('mac-dinh') ? 'post-sort-link-active' : ''}"
-                                    class="post-sort-link"
-                                    th:attr="href=@{'/?' + (${gia_tu != null ? 'gia_tu=' + gia_tu + '&' : ''}) + (${gia_den != null ? 'gia_den=' + gia_den + '&' : ''}) + (${dien_tich_tu != null ? 'dien_tich_tu=' + dien_tich_tu + '&' : ''}) + (${dien_tich_den != null ? 'dien_tich_den=' + dien_tich_den + '&' : ''}) + 'orderBy=mac-dinh'}">
+                                <a th:classappend="${orderBy.equals('mac-dinh') ? 'post-sort-link-active' : ''}"
+                                   class="post-sort-link"
+                                   th:attr="href=@{(${province != null} ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                              (${district != null} ? '/' + ${district} : '') +
+                                              (${ward != null} ? '/' + ${ward} : '') +
+                                              '?' +
+                                              (${gia_tu != null ? 'gia_tu=' + gia_tu + '&' : ''}) +
+                                              (${gia_den != null ? 'gia_den=' + gia_den + '&' : ''}) +
+                                              (${dien_tich_tu != null ? 'dien_tich_tu=' + dien_tich_tu + '&' : ''}) +
+                                              (${dien_tich_den != null ? 'dien_tich_den=' + dien_tich_den + '&' : ''}) +
+                                              'orderBy=mac-dinh'}">
                                     Mặc định
                                 </a>
-                                <a  th:classappend="${orderBy.equals('moi-nhat') ? 'post-sort-link-active' : ''}"
-                                    class="post-sort-link"
-                                    th:attr="href=@{'/?' + (${gia_tu != null ? 'gia_tu=' + gia_tu + '&' : ''}) + (${gia_den != null ? 'gia_den=' + gia_den + '&' : ''}) + (${dien_tich_tu != null ? 'dien_tich_tu=' + dien_tich_tu + '&' : ''}) + (${dien_tich_den != null ? 'dien_tich_den=' + dien_tich_den + '&' : ''}) + 'orderBy=moi-nhat'}">
+                                <a th:classappend="${orderBy.equals('moi-nhat') ? 'post-sort-link-active' : ''}"
+                                   class="post-sort-link"
+                                   th:attr="href=@{(${province != null} ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                              (${district != null} ? '/' + ${district} : '') +
+                                              (${ward != null} ? '/' + ${ward} : '') +
+                                              '?' +
+                                              (${gia_tu != null ? 'gia_tu=' + gia_tu + '&' : ''}) +
+                                              (${gia_den != null ? 'gia_den=' + gia_den + '&' : ''}) +
+                                              (${dien_tich_tu != null ? 'dien_tich_tu=' + dien_tich_tu + '&' : ''}) +
+                                              (${dien_tich_den != null ? 'dien_tich_den=' + dien_tich_den + '&' : ''}) +
+                                              'orderBy=moi-nhat'}">
                                     Mới nhất
                                 </a>
-                                <a  th:classappend="${orderBy.equals('co-video') ? 'post-sort-link-active' : ''}"
-                                    class="post-sort-link"
-                                    th:attr="href=@{'/?' + (${gia_tu != null ? 'gia_tu=' + gia_tu + '&' : ''}) + (${gia_den != null ? 'gia_den=' + gia_den + '&' : ''}) + (${dien_tich_tu != null ? 'dien_tich_tu=' + dien_tich_tu + '&' : ''}) + (${dien_tich_den != null ? 'dien_tich_den=' + dien_tich_den + '&' : ''}) + 'orderBy=co-video'}">
+                                <a th:classappend="${orderBy.equals('co-video') ? 'post-sort-link-active' : ''}"
+                                   class="post-sort-link"
+                                   th:attr="href=@{(${province != null} ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                              (${district != null} ? '/' + ${district} : '') +
+                                              (${ward != null} ? '/' + ${ward} : '') +
+                                              '?' +
+                                              (${gia_tu != null ? 'gia_tu=' + gia_tu + '&' : ''}) +
+                                              (${gia_den != null ? 'gia_den=' + gia_den + '&' : ''}) +
+                                              (${dien_tich_tu != null ? 'dien_tich_tu=' + dien_tich_tu + '&' : ''}) +
+                                              (${dien_tich_den != null ? 'dien_tich_den=' + dien_tich_den + '&' : ''}) +
+                                              'orderBy=co-video'}">
                                     Có video
                                 </a>
                             </div>
                         </th:block>
+
 
                         <ul>
                             <li  th:each="room : ${pageRoomList}" >
@@ -165,11 +191,13 @@
                             </li>
                         </ul>
                     </section>
+
                     <div class="mb-5" th:if="${pageRoomList.getTotalPages() > 1 && !pageRoomList.isEmpty()}">
                         <nav aria-label="...">
                             <ul class="pagination justify-content-center">
                                 <li class="page-item" th:classappend="${currentPage == 1 ? 'disabled' : ''}">
-                                    <a class="page-link" th:href="|/?${gia_tu != null ? '&gia_tu=' + gia_tu : ''}${gia_den != null ? '&gia_den=' + gia_den : ''}${dien_tich_tu != null ? '&dien_tich_tu=' + dien_tich_tu : ''}${dien_tich_den != null ? '&dien_tich_den=' + dien_tich_den : ''}&page=${currentPage - 1}&orderBy=${orderBy}|">
+                                    <a class="page-link"
+                                       th:href="|/cho-thue-phong-tro${province != null ? '-' + province : ''}${district != null ? '/' + district : ''}${ward != null ? '/' + ward : ''}?${gia_tu != null ? '&gia_tu=' + gia_tu : ''}${gia_den != null ? '&gia_den=' + gia_den : ''}${dien_tich_tu != null ? '&dien_tich_tu=' + dien_tich_tu : ''}${dien_tich_den != null ? '&dien_tich_den=' + dien_tich_den : ''}&page=${currentPage - 1}&orderBy=${orderBy}|">
                                         <i class="fa-solid fa-angles-left"></i>
                                         Trang trước
                                     </a>
@@ -179,10 +207,12 @@
                                     th:classappend="${currentPage == number ? 'active' : ''}"
                                 >
                                     <span th:if="${number == -1}" class="page-link">...</span>
-                                    <a th:if="${number != -1}" class="page-link" th:href="|/?${gia_tu != null ? '&gia_tu=' + gia_tu : ''}${gia_den != null ? '&gia_den=' + gia_den : ''}${dien_tich_tu != null ? '&dien_tich_tu=' + dien_tich_tu : ''}${dien_tich_den != null ? '&dien_tich_den=' + dien_tich_den : ''}&page=${number}&orderBy=${orderBy}|" th:text="${number}"></a>
+                                    <a th:if="${number != -1}" class="page-link"
+                                       th:href="|/cho-thue-phong-tro${province != null ? '-' + province : ''}${district != null ? '/' + district : ''}${ward != null ? '/' + ward : ''}?${gia_tu != null ? '&gia_tu=' + gia_tu : ''}${gia_den != null ? '&gia_den=' + gia_den : ''}${dien_tich_tu != null ? '&dien_tich_tu=' + dien_tich_tu : ''}${dien_tich_den != null ? '&dien_tich_den=' + dien_tich_den : ''}&page=${number}&orderBy=${orderBy}|" th:text="${number}"></a>
                                 </li>
                                 <li class="page-item" th:classappend="${currentPage == pageRoomList.getTotalPages() ? 'disabled' : ''}">
-                                    <a class="page-link" th:href="|/?${gia_tu != null ? '&gia_tu=' + gia_tu : ''}${gia_den != null ? '&gia_den=' + gia_den : ''}${dien_tich_tu != null ? '&dien_tich_tu=' + dien_tich_tu : ''}${dien_tich_den != null ? '&dien_tich_den=' + dien_tich_den : ''}&page=${currentPage + 1}&orderBy=${orderBy}|">
+                                    <a class="page-link"
+                                       th:href="|/cho-thue-phong-tro${province != null ? '-' + province : ''}${district != null ? '/' + district : ''}${ward != null ? '/' + ward : ''}?${gia_tu != null ? '&gia_tu=' + gia_tu : ''}${gia_den != null ? '&gia_den=' + gia_den : ''}${dien_tich_tu != null ? '&dien_tich_tu=' + dien_tich_tu : ''}${dien_tich_den != null ? '&dien_tich_den=' + dien_tich_den : ''}&page=${currentPage + 1}&orderBy=${orderBy}|">
                                         Trang sau
                                         <i class="fa-solid fa-angles-right"></i>
                                     </a>
@@ -199,14 +229,70 @@
                         </div>
                         <div>
                             <ul class="list-link list-link-price m-0">
-                                <li><a th:href="@{/?gia_den=1000000}">Dưới 1 triệu</a></li>
-                                <li><a th:href="@{/?gia_tu=1000000&gia_den=2000000}">Từ 1 - 2 triệu</a></li>
-                                <li><a th:href="@{/?gia_tu=2000000&gia_den=3000000}">Từ 2 - 3 triệu</a></li>
-                                <li><a th:href="@{/?gia_tu=3000000&gia_den=5000000}">Từ 3 - 5 triệu</a></li>
-                                <li><a th:href="@{/?gia_tu=5000000&gia_den=7000000}">Từ 5 - 7 triệu</a></li>
-                                <li><a th:href="@{/?gia_tu=7000000&gia_den=10000000}">Từ 7 - 10 triệu</a></li>
-                                <li><a th:href="@{/?gia_tu=10000000&gia_den=15000000}">Từ 10 - 15 triệu</a></li>
-                                <li><a th:href="@{/?gia_tu=15000000}">Trên 15 triệu</a></li>
+                                <li>
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?gia_den=1000000'}">
+                                        Dưới 1 triệu
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?gia_tu=1000000&gia_den=2000000'}">
+                                        Từ 1 - 2 triệu
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?gia_tu=2000000&gia_den=3000000'}">
+                                        Từ 2 - 3 triệu
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?gia_tu=3000000&gia_den=5000000'}">
+                                        Từ 3 - 5 triệu
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?gia_tu=5000000&gia_den=7000000'}">
+                                        Từ 5 - 7 triệu
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?gia_tu=7000000&gia_den=10000000'}">
+                                        Từ 7 - 10 triệu
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?gia_tu=10000000&gia_den=15000000'}">
+                                        Từ 10 - 15 triệu
+                                    </a>
+                                </li>
+                                <li>
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?gia_tu=15000000'}">
+                                        Trên 15 triệu
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -218,37 +304,50 @@
                         <div>
                             <ul class="list-link list-link-acreage m-0">
                                 <li>
-                                    <a th:href="@{/?dien_tich_den=20}">
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?&dien_tich_den=20'}">
                                         Dưới 20 m<sup>2</sup>
                                     </a>
-
                                 </li>
                                 <li>
-                                    <a th:href="@{/?dien_tich_tu=20&dien_tich_den=30}">
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?dien_tich_tu=20&dien_tich_den=30'}">
                                         Từ 20 - 30 m<sup>2</sup>
                                     </a>
-
                                 </li>
                                 <li>
-                                    <a th:href="@{/?dien_tich_tu=30&dien_tich_den=50}">
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?dien_tich_tu=30&dien_tich_den=50'}">
                                         Từ 30 - 50 m<sup>2</sup>
                                     </a>
-
                                 </li>
                                 <li>
-                                    <a th:href="@{/?dien_tich_tu=50&dien_tich_den=70}">
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?dien_tich_tu=50&dien_tich_den=70'}">
                                         Từ 50 - 70 m<sup>2</sup>
                                     </a>
-
                                 </li>
                                 <li>
-                                    <a th:href="@{/?dien_tich_tu=70&dien_tich_den=90}">
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?dien_tich_tu=70&dien_tich_den=90'}">
                                         Từ 70 - 90 m<sup>2</sup>
                                     </a>
-
                                 </li>
                                 <li>
-                                    <a th:href="@{/?dien_tich_tu=90}">
+                                    <a th:href="@{(${province} != null ? '/cho-thue-phong-tro-' + ${province} : '/cho-thue-phong-tro') +
+                                                (${district} != null ? '/' + ${district} : '') +
+                                                (${ward} != null ? '/' + ${ward} : '') +
+                                                '?dien_tich_tu=90'}">
                                         Trên 90 m<sup>2</sup>
                                     </a>
                                 </li>
@@ -380,6 +479,9 @@
     </main>
 </th:block>
 
-<th:block id="js"></th:block>
+<th:block id="js">
+    <script th:inline="javascript">
+    </script>
+</th:block>
 </body>
 </html>

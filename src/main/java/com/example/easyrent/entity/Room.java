@@ -39,8 +39,6 @@ public class Room {
     @Column(nullable = false)
     Double acreage;
 
-    Boolean status;
-
     String streetDetail;
 
     String exactAddress;
@@ -52,10 +50,6 @@ public class Room {
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
-
-    @ManyToOne
-    @JoinColumn(name = "serviceType_id")
-    ServiceType serviceType;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -78,4 +72,7 @@ public class Room {
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     List<VideoRoom> videoRooms;
+
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<OrderService> orderServices;
 }

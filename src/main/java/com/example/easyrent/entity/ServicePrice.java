@@ -1,5 +1,6 @@
 package com.example.easyrent.entity;
 
+import com.example.easyrent.model.enums.PriceType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -11,24 +12,22 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "serviceType")
-public class ServiceType {
+@Table(name = "servicePrice")
+public class ServicePrice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
-    @Column(nullable = false)
-    String name;
-
-    String description;
-
-    @Column(nullable = false, unique = true)
-    String titleColor;
-
-    boolean autoApprove;
-
-    boolean showPhone;
+    @Enumerated(EnumType.STRING)
+    PriceType priceType;
 
     @Column(nullable = false)
-    int priority;
+    int price;
+
+    @Column(nullable = false)
+    int discountPrice;
+
+    @ManyToOne
+    @JoinColumn(name = "serviceType_id")
+     ServiceType serviceType;
 }
