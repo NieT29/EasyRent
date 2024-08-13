@@ -1,9 +1,11 @@
 package com.example.easyrent.controller;
 
+import com.example.easyrent.entity.Category;
 import com.example.easyrent.entity.District;
 import com.example.easyrent.entity.Room;
 import com.example.easyrent.model.dto.ServiceTypeAttributesDTO;
 import com.example.easyrent.model.enums.OrderServiceStatus;
+import com.example.easyrent.service.CategoryService;
 import com.example.easyrent.service.RoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class WebController {
     private final RoomService roomService;
+    private final CategoryService categoryService;
 
     @GetMapping("/")
     public String getHome(Model model,
@@ -41,6 +44,8 @@ public class WebController {
         List<List<Room>> allRoomLists = Arrays.asList(roomListNew, pageRoomList.getContent());
         Map<Integer, ServiceTypeAttributesDTO> roomAttributesMap = roomService.getRoomServiceTypeAttributes(allRoomLists);
 
+        List<Category> allCategories = categoryService.getAllCategories();
+
 
         int totalPages = pageRoomList.getTotalPages();
         if (totalPages > 0) {
@@ -57,13 +62,14 @@ public class WebController {
         model.addAttribute("dien_tich_den", dien_tich_den);
         model.addAttribute("roomAttributesMap",roomAttributesMap);
         model.addAttribute("categoryCounts", categoryCounts);
+        model.addAttribute("allCategories", allCategories);
         return "web/index";
     }
 
     @GetMapping({"/cho-thue-phong-tro",
-            "/cho-thue-phong-tro-{province}",
-            "/cho-thue-phong-tro-{province}/{district}",
-            "/cho-thue-phong-tro-{province}/{district}/{ward}"})
+            "/cho-thue-phong-tro/{province}",
+            "/cho-thue-phong-tro/{province}/{district}",
+            "/cho-thue-phong-tro/{province}/{district}/{ward}"})
     public String getRoomRentals(Model model,
                                  @PathVariable(required = false) String province,
                                  @PathVariable(required = false) String district,
@@ -84,6 +90,9 @@ public class WebController {
         List<List<Room>> allRoomLists = Arrays.asList(roomListNew ,pageRoomList.getContent());
         Map<Integer, ServiceTypeAttributesDTO> roomAttributesMap = roomService.getRoomServiceTypeAttributes(allRoomLists);
 
+        List<Category> allCategories = categoryService.getAllCategories();
+
+
         int totalPages = pageRoomList.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = roomService.getPageNumbers(page, totalPages);
@@ -100,14 +109,15 @@ public class WebController {
         model.addAttribute("dien_tich_den", dien_tich_den);
         model.addAttribute("roomAttributesMap",roomAttributesMap);
         model.addAttribute("categoryCounts", categoryCounts);
+        model.addAttribute("allCategories", allCategories);
 
         return "web/cho-thue-phong-tro";
     }
 
     @GetMapping({"/cho-thue-nha",
-            "/cho-thue-nha-{province}",
-            "/cho-thue-nha-{province}/{district}",
-            "/cho-thue-nha-{province}/{district}/{ward}"})
+            "/cho-thue-nha/{province}",
+            "/cho-thue-nha/{province}/{district}",
+            "/cho-thue-nha/{province}/{district}/{ward}"})
     public String getHouseRentals(Model model,
                                  @PathVariable(required = false) String province,
                                  @PathVariable(required = false) String district,
@@ -128,6 +138,9 @@ public class WebController {
         List<List<Room>> allRoomLists = Arrays.asList(roomListNew ,pageRoomList.getContent());
         Map<Integer, ServiceTypeAttributesDTO> roomAttributesMap = roomService.getRoomServiceTypeAttributes(allRoomLists);
 
+        List<Category> allCategories = categoryService.getAllCategories();
+
+
         int totalPages = pageRoomList.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = roomService.getPageNumbers(page, totalPages);
@@ -144,14 +157,15 @@ public class WebController {
         model.addAttribute("dien_tich_den", dien_tich_den);
         model.addAttribute("roomAttributesMap",roomAttributesMap);
         model.addAttribute("categoryCounts", categoryCounts);
+        model.addAttribute("allCategories", allCategories);
 
         return "web/cho-thue-nha";
     }
 
     @GetMapping({"/cho-thue-can-ho",
-            "/cho-thue-can-ho-{province}",
-            "/cho-thue-can-ho-{province}/{district}",
-            "/cho-thue-can-ho-{province}/{district}/{ward}"})
+            "/cho-thue-can-ho/{province}",
+            "/cho-thue-can-ho/{province}/{district}",
+            "/cho-thue-can-ho/{province}/{district}/{ward}"})
     public String getApartmentRentals(Model model,
                                  @PathVariable(required = false) String province,
                                  @PathVariable(required = false) String district,
@@ -172,6 +186,8 @@ public class WebController {
         List<List<Room>> allRoomLists = Arrays.asList(roomListNew ,pageRoomList.getContent());
         Map<Integer, ServiceTypeAttributesDTO> roomAttributesMap = roomService.getRoomServiceTypeAttributes(allRoomLists);
 
+        List<Category> allCategories = categoryService.getAllCategories();
+
         int totalPages = pageRoomList.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = roomService.getPageNumbers(page, totalPages);
@@ -188,14 +204,15 @@ public class WebController {
         model.addAttribute("dien_tich_den", dien_tich_den);
         model.addAttribute("roomAttributesMap",roomAttributesMap);
         model.addAttribute("categoryCounts", categoryCounts);
+        model.addAttribute("allCategories", allCategories);
 
         return "web/cho-thue-can-ho";
     }
 
     @GetMapping({"/cho-thue-mat-bang",
-            "/cho-thue-mat-bang-{province}",
-            "/cho-thue-mat-bang-{province}/{district}",
-            "/cho-thue-mat-bang-{province}/{district}/{ward}"})
+            "/cho-thue-mat-bang/{province}",
+            "/cho-thue-mat-bang/{province}/{district}",
+            "/cho-thue-mat-bang/{province}/{district}/{ward}"})
     public String getLeaseSpaces(Model model,
                                  @PathVariable(required = false) String province,
                                  @PathVariable(required = false) String district,
@@ -216,6 +233,9 @@ public class WebController {
         List<List<Room>> allRoomLists = Arrays.asList(roomListNew ,pageRoomList.getContent());
         Map<Integer, ServiceTypeAttributesDTO> roomAttributesMap = roomService.getRoomServiceTypeAttributes(allRoomLists);
 
+        List<Category> allCategories = categoryService.getAllCategories();
+
+
         int totalPages = pageRoomList.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = roomService.getPageNumbers(page, totalPages);
@@ -232,14 +252,16 @@ public class WebController {
         model.addAttribute("dien_tich_den", dien_tich_den);
         model.addAttribute("roomAttributesMap",roomAttributesMap);
         model.addAttribute("categoryCounts", categoryCounts);
+        model.addAttribute("allCategories", allCategories);
+
 
         return "web/cho-thue-mat-bang";
     }
 
     @GetMapping({"/tim-nguoi-o-ghep",
-            "/tim-nguoi-o-ghep-{province}",
-            "/tim-nguoi-o-ghep-{province}/{district}",
-            "/tim-nguoi-o-ghep-{province}/{district}/{ward}"})
+            "/tim-nguoi-o-ghep/{province}",
+            "/tim-nguoi-o-ghep/{province}/{district}",
+            "/tim-nguoi-o-ghep/{province}/{district}/{ward}"})
     public String getRoommateSearch(Model model,
                                  @PathVariable(required = false) String province,
                                  @PathVariable(required = false) String district,
@@ -260,6 +282,9 @@ public class WebController {
         List<List<Room>> allRoomLists = Arrays.asList(roomListNew ,pageRoomList.getContent());
         Map<Integer, ServiceTypeAttributesDTO> roomAttributesMap = roomService.getRoomServiceTypeAttributes(allRoomLists);
 
+        List<Category> allCategories = categoryService.getAllCategories();
+
+
         int totalPages = pageRoomList.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = roomService.getPageNumbers(page, totalPages);
@@ -276,6 +301,7 @@ public class WebController {
         model.addAttribute("dien_tich_den", dien_tich_den);
         model.addAttribute("roomAttributesMap",roomAttributesMap);
         model.addAttribute("categoryCounts", categoryCounts);
+        model.addAttribute("allCategories", allCategories);
 
         return "web/tim-nguoi-o-ghep";
     }

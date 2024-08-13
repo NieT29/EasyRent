@@ -4,7 +4,8 @@
 <head>
 
     <title>Phòng Trọ Vip</title>
-    <th:block id="css"></th:block>
+    <th:block id="css">
+    </th:block>
 </head>
 <body>
 
@@ -14,21 +15,166 @@
             <section class="filter-top-inner">
                 <section class="filter-top">
                     <div class="filter-top-body d-flex align-items-center">
-                        <div class="filter-item post-estate-type d-flex">
-                            <span>Phòng trọ, nhà trọ</span>
+                        <div class="filter-item post-estate-type" >
+                            <button id="openCategoryModal">Phòng trọ, nhà trọ</button>
                         </div>
-                        <div class="filter-item post-location">
-                            <span>Toàn quốc</span>
+                        <!-- modal chọn category-->
+                        <div id="categoryModal" class="filter-popup">
+                            <div class="filter-popup-header">
+                                <span class="header-label">Chọn loại bất động sản</span>
+                                <div class="popup-close">Đóng</div>
+                            </div>
+                            <div class="filter-popup-content">
+                                <div id="filter-popup-category" class="filter-list-option">
+                                    <ul>
+                                        <li th:each="category : ${allCategories}" th:text="${category.type}" th:data="${category.slug}"></li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class="filter-item post-price">
-                            <span>Chọn giá</span>
+
+                        <div class="filter-item post-location" >
+                            <button id="openLocationModal">
+                                Toàn quốc
+                            </button>
                         </div>
-                        <div class="filter-item post-acreage">
-                            <span>Chọn diện tích</span>
+                        <!-- modal chọn location -->
+                            <!--modal province-->
+                        <div id="provinceModal" class="filter-popup">
+                            <div class="filter-popup-header">
+                                <span class="header-label">Chọn tỉnh thành</span>
+                                <div class="popup-close">Đóng</div>
+                            </div>
+                            <div class="filter-popup-content">
+                                <div id="filter-popup-province" class="filter-list-option">
+                                    <ul>
+                                        <li>Tất cả</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
+                        <!--modal district-->
+                        <div id="districtModal" class="filter-popup">
+                            <div class="filter-popup-header">
+                                <span class="header-label" id="modal-header-province">Chọn quận, huyện</span>
+                                <div class="popup-close">Đóng</div>
+                            </div>
+                            <div class="filter-popup-content">
+                                <div id="filter-popup-district" class="filter-list-option">
+                                    <ul>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!--modal ward-->
+                        <div id="wardModal" class="filter-popup">
+                            <div class="filter-popup-header">
+                                <span class="header-label" id="modal-header-district">Chọn phường xã</span>
+                                <div class="popup-close">Đóng</div>
+                            </div>
+                            <div class="filter-popup-content">
+                                <div id="filter-popup-ward" class="filter-list-option">
+                                    <ul>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="filter-item post-price" >
+                            <button id="openPriceModal">Chọn giá</button>
+                        </div>
+                        <!-- modal chọn giá -->
+                        <div id="priceModal" class="filter-popup">
+                            <div class="filter-popup-header">
+                                <span class="header-label">Chọn giá</span>
+                                <div class="popup-close">Đóng</div>
+                            </div>
+                            <div class="filter-popup-content">
+                                <div class="bds-ranger">
+                                    <p class="my-4">
+                                        <input type="text" readonly="readonly" id="priceRangeLabel" class="filter-popup-label">
+                                    </p>
+
+                                    <div class="filter-range-wrapper mb-5">
+                                        <span class="filter-range-min">0</span>
+                                        <div id="priceRange" class="price-slider"></div>
+                                        <span class="filter-range-max">15 triệu+</span>
+                                    </div>
+                                    <p class="quick-select-title fw-bolder">Chọn nhanh</p>
+                                    <ul class="custom-list-ranger">
+                                        <li class="btn-quick-select" data-range="[0, 1]">Dưới 1 triệu đồng</li>
+                                        <li class="btn-quick-select" data-range="[1, 2]">Từ 1 - 2 triệu đồng</li>
+                                        <li class="btn-quick-select" data-range="[2, 3]">Từ 2 - 3 triệu đồng</li>
+                                        <li class="btn-quick-select" data-range="[3, 5]">Từ 3 - 5 triệu đồng</li>
+                                        <li class="btn-quick-select" data-range="[5, 7]">Từ 5 - 7 triệu đồng</li>
+                                        <li class="btn-quick-select" data-range="[7, 10]">Từ 7 - 10 triệu đồng</li>
+                                        <li class="btn-quick-select" data-range="[10, 15]">Từ 10 - 15 triệu đồng</li>
+                                        <li class="btn-quick-select" data-range="[15, 15]">Trên 15 triệu đồng</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="filter-popup-footer">
+                                <button class="filter-btn-bottom" id="btn-apply-price">Áp dụng</button>
+                            </div>
+                        </div>
+
+                        <div class="filter-item post-acreage" >
+                            <button id="openAcreageModal">Chọn diện tích</button>
+                        </div>
+                        <!-- modal chọn diện tích -->
+                        <div id="acreageModal" class="filter-popup">
+                            <div class="filter-popup-header">
+                                <span class="header-label">Chọn diện tích</span>
+                                <div class="popup-close">Đóng</div>
+                            </div>
+                            <div class="filter-popup-content">
+                                <div class="bds-ranger">
+                                    <p class="my-4">
+                                        <input type="text" readonly="readonly" id="acreageRangeLabel" class="filter-popup-label">
+                                    </p>
+
+                                    <div class="filter-range-wrapper mb-5">
+                                        <span class="filter-range-min">0</span>
+                                        <div id="acreageRange" class="acreage-slider"></div>
+                                        <span class="filter-range-max">90</span>
+                                    </div>
+                                    <p class="quick-select-title fw-bolder">Chọn nhanh</p>
+                                    <ul class="custom-list-ranger">
+                                        <li class="btn-quick-select" data-range="[0, 20]">Dưới 20m
+                                            <sup>2</sup>
+                                        </li>
+                                        <li class="btn-quick-select" data-range="[20, 30]">
+                                            Từ 20m<sup>2</sup>
+                                            - 30m<sup>2</sup>
+                                        </li>
+                                        <li class="btn-quick-select" data-range="[30, 50]">
+                                            Từ 30m<sup>2</sup>
+                                            - 50m<sup>2</sup>
+                                        </li>
+                                        <li class="btn-quick-select" data-range="[50, 70]">
+                                            Từ 50m<sup>2</sup>
+                                            - 70m<sup>2</sup>
+                                        </li>
+                                        <li class="btn-quick-select" data-range="[70, 90]">
+                                            Từ 70m<sup>2</sup>
+                                            - 90m<sup>2</sup>
+                                        </li>
+
+                                        <li class="btn-quick-select" data-range="[90, 90]">
+                                            Trên 90m<sup>2</sup>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="filter-popup-footer">
+                                <button class="filter-btn-bottom" id="btn-apply-acreage">Áp dụng</button>
+                            </div>
+                        </div>
+
                         <div class="filter-item filter-submit">
-                            <span>Tìm kiếm</span>
+                            <button id="btn-submit-filter">Tìm kiếm</button>
                         </div>
+                        <div id="overlay" class="modal-overlay"></div>
                     </div>
                 </section>
             </section>
@@ -46,15 +192,15 @@
                 <h2 class="section-header-title m-0">Khu vực nổi bật</h2>
             </div>
             <div class="location-city">
-                <a href="/cho-thue-phong-tro-Hà Nội" class="location-city-item city-1">
+                <a href="/cho-thue-phong-tro/Hà Nội" class="location-city-item city-1">
                     <div class="city-bg"></div>
                     <span class="location-city-name">Phòng trọ Hà Nội</span>
                 </a>
-                <a href="/cho-thue-phong-tro-Hồ Chí Minh" class="location-city-item city-2">
+                <a href="/cho-thue-phong-tro/Hồ Chí Minh" class="location-city-item city-2">
                     <div class="city-bg"></div>
                     <span class="location-city-name">Phòng trọ Hồ Chí Minh</span>
                 </a>
-                <a href="/cho-thue-phong-tro-Đà Nẵng" class="location-city-item city-3">
+                <a href="/cho-thue-phong-tro/Đà Nẵng" class="location-city-item city-3">
                     <div class="city-bg"></div>
                     <span class="location-city-name">Phòng trọ Đà Nẵng</span>
                 </a>
@@ -136,7 +282,7 @@
                                             </div>
                                             <th:block th:each="orderService : ${room.orderServices}">
                                                 <span class="left-infor-time" th:if="${orderService.status.toString() == 'ACTIVE'}"
-                                                      th:text="${@timeUtils.timeAgo(orderService.orderDate)}">1 giờ trước</span>
+                                                      th:text="${@timeUtils.timeAgo(orderService.startDate)}">1 giờ trước</span>
                                             </th:block>
                                         </div>
                                         <div class="">
@@ -314,7 +460,7 @@
                                             <th:block th:each="orderService : ${roomsNew.orderServices}">
                                                 <span   class="right-infor-time"
                                                         th:if="${orderService.status.toString() == 'ACTIVE'}"
-                                                        th:text="${@timeUtils.timeAgo(orderService.orderDate)}">1 giờ trước</span>
+                                                        th:text="${@timeUtils.timeAgo(orderService.startDate)}">1 giờ trước</span>
                                             </th:block>
                                         </div>
                                     </div>
@@ -380,6 +526,9 @@
     </main>
 </th:block>
 
-<th:block id="js"></th:block>
+<th:block id="js">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.0/nouislider.min.js"></script>
+    <script src="/web-assets/js/filterModal.js"></script>
+</th:block>
 </body>
 </html>

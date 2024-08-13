@@ -3,7 +3,7 @@
       th:replace="~{web/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: #content-wrapper}, ~{:: #js})}">
 <head>
 
-    <title>Chi tiết phòng</title>
+    <title>Chi tiết tin đăng</title>
     <th:block id="css">
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     </th:block>
@@ -73,7 +73,7 @@
                                     <i></i>
                                     <th:block th:each="orderService : ${room.orderServices}">
                                         <span   th:if="${orderService.status.toString() == 'ACTIVE'}"
-                                                th:text="${@timeUtils.timeAgo(orderService.orderDate)}">1 giờ trước</span>
+                                                th:text="${@timeUtils.timeAgo(orderService.startDate)}">1 giờ trước</span>
                                     </th:block>
                                 </div>
                                 <div class="attributes-item attributes-hashtag">
@@ -144,7 +144,7 @@
                                                 <td class="name">Ngày đăng:</td>
                                                 <td>
                                                     <time   th:if="${orderService.status.toString() == 'ACTIVE'}"
-                                                            th:text="${@timeUtils.formatDateTime(orderService.orderDate)}">Thứ 3, 00:22 30/07/2024
+                                                            th:text="${@timeUtils.formatDateTime(orderService.startDate)}">Thứ 3, 00:22 30/07/2024
                                                     </time>
                                                 </td>
                                             </tr>
@@ -253,7 +253,7 @@
                                                 <th:block th:each="orderService : ${room.orderServices}">
                                                     <span   class="left-infor-time"
                                                             th:if="${orderService.status.toString() == 'ACTIVE'}"
-                                                            th:text="${@timeUtils.timeAgo(orderService.orderDate)}">1 giờ trước</span>
+                                                            th:text="${@timeUtils.timeAgo(orderService.startDate)}">1 giờ trước</span>
                                                 </th:block>
                                             </div>
                                             <div class="">
@@ -336,7 +336,7 @@
                                             <th:block th:each="orderService : ${roomsNew.orderServices}">
                                                     <span   class="right-infor-time"
                                                             th:if="${orderService.status.toString() == 'ACTIVE'}"
-                                                            th:text="${@timeUtils.timeAgo(orderService.orderDate)}">1 giờ trước</span>
+                                                            th:text="${@timeUtils.timeAgo(orderService.startDate)}">1 giờ trước</span>
                                             </th:block>
                                         </div>
                                     </div>
@@ -410,40 +410,38 @@
         });
     </script>
 
-        <script>
-            function geocodeAddress(address) {
-                const url = `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(address)}&apiKey=aCRq1_xL90rvV-l1C8Gjimw5N52eRrHphEt6HM7gjWY`;
+    <script>
+        function geocodeAddress(address) {
+            const url = `https://geocode.search.hereapi.com/v1/geocode?q=${encodeURIComponent(address)}&apiKey=aCRq1_xL90rvV-l1C8Gjimw5N52eRrHphEt6HM7gjWY`;
 
-                fetch(url)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.items.length > 0) {
-                            const { lat, lng } = data.items[0].position;
-                            initMap(lat, lng);
-                        } else {
-                            console.error('Không tìm thấy tọa độ cho địa chỉ này');
-                        }
-                    })
-                    .catch(error => console.error('Lỗi khi gọi API geocoding:', error));
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.items.length > 0) {
+                        const { lat, lng } = data.items[0].position;
+                        initMap(lat, lng);
+                    } else {
+                        console.error('Không tìm thấy tọa độ cho địa chỉ này');
+                    }
+                })
+                .catch(error => console.error('Lỗi khi gọi API geocoding:', error));
             }
 
-            function initMap(lat, lng) {
-                var map = L.map('map').setView([lat, lng], 15);
+        function initMap(lat, lng) {
+            var map = L.map('map').setView([lat, lng], 15);
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    maxZoom: 19,
-                    attribution: '© OpenStreetMap'
-                }).addTo(map);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
 
-                L.marker([lat, lng]).addTo(map)
-                    .bindPopup('Địa chỉ bài đăng')
-                    .openPopup();
-            }
+            L.marker([lat, lng]).addTo(map)
+                .bindPopup('Địa chỉ bài đăng')
+                .openPopup();
+        }
 
-            geocodeAddress(roomAddress);
-        </script>
-
-
+        geocodeAddress(roomAddress);
+    </script>
 </th:block>
 </body>
 </html>

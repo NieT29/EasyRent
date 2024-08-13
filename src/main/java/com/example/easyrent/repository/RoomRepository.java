@@ -17,18 +17,17 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
     @Query("SELECT r FROM Room r " +
             "JOIN r.orderServices os " +
             "WHERE os.status = :status " +
-            "ORDER BY r.createdAt DESC")
-    Page<Room> findByOrderServiceStatusOrderByCreatedAtDesc(@Param("status") OrderServiceStatus status, Pageable pageable);
+            "ORDER BY os.startDate DESC")
+    Page<Room> findByOrderServiceStatusOrderByStartDateDesc(@Param("status") OrderServiceStatus status, Pageable pageable);
 
     @Query("SELECT r FROM Room r " +
             "JOIN r.orderServices os " +
             "WHERE os.status = :status " +
             "AND r.id != :id " +
-            "ORDER BY r.createdAt DESC")
-    Page<Room> findByOrderServiceStatusAndIdNotOrderByCreatedAtDesc(@Param("status") OrderServiceStatus status,
+            "ORDER BY os.startDate DESC")
+    Page<Room> findByOrderServiceStatusAndIdNotOrderByStartDateDesc(@Param("status") OrderServiceStatus status,
                                                                     @Param("id") Integer id,
                                                                     Pageable pageable);
-
 
     @Query("SELECT r FROM Room r " +
             "JOIN r.orderServices os " +
@@ -37,8 +36,8 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
             "AND (:gia_den IS NULL OR r.price <= :gia_den) " +
             "AND (:dien_tich_tu IS NULL OR r.acreage >= :dien_tich_tu) " +
             "AND (:dien_tich_den IS NULL OR r.acreage <= :dien_tich_den) " +
-            "ORDER BY r.createdAt DESC")
-    Page<Room> findAllByOrderServiceStatusAndPriceAndAcreageOrderByCreatedAtDesc(@Param("status") OrderServiceStatus status,
+            "ORDER BY os.startDate DESC")
+    Page<Room> findAllByOrderServiceStatusAndPriceAndAcreageOrderByStartDateDesc(@Param("status") OrderServiceStatus status,
                                                                                  @Param("gia_tu") Integer gia_tu,
                                                                                  @Param("gia_den") Integer gia_den,
                                                                                  @Param("dien_tich_tu") Double dien_tich_tu,
@@ -53,7 +52,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
             "AND (:gia_den IS NULL OR r.price <= :gia_den) " +
             "AND (:dien_tich_tu IS NULL OR r.acreage >= :dien_tich_tu) " +
             "AND (:dien_tich_den IS NULL OR r.acreage <= :dien_tich_den) " +
-            "ORDER BY r.createdAt DESC")
+            "ORDER BY os.startDate DESC")
     Page<Room> findAllByOrderServiceStatusAndHasVideoAndPriceAndAcreage(@Param("status") OrderServiceStatus status,
                                                                         @Param("gia_tu") Integer gia_tu,
                                                                         @Param("gia_den") Integer gia_den,
@@ -70,7 +69,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
             "AND (:gia_den IS NULL OR r.price <= :gia_den) " +
             "AND (:dien_tich_tu IS NULL OR r.acreage >= :dien_tich_tu) " +
             "AND (:dien_tich_den IS NULL OR r.acreage <= :dien_tich_den) " +
-            "ORDER BY st.priority ASC, r.createdAt DESC")
+            "ORDER BY st.priority ASC, os.startDate DESC")
     Page<Room> findAllByOrderServiceStatusAndPriceAndAcreage(@Param("status") OrderServiceStatus status,
                                                              @Param("gia_tu") Integer gia_tu,
                                                              @Param("gia_den") Integer gia_den,
@@ -94,8 +93,8 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
             "AND (:gia_den IS NULL OR r.price <= :gia_den) " +
             "AND (:dien_tich_tu IS NULL OR r.acreage >= :dien_tich_tu) " +
             "AND (:dien_tich_den IS NULL OR r.acreage <= :dien_tich_den) " +
-            "ORDER BY r.createdAt DESC")
-    Page<Room> findAllByLocationAndCategoryAndOrderServiceStatusAndPriceAndAcreageOrderByCreatedAtDesc(@Param("province") String province,
+            "ORDER BY os.startDate DESC")
+    Page<Room> findAllByLocationAndCategoryAndOrderServiceStatusAndPriceAndAcreageOrderByStartDateDesc(@Param("province") String province,
                                                                                                        @Param("district") String district,
                                                                                                        @Param("ward") String ward,
                                                                                                        @Param("categoryName") String categoryName,
@@ -124,7 +123,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
             "AND (:gia_den IS NULL OR r.price <= :gia_den) " +
             "AND (:dien_tich_tu IS NULL OR r.acreage >= :dien_tich_tu) " +
             "AND (:dien_tich_den IS NULL OR r.acreage <= :dien_tich_den) " +
-            "ORDER BY r.createdAt DESC")
+            "ORDER BY os.startDate DESC")
     Page<Room> findAllByOrderServiceStatusAndLocationAndCategoryAndHasVideoAndPriceAndAcreage(@Param("province") String province,
                                                                                               @Param("district") String district,
                                                                                               @Param("ward") String ward,
@@ -152,7 +151,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
             "AND (:gia_den IS NULL OR r.price <= :gia_den) " +
             "AND (:dien_tich_tu IS NULL OR r.acreage >= :dien_tich_tu) " +
             "AND (:dien_tich_den IS NULL OR r.acreage <= :dien_tich_den) " +
-            "ORDER BY st.priority ASC, r.createdAt DESC")
+            "ORDER BY st.priority ASC, os.startDate DESC")
     Page<Room> findAllByOrderServiceStatusAndLocationAndCategoryAndPriceAndAcreage(@Param("province") String province,
                                                                                    @Param("district") String district,
                                                                                    @Param("ward") String ward,
@@ -163,9 +162,6 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
                                                                                    @Param("dien_tich_tu") Double dien_tich_tu,
                                                                                    @Param("dien_tich_den") Double dien_tich_den,
                                                                                    Pageable pageable);
-
-
-
 
     @Query("SELECT r FROM Room r " +
             "JOIN r.orderServices os " +
@@ -183,7 +179,7 @@ public interface RoomRepository extends JpaRepository<Room, Integer> {
             "AND r.district = (SELECT rr.district FROM Room rr WHERE rr.id = :roomId) " +
             "AND os.status = :status " +
             "AND r.id != :roomId " +
-            "ORDER BY r.createdAt DESC")
+            "ORDER BY os.startDate DESC")
     List<Room> findRelateRooms(@Param("roomId") Integer roomId,
                                @Param("status") OrderServiceStatus status);
 

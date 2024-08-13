@@ -69,8 +69,8 @@ class EasyRentApplicationTests {
 
             User userRd = userList.get(random.nextInt(userList.size()));
 
-            int price = (random.nextInt(91) + 10) * 100000;
-            double acreage = 10 + random.nextInt(141);
+            int price = (random.nextInt(171) + 10) * 100000;
+            double acreage = 10 + random.nextInt(120);
 
             String streetDetail = faker.address().streetAddress();
             String exactAddress = streetDetail + ", " + wardRd.getName() + ", " + districtRd.getName() + ", " + provinceRd.getName();

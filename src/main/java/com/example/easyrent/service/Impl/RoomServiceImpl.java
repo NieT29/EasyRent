@@ -17,11 +17,12 @@ import java.util.*;
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
 
+
     @Override
     public Page<Room> getRoomsFiltered(OrderServiceStatus status, int page, int pageSize, Integer gia_tu, Integer gia_den, Double dien_tich_tu, Double dien_tich_den, String orderBy) {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
         if (orderBy.equals("moi-nhat")) {
-            return roomRepository.findAllByOrderServiceStatusAndPriceAndAcreageOrderByCreatedAtDesc(status, gia_tu, gia_den, dien_tich_tu, dien_tich_den, pageRequest);
+            return roomRepository.findAllByOrderServiceStatusAndPriceAndAcreageOrderByStartDateDesc(status, gia_tu, gia_den, dien_tich_tu, dien_tich_den, pageRequest);
         } else if (orderBy.equals("co-video")) {
             return roomRepository.findAllByOrderServiceStatusAndHasVideoAndPriceAndAcreage(status, gia_tu, gia_den, dien_tich_tu, dien_tich_den, pageRequest);
         } else {
@@ -34,7 +35,7 @@ public class RoomServiceImpl implements RoomService {
         PageRequest pageRequest = PageRequest.of(page - 1, pageSize);
 
         if (orderBy.equals("moi-nhat")) {
-            return roomRepository.findAllByLocationAndCategoryAndOrderServiceStatusAndPriceAndAcreageOrderByCreatedAtDesc(province, district, ward, categoryName, status, gia_tu, gia_den, dien_tich_tu, dien_tich_den, pageRequest);
+            return roomRepository.findAllByLocationAndCategoryAndOrderServiceStatusAndPriceAndAcreageOrderByStartDateDesc(province, district, ward, categoryName, status, gia_tu, gia_den, dien_tich_tu, dien_tich_den, pageRequest);
         } else if (orderBy.equals("co-video")) {
             return roomRepository.findAllByOrderServiceStatusAndLocationAndCategoryAndHasVideoAndPriceAndAcreage(province, district, ward, categoryName, status, gia_tu, gia_den, dien_tich_tu, dien_tich_den, pageRequest);
         } else {
@@ -167,12 +168,12 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public Page<Room> getRoomListNew(OrderServiceStatus status, int page, int pageSize) {
         PageRequest pageRequest = PageRequest.of(page -1, pageSize);
-        return roomRepository.findByOrderServiceStatusOrderByCreatedAtDesc(status, pageRequest);
+        return roomRepository.findByOrderServiceStatusOrderByStartDateDesc(status, pageRequest);
     }
 
     @Override
     public Page<Room> getRoomListNewExcludingCurrent(OrderServiceStatus status, Integer currentRoomId, int page, int pageSize) {
         PageRequest pageRequest = PageRequest.of(page -1, pageSize);
-        return roomRepository.findByOrderServiceStatusAndIdNotOrderByCreatedAtDesc(status, currentRoomId, pageRequest);
+        return roomRepository.findByOrderServiceStatusAndIdNotOrderByStartDateDesc(status, currentRoomId, pageRequest);
     }
 }

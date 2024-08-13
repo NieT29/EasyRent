@@ -1,4 +1,3 @@
-console.log("from js");
 
 function activeMenu() {
     let path = window.location.pathname;
