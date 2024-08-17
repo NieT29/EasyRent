@@ -325,4 +325,14 @@ public class WebController {
         model.addAttribute("roomAttributesMap", roomAttributesMap);
         return "web/detail-room";
     }
+
+    @GetMapping("/dang-nhap")
+    public String getLogin() {
+        return "web/auth/login";
+    }
+
+    @GetMapping("/dang-ky")
+    public String getRegister() {
+        return "web/auth/register";
+    }
 }

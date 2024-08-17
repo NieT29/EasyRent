@@ -12,6 +12,7 @@ import com.github.slugify.Slugify;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +44,8 @@ class EasyRentApplicationTests {
     private ServicePriceRepository servicePriceRepository;
     @Autowired
     private OrderServiceRepository orderServiceRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Test
@@ -110,10 +113,11 @@ class EasyRentApplicationTests {
                     .name(name)
                     .email(faker.internet().emailAddress())
                     .avatar("https://placehold.co/600x400?text=" + String.valueOf(name.charAt(0)).toUpperCase())
-                    .password("123")
+                    .password(passwordEncoder.encode("123"))
                     .role(i == 0 || i == 1 ? UserRole.ADMIN : UserRole.USER)
                     .phoneNumber("0943648763")
                     .accountBalance(accountBalance)
+                    .enabled(faker.bool().bool())
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())
                     .build();

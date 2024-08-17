@@ -1,16 +1,27 @@
-
 function activeMenu() {
     let path = window.location.pathname;
 
-    const menuItems = document.querySelectorAll('#main-menu, .nav-menu, .nav-item a')
+    const menuItems = document.querySelectorAll('#main-menu, .nav-menu, .nav-item a');
     menuItems.forEach(function (menu) {
-        if (menu.getAttribute('href') === path) {
-            menu.classList.add('active-menu')
+        const href = menu.getAttribute('href');
+
+        if (href === '/') {
+            // Nếu path là "/" thì chỉ active cho menu có href là "/"
+            if (path === href) {
+                menu.classList.add('active-menu');
+            }
+        } else {
+            // Với các menu khác, kiểm tra xem path có bắt đầu bằng href không
+            if (path.startsWith(href)) {
+                menu.classList.add('active-menu');
+            }
         }
-    })
+    });
 }
 
-activeMenu()
+activeMenu();
+
+
 
 // sticky
 const header = document.getElementById('header');

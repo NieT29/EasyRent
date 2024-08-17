@@ -32,6 +32,8 @@ public class User {
 
     String phoneNumber;
 
+    Boolean enabled;
+
     @Column(nullable = false)
     String password;
 

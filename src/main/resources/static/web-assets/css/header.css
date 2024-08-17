@@ -69,3 +69,100 @@
 #main-menu .nav-menu a.active-menu {
     background-color: #f73859;
 }
+
+.dropdown-toggle:focus {
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.dropdown-menu {
+    box-shadow: 0 0 20px rgb(75 75 75 / 30%);
+    background-color: #fff;
+    padding: 15px 20px;
+    border-radius: 5px;
+    z-index: 9;
+    border: none;
+    min-width: 200px;
+}
+
+.dropdown-item {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    width: 100%;
+    white-space: nowrap;
+    align-items: center;
+    font-size: 14px;
+    color: #1266dd;
+}
+
+.dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.dropdown-item:hover {
+    background-color: transparent;
+    color: #f60;
+}
+
+.dropdown-item i {
+    width: 16px;
+    height: 16px;
+    margin-right: 10px;
+}
+
+.dang-tin i {
+    background: url('/web-assets/image/dashboard-add-post.svg') center no-repeat;
+    background-size: contain;
+}
+
+.quan-ly-tin-dang i {
+    background: url('/web-assets/image/dashboard-manage-post.svg') center no-repeat;
+    background-size: contain;
+}
+
+.nap-tien i {
+    background: url('/web-assets/image/dashboard-payment.svg') center no-repeat;
+    background-size: contain;
+}
+
+.lich-su-nap-tien i {
+    background: url('/web-assets/image/dashboard-payment-history.svg') center no-repeat;
+    background-size: contain;
+}
+
+.thong-tin-ca-nhan i {
+    background: url('/web-assets/image/dashboard-user.svg') center no-repeat;
+    background-size: contain;
+}
+
+.tin-yeu-thich i {
+    background: url('/web-assets/image/dashboard-post-saved.svg') center no-repeat;
+    background-size: contain;
+}
+
+.dang-xuat i {
+    background: url('/web-assets/image/dashboard-logout.svg') center no-repeat;
+    background-size: contain;
+}
+
+.trang-quan-tri i {
+    background: url('/web-assets/image/dashboard-manage-post.svg') center no-repeat;
+    background-size: contain;
+}
+
+.welcome-text {
+    margin-right: 50px;
+    display: inline-flex;
+    align-items: center;
+    color: #333;
+}
+
+
+
+
+
+
+
+
+

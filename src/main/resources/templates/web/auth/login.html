@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: #content-wrapper}, ~{:: #js})}">
+<head>
+
+    <title>Đăng nhập</title>
+    <th:block id="css">
+    </th:block>
+</head>
+<body>
+
+<th:block id="content-wrapper">
+    <main class="container mt-3">
+        <div class="container">
+            <div class="card-access">
+                <div class="card-access-header">
+                    <h3>Đăng nhập</h3>
+                </div>
+                <div class="card-access-content">
+                    <form id="form-login" class="form-access">
+                        <div class="mb-4 form-group">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="text" class="form-control" id="email" name="email"/>
+                        </div>
+                        <div class="mb-4 form-group">
+                            <label for="password" class="form-label">Mật khẩu</label>
+                            <input type="password" class="form-control" id="password" name="password"/>
+                        </div>
+                        <div class="mb-4">
+                            <button type="submit" class="btn btn-access-submit" id="btn-login">Đăng nhập</button>
+                        </div>
+                        <div>
+                            <a href="">Bạn quên mật khẩu?</a>
+                            <a class="float-end" href="/dang-ky">Tạo tài khoản mới</a>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</th:block>
+
+<th:block id="js">
+
+    <script>
+        $('#form-login').validate({
+            rules: {
+                email: {
+                    required: true,
+                    email: true,
+                },
+                password: {
+                    required: true,
+                }
+            },
+            messages: {
+                email: {
+                    required: "Email không được để trống",
+                    email: "Email không đúng định dạng"
+                },
+                password: {
+                    required: "Mật khẩu không được để trống",
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        // Xử lý logic
+        const formLoginEl = document.getElementById("form-login");
+        const emailEl = document.getElementById("email")
+        const passwordEl = document.getElementById("password")
+
+        formLoginEl.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            // Kiểm tra form đã validate chưa
+            if (!$('#form-login').valid()) {
+                return;
+            }
+
+            const data = {
+                email: emailEl.value,
+                password: passwordEl.value
+            }
+
+            try {
+                let res = await axios.post("/api/auth/login", data)
+                toastr.success("Đăng nhập thành công")
+                setTimeout(() => {
+                    window.location.href = "/";
+                }, 1000)
+            } catch (error) {
+                console.log(error)
+                toastr.error(error.response.data.error)
+            }
+        })
+    </script>
+</th:block>
+</body>
+</html>

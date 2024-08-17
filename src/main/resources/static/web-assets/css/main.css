@@ -1127,6 +1127,62 @@ a {
     border-color: #dee2e6;
 }
 
+/*login register*/
+.card-access {
+    padding: 30px 30px 100px;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #fff;
+    border: 1px solid #dedede;
+    border-radius: 8px;
+}
+
+.card-access-header {
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.card-access-header h3 {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.form-access .form-group>label {
+    display: block;
+    font-weight: 400;
+    font-size: 13px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+}
+
+.form-access .form-control {
+    width: 100%;
+    height: 45px;
+    border: 0;
+    background-color: #e8f0fe;
+    padding: 0 10px;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.btn-access-submit {
+    width: 100%;
+    height: 45px;
+    border: 0;
+    border-radius: 5px;
+    background: #3961fb;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.btn-access-submit:hover {
+    background-color: #3961fb;
+    text-decoration: underline;
+    color: #fff;
+}
+
 
 
 
