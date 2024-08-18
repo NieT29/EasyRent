@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{web/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: #content-wrapper}, ~{:: #js})}">
+<head>
+
+    <title>Đăng nhập</title>
+    <th:block id="css">
+        <style>
+            .status-icon i{
+                font-size: 4rem;
+                margin-bottom: 1.5rem;
+            }
+        </style>
+    </th:block>
+</head>
+<body>
+
+<th:block id="content-wrapper">
+    <main class="container mt-3">
+        <div class="container">
+            <div>
+                <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Xác thực tài khoản
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="card-access">
+                <div class="card-access-header">
+                    <h3>Xác thực tài khoản</h3>
+                </div>
+                <div class="card-access-content">
+                    <form id="form-verify" class="form-access">
+                        <div class="status-container d-flex flex-column justify-content-center align-items-center" style="margin-top: 35px">
+                            <th:block th:if="${verifyResponse.success}">
+                                <div class="status-icon">
+                                    <i class="fas fa-check-circle fa-lg text-success"></i>
+                                </div>
+                            </th:block>
+                            <th:block th:if="${!verifyResponse.success}">
+                                <div class="status-icon text-center ">
+                                    <i  class="fas fa-times-circle fa-lg text-danger"></i>
+                                </div>
+                            </th:block>
+                            <div class="status-text text-center mt-3">
+                                <th:block th:if="${verifyResponse.success}">
+                                    <div class="mb-4">
+                                        <h4 class="mb-2">[[${verifyResponse.message}]]</h4>
+                                        <p class="mt-2">Cảm ơn bạn đã xác thực tài khoản. Vui lòng đăng nhập để sử dụng các dịch vụ của chúng tôi!</p>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-access-submit">
+                                            <a href="/dang-nhap">Đăng nhập</a>
+                                        </button>
+                                    </div>
+                                </th:block>
+                                <th:block th:if="${!verifyResponse.success}">
+                                    <h4 class="mb-2">Xác thực tài khoản thất bại!</h4>
+                                    <p class="mt-2">[[${verifyResponse.message}]]</p>
+                                </th:block>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</th:block>
+
+<th:block id="js">
+</th:block>
+</body>
+</html>

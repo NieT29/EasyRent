@@ -1129,7 +1129,7 @@ a {
 
 /*login register*/
 .card-access {
-    padding: 30px 30px 100px;
+    padding: 30px 30px 50px;
     max-width: 600px;
     margin: 0 auto;
     background-color: #fff;
@@ -1145,6 +1145,7 @@ a {
 .card-access-header h3 {
     font-size: 28px;
     font-weight: 700;
+    text-align: center;
 }
 
 .form-access .form-group>label {
@@ -1175,11 +1176,20 @@ a {
     font-weight: 700;
     color: #fff;
     margin-bottom: 10px;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn-access-submit:hover {
     background-color: #3961fb;
     text-decoration: underline;
+    color: #fff;
+}
+
+/*verify*/
+.btn-access-submit a {
     color: #fff;
 }
 

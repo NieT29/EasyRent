@@ -5,6 +5,8 @@ import com.example.easyrent.entity.District;
 import com.example.easyrent.entity.Room;
 import com.example.easyrent.model.dto.ServiceTypeAttributesDTO;
 import com.example.easyrent.model.enums.OrderServiceStatus;
+import com.example.easyrent.model.response.VerifyResponse;
+import com.example.easyrent.service.AuthService;
 import com.example.easyrent.service.CategoryService;
 import com.example.easyrent.service.RoomService;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,7 @@ import java.util.Map;
 public class WebController {
     private final RoomService roomService;
     private final CategoryService categoryService;
+    private final AuthService authService;
 
     @GetMapping("/")
     public String getHome(Model model,
@@ -334,5 +337,25 @@ public class WebController {
     @GetMapping("/dang-ky")
     public String getRegister() {
         return "web/auth/register";
+    }
+
+    @GetMapping("/quen-mat-khau")
+    public String getForgetPassword() {
+        return "web/auth/forget-password";
+    }
+
+    @GetMapping("/dat-lai-mat-khau")
+    public String getResetPassword(@RequestParam String token, Model model) {
+        VerifyResponse verifyResponse = authService.confirmResetPassword(token);
+        model.addAttribute("verifyResponse", verifyResponse);
+        model.addAttribute("tokenString", token);
+        return "web/auth/reset-password";
+    }
+
+    @GetMapping("/xac-thuc-tai-khoan")
+    public String getVerifyAccount(@RequestParam String token, Model model) {
+        VerifyResponse verifyResponse = authService.confirmRegistration(token);
+        model.addAttribute("verifyResponse", verifyResponse);
+        return "web/auth/verify-account";
     }
 }

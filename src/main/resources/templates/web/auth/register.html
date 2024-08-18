@@ -12,6 +12,19 @@
 <th:block id="content-wrapper">
     <main class="container mt-3">
         <div class="container">
+            <div>
+                <nav style="--bs-breadcrumb-divider: '>'" aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Trang chủ</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Đăng ký
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+
             <div class="card-access">
                 <div class="card-access-header">
                     <h3>Tạo tài khoản mới</h3>
@@ -39,7 +52,9 @@
                             <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"/>
                         </div>
                         <div class="mb-4">
-                            <button type="submit" class="btn btn-access-submit" id="btn-register">Tạo tài khoản</button>
+                            <button type="submit" class="btn btn-access-submit" id="btn-register">
+                                Tạo tài khoản
+                            </button>
                         </div>
                         <div>
                             <p>Bạn đã có tài khoản?
@@ -47,6 +62,13 @@
                             </p>
                         </div>
                     </form>
+                    <div id="form-auth-feedback" class="card-access-content form-access" style="min-height: 150px; text-align: center; display: none">
+                        <p style="font-size: 16px; margin-bottom: 70px">Đăng ký thành công, vui lòng kiểm tra email để xác thực tài khoản!</p>
+
+                        <div class="status-icon">
+                            <i style="font-size: 80px" class="fas fa-check-circle fa-lg text-success"></i>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -55,6 +77,105 @@
 </th:block>
 
 <th:block id="js">
+    <script>
+        $('#form-register').validate({
+            rules: {
+                userName: {
+                    required: true,
+                },
+                email: {
+                    required: true,
+                    email: true,
+                },
+                phone: {
+                    required:true,
+                    pattern: "^0(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-9]|9[0-9])[0-9]{7}$"
+                },
+                password: {
+                    required: true,
+                },
+                confirmPassword: {
+                    required: true,
+                    equalTo: '[name="password"]'
+                }
+            },
+            messages: {
+                userName: {
+                    required: "Tên không được để trống",
+                },
+                email: {
+                    required: "Email không được để trống",
+                    email: "Email không đúng định dạng"
+                },
+                phone: {
+                    required: "Số điện thoại không được để trống" ,
+                    pattern: "Số điện thoại không đúng định dạng"
+                },
+                password: {
+                    required: "Mật khẩu không được để trống",
+                },
+                confirmPassword: {
+                    required: "Mật khẩu không được để trống",
+                    equalTo: "Mật khẩu không khớp"
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        // xu ly logic
+        const formRegisterEl = document.getElementById("form-register")
+        const userNameEl = document.getElementById("userName")
+        const emailEl = document.getElementById("email")
+        const phoneEl = document.getElementById("phone")
+        const passwordEl = document.getElementById("password")
+        const confirmPasswordEl = document.getElementById("confirmPassword")
+        const submitButton = document.getElementById("btn-register");
+        const formFeedback = document.getElementById("form-auth-feedback");
+
+        formRegisterEl.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            if (!$('#form-register').valid()) {
+                return;
+            }
+
+            const data = {
+                name: userNameEl.value,
+                email: emailEl.value,
+                phoneNumber: phoneEl.value,
+                password: passwordEl.value,
+                confirmPassword: confirmPasswordEl.value
+            }
+
+            try {
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span id="btn-loading" class="spinner-border text-primary" role="status" aria-hidden="true"></span>';
+
+                let res = await axios.post("/api/auth/register", data)
+                toastr.success("Đăng ký thành công, vui lòng kiểm tra email để xác thực tài khoản!")
+
+                formRegisterEl.style.display = 'none';
+                formFeedback.style.display = 'block';
+
+            } catch (error) {
+                console.log(error)
+                toastr.error(error.response.data.error)
+
+                submitButton.disabled = false;
+                submitButton.innerHTML = 'Tạo tài khoản';
+            }
+        })
+    </script>
 </th:block>
 </body>
 </html>
