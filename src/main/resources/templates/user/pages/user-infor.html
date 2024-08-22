@@ -40,7 +40,7 @@
         <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
-                <form id="">
+                <form id="form-profile">
                     <div class="form-group row mt-4">
                         <label for="user_id" class="col-md-2 offset-md-2 col-form-label">Mã thành viên</label>
                         <div class="col-md-6">
@@ -57,14 +57,14 @@
                     <div class="form-group row mt-5">
                         <label for="user_name" class="col-md-2 offset-md-2 col-form-label">Tên hiển thị</label>
                         <div class="col-md-6">
-                            <input type="text" class="form-control" id="user_name" name="name" th:value="${#authentication.principal.user.name}" placeholder="Ex: Nguyễn Văn A">
+                            <input type="text" class="form-control" id="user_name" name="userName" th:value="${#authentication.principal.user.name}" placeholder="Ex: Nguyễn Văn A">
                         </div>
                     </div>
 
                     <div class="form-group row">
                         <label for="user_phone" class="col-md-2 offset-md-2 col-form-label">Số điện thoại</label>
                         <div class="col-md-6">
-                            <input type="tel" class="form-control" id="user_phone" name="user_phone" th:value="${#authentication.principal.user.phoneNumber}">
+                            <input type="tel" class="form-control" id="user_phone" name="phoneNumber" th:value="${#authentication.principal.user.phoneNumber}">
                         </div>
                     </div>
                     <div class="form-group row mt-5">
@@ -82,11 +82,11 @@
                                 <div class="user-avatar-preview mb-3">
                                     <img th:src="${#authentication.principal.user.avatar}" alt="" id="user_avatar">
                                 </div>
-                                <label for="input-avatar" class="btn btn-sm btn-outline-secondary  w-100"
+                                <label for="user_avatar_input" class="btn btn-sm btn-outline-secondary  w-100"
                                        data-toggle="modal" data-target="#modal-xl">
                                     Chọn ảnh
                                 </label>
-                                <input type="file" id="input-avatar" class="d-none">
+                                <input type="file" id="user_avatar_input" class="d-none">
                             </div>
                         </div>
                     </div>
@@ -94,7 +94,7 @@
                     <div class="form-group row mt-5">
                         <label for="user_email" class="col-md-2 col-form-label"></label>
                         <div class="col-md-8">
-                            <button type="submit" class="btn btn-primary  mb-2 btn-block">Lưu &amp; Cập nhật</button>
+                            <button id="btn-update-profile" type="submit" class="btn btn-primary  mb-2 btn-block">Lưu &amp; Cập nhật</button>
                         </div>
                     </div>
                     <input type="hidden" name="user_id" value="141535">
@@ -104,7 +104,108 @@
     </div>
 </div>
 <th:block id="js">
+    <script>
+        const userNameEl = document.getElementById("user_name")
+        const numberPhoneEl = document.getElementById("user_phone")
+        const userInputAvatarEl = document.getElementById("user_avatar_input")
+        const userAvatarEl = document.getElementById("user_avatar")
+        const updateProfileForm = document.getElementById("form-profile");
 
+
+        $('#form-profile').validate({
+            rules: {
+                userName: {
+                    required: true,
+                },
+                phoneNumber: {
+                    required: true,
+                    pattern: "^0(3[2-9]|5[6|8|9]|7[0|6-9]|8[1-9]|9[0-9])[0-9]{7}$"
+                }
+            },
+            messages: {
+                userName: {
+                    required: "Tên không được để trống"
+                },
+                phoneNumber: {
+                    required: "Số điện thoại không được để trống" ,
+                    pattern: "Số điện thoại không đúng định dạng"
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.after(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        userInputAvatarEl.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    userAvatarEl.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        updateProfileForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            if (!$("#form-profile").valid()) {
+                return;
+            }
+
+            // Gửi dữ liệu cập nhật avatar trước (nếu có)
+            let avatarUrl = null;
+            if (userInputAvatarEl.files.length > 0) {
+                const avatarData = new FormData();
+                avatarData.append("avatar", userInputAvatarEl.files[0]);
+
+                try {
+                    const avatarResponse = await axios.post('/api/user/upload-avatar', avatarData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        }
+                    });
+                    avatarUrl = avatarResponse.data;  // Lưu lại URL của avatar đã upload
+                } catch (error) {
+                    console.log(error);
+                    toastr.error("Tải lên avatar thất bại");
+                    return;
+                }
+            }
+
+            // Gửi dữ liệu cập nhật thông tin người dùng
+            const updateData = {
+                name: userNameEl.value,
+                phoneNumber: numberPhoneEl.value,
+                avatar: avatarUrl  // Chỉ gửi URL avatar nếu có thay đổi
+            };
+
+            try {
+                const res = await axios.put('/api/user/update-profile', updateData, {
+                    headers: {
+                        'Content-Type': 'application/json'  // Sử dụng JSON cho dữ liệu cập nhật thông tin người dùng
+                    }
+                });
+                toastr.success("Cập nhật thông tin thành công");
+                setTimeout(() => {
+                    window.location.href = "/quan-ly/thong-tin-ca-nhan";
+                }, 3000)
+            } catch (error) {
+                console.log(error.response.data);
+                toastr.error(error.response.data.message);
+            }
+        })
+
+    </script>
 </th:block>
 </body>
 
