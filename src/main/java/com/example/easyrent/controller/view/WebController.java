@@ -1,4 +1,4 @@
-package com.example.easyrent.controller;
+package com.example.easyrent.controller.view;
 
 import com.example.easyrent.entity.Category;
 import com.example.easyrent.entity.District;
@@ -66,7 +66,7 @@ public class WebController {
         model.addAttribute("roomAttributesMap",roomAttributesMap);
         model.addAttribute("categoryCounts", categoryCounts);
         model.addAttribute("allCategories", allCategories);
-        return "web/index";
+        return "web/pages/index";
     }
 
     @GetMapping({"/cho-thue-phong-tro",
@@ -114,7 +114,7 @@ public class WebController {
         model.addAttribute("categoryCounts", categoryCounts);
         model.addAttribute("allCategories", allCategories);
 
-        return "web/cho-thue-phong-tro";
+        return "web/pages/cho-thue-phong-tro";
     }
 
     @GetMapping({"/cho-thue-nha",
@@ -162,7 +162,7 @@ public class WebController {
         model.addAttribute("categoryCounts", categoryCounts);
         model.addAttribute("allCategories", allCategories);
 
-        return "web/cho-thue-nha";
+        return "web/pages/cho-thue-nha";
     }
 
     @GetMapping({"/cho-thue-can-ho",
@@ -209,7 +209,7 @@ public class WebController {
         model.addAttribute("categoryCounts", categoryCounts);
         model.addAttribute("allCategories", allCategories);
 
-        return "web/cho-thue-can-ho";
+        return "web/pages/cho-thue-can-ho";
     }
 
     @GetMapping({"/cho-thue-mat-bang",
@@ -258,7 +258,7 @@ public class WebController {
         model.addAttribute("allCategories", allCategories);
 
 
-        return "web/cho-thue-mat-bang";
+        return "web/pages/cho-thue-mat-bang";
     }
 
     @GetMapping({"/tim-nguoi-o-ghep",
@@ -306,7 +306,7 @@ public class WebController {
         model.addAttribute("categoryCounts", categoryCounts);
         model.addAttribute("allCategories", allCategories);
 
-        return "web/tim-nguoi-o-ghep";
+        return "web/pages/tim-nguoi-o-ghep";
     }
 
     @GetMapping("/posts/{id}/{slug}")
@@ -326,7 +326,7 @@ public class WebController {
         model.addAttribute("relateRooms", relateRooms);
         model.addAttribute("roomsInSameProvince", roomsInSameProvince);
         model.addAttribute("roomAttributesMap", roomAttributesMap);
-        return "web/detail-room";
+        return "web/pages/detail-room";
     }
 
     @GetMapping("/dang-nhap")

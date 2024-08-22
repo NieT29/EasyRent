@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <!-- Main Sidebar Container -->
+    <aside class="main-sidebar sidebar-light-primary elevation-3">
+    <!-- Brand Logo -->
+    <a href="./index.html" class="brand-link">
+        <img src="/admin-user-assets/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3 "
+             style="opacity: 0.8" />
+        <span class="brand-text font-weight">PhongTroVip</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex flex-column">
+            <div class="d-flex mb-2">
+                <div class="image">
+                    <img th:src="${#authentication.principal.user.avatar}" class="user-img-sidebar img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <div class="user-name" th:text="${#authentication.principal.user.name}"></div>
+                    <div class="user-phoneNumber" th:text="${#authentication.principal.user.phoneNumber}">tiền</div>
+                </div>
+            </div>
+            <ul class="mb-2 list-unstyled" style="padding-left: 13px">
+                <li><span>Mã thành viên:</span> <span style="font-weight: 700;" th:text="${#authentication.principal.user.id}"> 141535</span></li>
+                <li><span>TK Chính:</span> <span style="font-weight: 700;" th:text="${#authentication.principal.user.accountBalance}"> 0</span></li>
+            </ul>
+            <div class="d-flex" style="padding-left: 13px">
+                <a class="btn btn-sm btn-warning mr-2" href="#" role="button">Nạp tiền</a>
+                <a class="btn btn-sm btn-danger text-white" href="#" role="button">Đăng tin</a>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <li class="nav-item">
+                <li class="nav-item">
+                    <a href="./blog-index.html" class="nav-link">
+                        <i class="far fa-calendar-alt nav-icon"></i>
+                        <p>Quản lý tin đăng</p>
+                    </a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <li class="nav-item">
+                    <a href="/quan-ly/thong-tin-ca-nhan" class="nav-link">
+                        <i class="far fa-edit nav-icon"></i>
+                        <p>Sửa thông tin cá nhân</p>
+                    </a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <li class="nav-item">
+                    <a href="./blog-index.html" class="nav-link">
+                        <i class="fas fa-dollar-sign nav-icon"></i>
+                        <p>Nạp tiền vào tài khoản</p>
+                    </a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <li class="nav-item">
+                    <a href="./blog-index.html" class="nav-link">
+                        <i class="fas fa-history nav-icon"></i>
+                        <p>Lịch sử nạp tiền</p>
+                    </a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <li class="nav-item">
+                    <a href="./blog-index.html" class="nav-link">
+                        <i class="far fa-calendar-check nav-icon"></i>
+                        <p>Lịch sử thanh toán</p>
+                    </a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <li class="nav-item">
+                    <a href="./blog-index.html" class="nav-link">
+                        <i class="far fa-clipboard nav-icon"></i>
+                        <p>Bảng giá dịch vụ</p>
+                    </a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <li class="nav-item">
+                    <a href="./blog-index.html" class="nav-link">
+                        <i class="far fa-comment nav-icon"></i>
+                        <p>Liên hệ</p>
+                    </a>
+                </li>
+                </li>
+                <li class="nav-item">
+                <li class="nav-item">
+                    <a href="./blog-index.html" class="nav-link">
+                        <i class="fas fa-sign-out-alt nav-icon"></i>
+                        <p>Đăng xuất</p>
+                    </a>
+                </li>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>
+</body>
+</html>

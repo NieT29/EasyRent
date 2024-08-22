@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{user/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+    <title>Phòng trọ vip - Quản lý</title>
+
+    <th:block id="css">
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2 border-bottom pb-3">
+                    <div class="col-sm-12 mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/">Trang chủ</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/quan-ly">Quản lý</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Cập nhật thông tin cá nhân
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-sm-12">
+                        <h1>Cập nhật thông tin cá nhân</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <form id="">
+                    <div class="form-group row mt-4">
+                        <label for="user_id" class="col-md-2 offset-md-2 col-form-label">Mã thành viên</label>
+                        <div class="col-md-6">
+                            <input type="text" readonly="" class="form-control " id="user_id" th:value="${'#' + #authentication.principal.user.id}" >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="user_email" class="col-md-2 offset-md-2 col-form-label">Email</label>
+                        <div class="col-md-6">
+                            <input type="text" readonly=""  class="form-control " id="user_email" name="email" th:value="${#authentication.principal.user.email}" >
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-5">
+                        <label for="user_name" class="col-md-2 offset-md-2 col-form-label">Tên hiển thị</label>
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="user_name" name="name" th:value="${#authentication.principal.user.name}" placeholder="Ex: Nguyễn Văn A">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="user_phone" class="col-md-2 offset-md-2 col-form-label">Số điện thoại</label>
+                        <div class="col-md-6">
+                            <input type="tel" class="form-control" id="user_phone" name="user_phone" th:value="${#authentication.principal.user.phoneNumber}">
+                        </div>
+                    </div>
+                    <div class="form-group row mt-5">
+                        <label class="col-md-2 offset-md-2 col-form-label" style="padding-top: 0;">Mật khẩu</label>
+                        <div class="col-md-6">
+                            <a class="" href="/quan-ly/doi-mat-khau">Đổi mật khẩu</a>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row mt-5">
+                        <label class="col-md-2 offset-md-2 col-form-label" style="padding-top: 0;">Ảnh đại diện</label>
+                        <div class="col-md-6">
+                            <div class="user-avatar-upload-wrapper js-one-image-wrapper">
+                                <div class="user-avatar-preview mb-3">
+                                    <img th:src="${#authentication.principal.user.avatar}" alt="" id="user_avatar">
+                                </div>
+                                <label for="input-avatar" class="btn btn-sm btn-outline-secondary  w-100"
+                                       data-toggle="modal" data-target="#modal-xl">
+                                    Chọn ảnh
+                                </label>
+                                <input type="file" id="input-avatar" class="d-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row mt-5">
+                        <label for="user_email" class="col-md-2 col-form-label"></label>
+                        <div class="col-md-8">
+                            <button type="submit" class="btn btn-primary  mb-2 btn-block">Lưu &amp; Cập nhật</button>
+                        </div>
+                    </div>
+                    <input type="hidden" name="user_id" value="141535">
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+<th:block id="js">
+
+</th:block>
+</body>
+
+</html>

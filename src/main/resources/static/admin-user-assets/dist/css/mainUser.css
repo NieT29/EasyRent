@@ -1,0 +1,37 @@
+.user-panel .user-img-sidebar {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+}
+
+.info .user-name {
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+.info .user-phoneNumber {
+    font-size: 14px;
+    color: #555555;
+}
+
+.user-avatar-upload-wrapper {
+    width: 140px;
+}
+
+.user-avatar-preview img{
+    width: 140px;
+    overflow: hidden;
+    height: 140px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #fafafa;
+}
+
+
+
+
+

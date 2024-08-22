@@ -1,4 +1,4 @@
-package com.example.easyrent.rest;
+package com.example.easyrent.controller.rest;
 
 import com.example.easyrent.entity.District;
 

@@ -169,7 +169,7 @@
 
             } catch (error) {
                 console.log(error)
-                toastr.error(error.response.data.error)
+                toastr.error(error.response.data.message)
 
                 submitButton.disabled = false;
                 submitButton.innerHTML = 'Tạo tài khoản';

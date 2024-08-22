@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:fragment="layout(title, css, contentWrapper, js)">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title th:replace="${title}"></title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/admin-user-assets/plugins/fontawesome-free/css/all.min.css" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/admin-user-assets/dist/css/adminlte.min.css"/>
+
+    <!-- User style -->
+    <link rel="stylesheet" href="/admin-user-assets/dist/css/mainUser.css"/>
+
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="/admin-user-assets/plugins/overlayScrollbars/css/OverlayScrollbars.min.css" />
+    <!--  Toastr  -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css"
+          integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+
+    <!--  CSS Resource  -->
+    <th:block th:replace="${css}"></th:block>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+<!--    new-->
+    <!-- Navbar -->
+    <th:block th:replace="~{user/fragments/navigation :: nav}"></th:block>
+
+    <!-- Main Sidebar Container -->
+    <th:block th:replace="~{user/fragments/sidebar :: aside}"></th:block>
+
+    <!-- Main content   -->
+    <th:block th:replace="${contentWrapper}"></th:block>
+</div>
+
+<!-- jQuery -->
+<script src="/admin-user-assets/plugins/jquery/jquery.min.js"></script>
+
+<!-- Bootstrap 4 -->
+<script src="/admin-user-assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- overlayScrollbars -->
+<script src="/admin-user-assets/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/admin-user-assets/dist/js/adminlte.js"></script>
+<!-- Toastr -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"
+        integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- Validation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"
+        integrity="sha512-WMEKGZ7L5LWgaPeJtw9MBM4i5w5OSBlSjTjCtSnvFJGSVD26gE5+Td12qN5pvWXhuWaWcVwF++F7aqu9cvqP0A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/additional-methods.min.js"
+        integrity="sha512-TiQST7x/0aMjgVTcep29gi+q5Lk5gVTUPE9XgN0g96rwtjEjLpod4mlBRKWHeBcvGBAEvJBmfDqh2hfMMmg+5A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- axios -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!-- js resource -->
+<th:block th:replace="${js}">
+</th:block>
+
+</body>
