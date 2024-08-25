@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{user/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+    <title>Nạp tiền vào tài khoản</title>
+
+    <th:block id="css">
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2 border-bottom pb-3">
+                    <div class="col-sm-12 mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/">Trang chủ</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/quan-ly">Quản lý</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Nạp tiền vào tài khoản
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-sm-12">
+                        <h1>Nạp tiền vào tài khoản</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid pb-5">
+                <div class="note alert alert-success js-promotion-payment-daily" role="alert">
+                    <p>Nạp từ 50.000 đến dưới 1.000.000 tặng 10%</p>
+                    <p>Nạp từ 1.000.000 đến dưới 2.000.000 tặng 20%</p>
+                    <p>Nạp từ 2.000.000 trở lên tặng 25%</p>
+                </div>
+                <div class="row">
+                    <div class="col-md-9">
+                        <h3 class="mt-5 mb-3">Mời bạn chọn phương thức nạp tiền</h3>
+                        <div class="d-none d-md-block">
+                            <div class="row addfund_method_list clearfix">
+                                <div class="col-md-4">
+                                    <div class="method_item">
+                                        <a href="/quan-ly/nap-tien/vnpay">
+                                            <div class="method_item_icon">
+                                                <img src="/admin-user-assets/dist/img/VnPayLogo.png" alt="vnpay" title="vnpay">
+                                            </div>
+                                            <div class="method_item_name">
+                                                VNPAY
+                                            </div>
+                                            <button class="btn btn_select_method">Chọn</button>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="method_item">
+                                        <a href="">
+                                            <div class="method_item_icon">
+                                                <img src="/admin-user-assets/dist/img/momo.png" alt="momo" title="momo">
+                                            </div>
+                                            <div class="method_item_name">
+                                                MOMO
+                                            </div>
+                                            <button class="btn btn_select_method">Chọn</button>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="method_item">
+                                        <a href="">
+                                            <div class="method_item_icon">
+                                                <img src="/admin-user-assets/dist/img/zalopay.png" alt="zalo pay" title="zalo pay">
+                                            </div>
+                                            <div class="method_item_name">
+                                                ZaloPay
+                                            </div>
+                                            <button class="btn btn_select_method">Chọn</button>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="method_item">
+                                        <a href="">
+                                            <div class="method_item_icon">
+                                                <img src="/admin-user-assets/dist/img/bank-transfer.png" alt="chuyen khoan" title="chuyen khoan">
+                                            </div>
+                                            <div class="method_item_name">
+                                                Chuyển khoản
+                                            </div>
+                                            <button class="btn btn_select_method">Chọn</button>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="method_item">
+                                        <a href="">
+                                            <div class="method_item_icon">
+                                                <img src="/admin-user-assets/dist/img/credit-card.png" alt="tin dung" title="tin dung">
+                                            </div>
+                                            <div class="method_item_name">
+                                                Thẻ tín dụng quốc tế
+                                            </div>
+                                            <button class="btn btn_select_method">Chọn</button>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="method_item">
+                                        <a href="">
+                                            <div class="method_item_icon">
+                                                <img src="/admin-user-assets/dist/img/qr-code.png" alt="qr code" title="qr code">
+                                            </div>
+                                            <div class="method_item_name">
+                                                Quét mã qr
+                                            </div>
+                                            <button class="btn btn_select_method">Chọn</button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 d-none d-md-block">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <div>Số dư tài khoản</div>
+                                <h3 class="heading" style="margin-top: 0; margin-bottom: 0; color: #28a745;">
+                                    <strong th:text="${@moneyUtils.formatCurrency(#authentication.principal.user.accountBalance)}">0đ</strong>
+                                </h3>
+                            </div>
+                        </div>
+                        <a class="btn btn-secondary btn-block" href="">Lịch sử nạp tiền <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+                        <a class="btn btn-secondary btn-block" href="">Lịch sử thanh toán <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+                        <a class="btn btn-secondary btn-block" href="">Bảng giá dịch vụ <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<th:block id="js">
+</th:block>
+</body>
+
+</html>

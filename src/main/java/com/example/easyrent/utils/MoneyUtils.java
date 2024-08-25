@@ -1,6 +1,8 @@
 package com.example.easyrent.utils;
 
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class MoneyUtils {
     private static final DecimalFormat df = new DecimalFormat("#.#");
@@ -13,5 +15,10 @@ public class MoneyUtils {
         } else {
             return amount + " đồng/tháng";
         }
+    }
+
+    public static String formatCurrency(int amount) {
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        return formatter.format(amount) + "đ";
     }
 }

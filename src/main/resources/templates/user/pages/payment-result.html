@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{user/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+    <title>Kết quả nạp tiền</title>
+
+    <th:block id="css">
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2 border-bottom pb-3">
+                    <div class="col-sm-12 mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/">Trang chủ</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/quan-ly">Quản lý</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/quan-ly/nap-tien">Nạp tiền vào tài khoản</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Kết quả nạp tiền
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-sm-12">
+                        <h1>Kết quả nạp tiền</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid pb-5">
+                <th:block th:if="${isSuccess}">
+                    <div class="note alert alert-success" role="alert">
+                        <h1 class="page_header_title">Nạp tiền thành công</h1>
+                        <p>Xin chào , tiền của bạn đã được cộng vào tài khoản thành công, vui lòng xem thông tin giao dịch bên dưới</p>
+                    </div>
+                    <div >
+                        <h4 class="mt-4 mb-3">Thông tin giao dịch</h4>
+                        <table class="table table-striped">
+                            <tbody><tr>
+                                <td><strong>Số tiền nạp</strong></td>
+                                <td>
+                                    <span style="color: #5cb85c; font-weight: bold;" th:text="${'+' + @moneyUtils.formatCurrency(deposit.getAmount())}" >+10.000 vnđ</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Số dư cuối</strong></td>
+                                <td th:text="${@moneyUtils.formatCurrency(deposit.getUser().getAccountBalance())}">10.000 vnđ</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Hình thức nạp</strong></td>
+                                <td th:text="${deposit.getPaymentMethod()}">MOMO</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mã giao dịch</strong></td>
+                                <td th:text="${deposit.getVnpTransactionId()}">PT12323082024231745</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Thời gian giao dịch</strong></td>
+                                <td th:text="${@timeUtils.formatDateTime2(deposit.getCreatedAt())}">23:18 23/08/2024</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </th:block>
+                <th:block th:if="${!isSuccess}">
+                    <div class="note alert alert-danger" role="alert">
+                        <h1 class="page_header_title">Nạp tiền không thành công</h1>
+                        <p>Xin chào , đã có lỗi xảy ra trong quá trình nạp tiền</p>
+                        <p>Liên hệ 0943648763 để chúng tôi hỗ trợ bạn</p>
+                    </div>
+                    <div>
+                        <h4 class="mt-4 mb-3">Những trường hợp dẫn đến giao dịch không thành công thường gặp</h4>
+                        <ul class="pl-0">
+                            <li style="list-style-type: disc; margin-left: 20px;"><p>Thẻ chưa đăng ký sử dụng các dịch vụ trực tuyến của Ngân hàng (internet banking, SMS banking, v.v.) để có thể thực hiện thanh toán bằng thẻ ngân hàng nội địa (ATM) qua Cổng thanh toán. Bạn có thể tham khảo “Quy định của Ngân hàng cho việc sử dụng phương thức thanh toán trực tuyến qua Cổng thanh toán” để biết yêu cầu và cách thức đăng ký các dịch vụ trực tuyến của Ngân hàng.</p></li>
+                            <li style="list-style-type: disc; margin-left: 20px;"><p>Giao dịch bị Ngân hàng từ chối.</p></li>
+                            <li style="list-style-type: disc; margin-left: 20px;"><p>Hệ thống Ngân hàng phát hành thẻ bị lỗi.</p></li>
+                            <li style="list-style-type: disc; margin-left: 20px;"><p>Số thẻ ngân hàng chưa chính xác.</p></li>
+                            <li style="list-style-type: disc; margin-left: 20px;"><p>Thông tin về tên của chủ thẻ chưa chính xác.</p></li>
+                            <li style="list-style-type: disc; margin-left: 20px;"><p>Thông tin ngày phát hành thẻ chưa chính xác.</p></li>
+                            <li style="list-style-type: disc; margin-left: 20px;"><p>Thẻ ngân hàng dùng để thanh toán đã hết hạn hoặc bị khoá.</p></li>
+                            <li style="list-style-type: disc; margin-left: 20px;"><p>Bạn đã dùng quá hạn mức thanh toán của Ngân hàng.</p></li>
+                            <li style="list-style-type: disc; margin-left: 20px;"><p>Số dư trong tài khoản của bạn không đủ để thực hiện giao dịch.</p></li>
+                            <li style="list-style-type: disc; margin-left: 20px;"><p>Hết thời gian giao dịch cho phép.</p></li>
+                        </ul>
+                    </div>
+                </th:block>
+            </div>
+        </section>
+    </div>
+</div>
+<th:block id="js">
+</th:block>
+</body>
+
+</html>

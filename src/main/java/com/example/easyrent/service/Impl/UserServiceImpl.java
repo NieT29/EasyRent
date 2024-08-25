@@ -6,10 +6,8 @@ import com.example.easyrent.model.request.ChangePasswordRequest;
 import com.example.easyrent.model.request.UpdateProfileUserRequest;
 import com.example.easyrent.repository.UserRepository;
 import com.example.easyrent.security.CustomUserDetails;
-import com.example.easyrent.security.CustomUserDetailsService;
 import com.example.easyrent.service.FileServerService;
 import com.example.easyrent.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -67,7 +65,9 @@ public class UserServiceImpl implements UserService {
 
         // Nếu người dùng đã có avatar cũ, xóa avatar cũ
         if (currentUser.getAvatar() != null && !currentUser.getAvatar().isEmpty()) {
-            fileServerService.deleteFile(currentUser.getAvatar());
+            if (currentUser.getAvatar().startsWith("/" + FileServerService.uploadDir + "/")) {
+                fileServerService.deleteFile(currentUser.getAvatar());
+            }
         }
 
         // Cập nhật avatar mới vào đối tượng người dùng

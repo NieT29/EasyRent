@@ -29,4 +29,9 @@ public class TimeUtils {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE, HH:mm dd/MM/yyyy", new Locale("vi", "VN"));
         return dateTime.format(formatter);
     }
+
+    public static String formatDateTime2(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy", new Locale("vi", "VN"));
+        return dateTime.format(formatter);
+    }
 }

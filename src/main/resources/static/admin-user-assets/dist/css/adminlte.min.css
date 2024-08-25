@@ -5067,6 +5067,12 @@ a.badge-dark:focus {
   color: #202326;
 }
 .alert-success {
+    color: #fff;
+    background-color: #28a745;
+    border-color: #23923d;
+}
+
+.alert-success {
   color: #155724;
   background-color: #d4edda;
   border-color: #c3e6cb;
@@ -5099,6 +5105,13 @@ a.badge-dark:focus {
 .alert-warning .alert-link {
   color: #533f03;
 }
+
+.alert-danger {
+    color: #fff;
+    background-color: #dc3545;
+    border-color: #d32535;
+}
+
 .alert-danger {
   color: #721c24;
   background-color: #f8d7da;
@@ -35542,11 +35555,7 @@ html.maximized-card {
 .alert-default-secondary .alert-link {
   color: #202326;
 }
-.alert-success {
-  color: #fff;
-  background-color: #28a745;
-  border-color: #23923d;
-}
+
 .alert-default-success {
   color: #155724;
   background-color: #d4edda;
@@ -35589,11 +35598,6 @@ html.maximized-card {
 }
 .alert-default-warning .alert-link {
   color: #533f03;
-}
-.alert-danger {
-  color: #fff;
-  background-color: #dc3545;
-  border-color: #d32535;
 }
 .alert-default-danger {
   color: #721c24;
