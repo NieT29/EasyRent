@@ -6,6 +6,7 @@ import com.example.easyrent.model.request.ChangePasswordRequest;
 import com.example.easyrent.model.request.UpdateProfileUserRequest;
 import com.example.easyrent.repository.UserRepository;
 import com.example.easyrent.security.CustomUserDetails;
+import com.example.easyrent.security.SecurityUtils;
 import com.example.easyrent.service.FileServerService;
 import com.example.easyrent.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,25 +25,9 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final FileServerService fileServerService;
 
-    private static User getUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() instanceof String) {
-            throw new BadRequestException("Người dùng chưa đăng nhập");
-        }
-
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        User currentUser = userDetails.getUser();
-
-        if (currentUser == null) {
-            throw new BadRequestException("Không thể xác định người dùng");
-        }
-
-        return currentUser;
-    }
-
     @Override
     public void updateProfileUser(UpdateProfileUserRequest request) {
-        User currentUser = getUser();
+        User currentUser = SecurityUtils.getCurrentUser();
 
         Optional<User> existingUser = userRepository.findByPhoneNumber(request.getPhoneNumber());
 
@@ -58,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String uploadAvatar(MultipartFile avatar) {
-        User currentUser = getUser();
+        User currentUser = SecurityUtils.getCurrentUser();
 
         // Lưu file avatar và trả về URL
         String avatarUrl = fileServerService.saveFile(avatar, currentUser.getId());
@@ -79,7 +64,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void changePassword(ChangePasswordRequest request) {
-        User currentUser = getUser();
+        User currentUser = SecurityUtils.getCurrentUser();
 
         if (!passwordEncoder.matches(request.getCurrentPassword(), currentUser.getPassword())) {
             throw new BadRequestException("Mật khẩu hiện tại không đúng");
@@ -98,8 +83,4 @@ public class UserServiceImpl implements UserService {
         System.out.println("Password changed successfully for user: " + currentUser.getEmail());
 
     }
-
-
-
-
 }

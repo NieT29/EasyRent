@@ -7,6 +7,7 @@ import com.example.easyrent.exception.BadRequestException;
 import com.example.easyrent.model.request.DepositRequest;
 import com.example.easyrent.model.response.PaymentResponse;
 import com.example.easyrent.security.CustomUserDetails;
+import com.example.easyrent.security.SecurityUtils;
 import com.example.easyrent.service.DepositService;
 import com.example.easyrent.service.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,7 +28,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public PaymentResponse createPaymentResponse(DepositRequest depositRequest, HttpServletRequest request) {
-        User currentUser = getUser(); // Lấy người dùng hiện tại
+        User currentUser = SecurityUtils.getCurrentUser(); // Lấy người dùng hiện tại
 
         int amount = depositRequest.getAmount();
         String vnp_TxnRef = VNPayConfig.getRandomNumber(8); // Mã giao dịch duy nhất
@@ -96,21 +97,5 @@ public class PaymentServiceImpl implements PaymentService {
                 .build();
 
         return paymentResponse;
-    }
-
-    private static User getUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal() instanceof String) {
-            throw new BadRequestException("Người dùng chưa đăng nhập");
-        }
-
-        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        User currentUser = userDetails.getUser();
-
-        if (currentUser == null) {
-            throw new BadRequestException("Không thể xác định người dùng");
-        }
-
-        return currentUser;
     }
 }

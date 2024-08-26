@@ -12,4 +12,6 @@ public interface DepositRepository extends JpaRepository<Deposit, Integer> {
     Optional<Deposit> findByVnpTransactionId(String vnpTransactionId);
 
     List<Deposit> findByStatusAndCreatedAtBefore(DepositStatus depositStatus, LocalDateTime localDateTime);
+
+    List<Deposit> findByUser_IdOrderByCreatedAtDesc(Integer userId);
 }

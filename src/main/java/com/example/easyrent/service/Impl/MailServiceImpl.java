@@ -18,7 +18,7 @@ public class MailServiceImpl implements MailService {
     private final TemplateEngine templateEngine;
 
     @Override
-    public void sendMail1(User user, String subject, String link) {
+    public void sendMailRegister(User user, String subject, String link) {
         try {
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8"); // Set encoding to UTF-8
@@ -41,7 +41,7 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendMail2(User user, String subject, String link) {
+    public void sendMailForgetPassword(User user, String subject, String link) {
         try {
             MimeMessage message = sender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8"); // Set encoding to UTF-8

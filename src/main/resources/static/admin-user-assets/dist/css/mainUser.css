@@ -88,6 +88,15 @@
     display: none;
 }
 
+#form-create-post h4 {
+    font-weight: bold;
+}
+
+#form-create-post .select2-container .select2-selection--single {
+    height: calc(2.25rem + 2px);
+    border-color: #ced4da;
+}
+
 
 
 

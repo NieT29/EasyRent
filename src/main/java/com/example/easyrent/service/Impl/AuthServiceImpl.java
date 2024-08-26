@@ -95,7 +95,7 @@ public class AuthServiceImpl implements AuthService {
         // link xac thuc
         String link =   "http://localhost:8080/xac-thuc-tai-khoan?token=" + token.getToken();
 
-        mailService.sendMail1(user, "Xác thực tài khoản", link);
+        mailService.sendMailRegister(user, "Xác thực tài khoản", link);
     }
 
     @Override
@@ -159,7 +159,7 @@ public class AuthServiceImpl implements AuthService {
         String link = "http://localhost:8080/dat-lai-mat-khau?token=" + token.getToken();
 
         //Gửi mail
-        mailService.sendMail2(user.get(), "Thay đổi mật khẩu", link);
+        mailService.sendMailForgetPassword(user.get(), "Thay đổi mật khẩu", link);
     }
 
     @Override

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{user/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+    <title>Đăng tin mới</title>
+
+    <th:block id="css">
+        <link rel="stylesheet" href="/admin-user-assets/plugins/select2/css/select2.min.css"/>
+<!--        <link rel="stylesheet" href="/admin-user-assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" />-->
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2 border-bottom pb-3">
+                    <div class="col-sm-12 mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/">Trang chủ</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/quan-ly">Quản lý</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Đăng tin ới
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-sm-12">
+                        <h1>Đăng tin mới</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid pb-5 pb-5">
+                <div class="note alert alert-danger mb-5" role="alert">
+                    <p class="m-0">Nếu bạn đã từng đăng tin, hãy sử dụng chức năng GIA HẠN/NÂNG CẤP VIP trong mục QUẢN LÝ TIN ĐĂNG để làm mới, đẩy tin lên cao thay vì dăng tin mới. Tin đăng trùng nhau sẽ không được duyệt</p>
+                </div>
+                <form id="form-create-post">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4>Địa chỉ cho thuê</h4>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="province">Tỉnh/Thành phố</label>
+                                        <select id="province" class="form-control select2 select2-hidden-accessible" style="width: 100%;" required  tabindex="-1" aria-hidden="true">
+                                            <option>-- Chọn Tỉnh/TP --</option>
+                                            <option>Hồ Chí Minh</option>
+                                            <option>Hà Nội</option>
+                                            <option>Đà Nẵng</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="district">Quận/Huyện</label>
+                                        <select id="district" class="form-control select2 select2-hidden-accessible" style="width: 100%;" required  tabindex="-1" aria-hidden="true">
+                                            <option>-- Chọn Tỉnh/TP --</option>
+                                            <option>Hồ Chí Minh</option>
+                                            <option>Hà Nội</option>
+                                            <option>Đà Nẵng</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="ward">Phường/Xã</label>
+                                        <select id="ward" class="form-control select2 select2-hidden-accessible" style="width: 100%;" required  tabindex="-1" aria-hidden="true">
+                                            <option>-- Chọn Tỉnh/TP --</option>
+                                            <option>Hồ Chí Minh</option>
+                                            <option>Hà Nội</option>
+                                            <option>Đà Nẵng</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="card mb-5" style="color: #856404; background-color: #fff3cd; border-color: #ffeeba;">
+                                <div class="card-body">
+                                    <h5>Lưu ý khi đăng tin</h5>
+                                    <ul class=" pl-0" >
+                                        <li style="list-style-type: square; margin-left: 15px;">Nội dung phải viết bằng tiếng Việt có dấu</li>
+                                        <li style="list-style-type: square; margin-left: 15px;">Tiêu đề tin không dài quá 100 kí tự</li>
+                                        <li style="list-style-type: square; margin-left: 15px;">Các bạn nên điền đầy đủ thông tin vào các mục để tin đăng có hiệu quả hơn.</li>
+                                        <li style="list-style-type: square; margin-left: 15px;">Để tăng độ tin cậy và tin rao được nhiều người quan tâm hơn, hãy sửa vị trí tin rao của bạn trên bản đồ bằng cách kéo icon tới đúng vị trí của tin rao.</li>
+                                        <li style="list-style-type: square; margin-left: 15px;">Tin đăng có hình ảnh rõ ràng sẽ được xem và gọi gấp nhiều lần so với tin rao không có ảnh. Hãy đăng ảnh để được giao dịch nhanh chóng!</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+<th:block id="js">
+    <script src="/admin-user-assets/plugins/select2/js/select2.full.min.js"></script>
+    <script>
+        $('.select2').select2()
+    </script>
+</th:block>
+</body>
+
+</html>

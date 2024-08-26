@@ -4,6 +4,7 @@ import com.example.easyrent.entity.Deposit;
 import com.example.easyrent.entity.User;
 import com.example.easyrent.model.enums.DepositStatus;
 import com.example.easyrent.repository.DepositRepository;
+import com.example.easyrent.service.DepositService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,11 +12,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/quan-ly")
 public class UserController {
     private final DepositRepository depositRepository;
+    private final DepositService depositService;
 
     @GetMapping
     public String getHome() {
@@ -93,4 +97,17 @@ public class UserController {
         return "user/pages/payment-result";
     }
 
+    @GetMapping("/lich-su-nap-tien")
+    public String depositHistory(Model model) {
+        List<Deposit> deposits = depositService.getDepositHistory();
+
+        model.addAttribute("deposits", deposits);
+        return "user/pages/deposit-history";
+    }
+
+
+    @GetMapping("/dang-tin-moi")
+    public String createPost() {
+        return "user/pages/create-post";
+    }
 }

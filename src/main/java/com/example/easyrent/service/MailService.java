@@ -3,7 +3,7 @@ package com.example.easyrent.service;
 import com.example.easyrent.entity.User;
 
 public interface MailService {
-    void sendMail1(User user, String subject, String link);
+    void sendMailRegister(User user, String subject, String link);
 
-    void sendMail2(User user, String subject, String link);
+    void sendMailForgetPassword(User user, String subject, String link);
 }

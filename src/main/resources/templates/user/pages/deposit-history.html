@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{user/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+    <title>Lịch sử nạp tiền</title>
+
+    <th:block id="css">
+        <link rel="stylesheet" href="/admin-user-assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-user-assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css"/>
+        <link rel="stylesheet" href="/admin-user-assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css"/>
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2 border-bottom pb-3">
+                    <div class="col-sm-12 mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/">Trang chủ</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/quan-ly">Quản lý</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Lịch sử nạp tiền
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-sm-12">
+                        <h1>Lịch sử nạp tiền</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid pb-5">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-bordered table-hover" id="table-deposit-history">
+                                    <thead>
+                                    <tr>
+                                        <th>Ngày nạp</th>
+                                        <th>Mã giao dịch</th>
+                                        <th>Phương thức</th>
+                                        <th>Số tiền</th>
+                                        <th>Khuyến mãi</th>
+                                        <th>Thực Nhận</th>
+                                        <th>Trạng thái</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="deposit : ${deposits}">
+                                        <td th:text="${deposit.createdAt}">03:38 25/8/2024</td>
+                                        <td th:text="${deposit.vnpTransactionId}"></td>
+                                        <td th:text="${deposit.paymentMethod}"></td>
+                                        <td th:text="${deposit.amount}"></td>
+                                        <td th:text="${deposit.bonusAmount}"></td>
+                                        <td th:text="${deposit.totalAmount}"></td>
+                                        <td>
+                                            <th:block th:if="${deposit.status.value == 'Thành công'}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-circle" style="width: 16px; height: 16px; color: #28a745;">
+                                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                                </svg>
+                                                <span>Thành công</span>
+                                            </th:block>
+
+                                            <th:block th:if="${deposit.status.value == 'Thất bại'}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle" style="width: 16px; height: 16px; color: red;">
+                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                                    <line x1="12" y1="16" x2="12" y2="16"></line>
+                                                </svg>
+                                                <span>Thất bại</span>
+                                            </th:block>
+
+                                            <th:block th:if="${deposit.status.value == 'Đang xử lý'}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-loader" style="width: 16px; height: 16px; color: #007bff;">
+                                                    <line x1="12" y1="2" x2="12" y2="6"></line>
+                                                    <line x1="12" y1="18" x2="12" y2="22"></line>
+                                                    <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                                                    <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                                                    <line x1="2" y1="12" x2="6" y2="12"></line>
+                                                    <line x1="18" y1="12" x2="22" y2="12"></line>
+                                                    <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                                                    <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                                                </svg>
+                                                <span>Đang xử lý</span>
+                                            </th:block>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<th:block id="js">
+    <script src="/admin-user-assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/admin-user-assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/admin-user-assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="/admin-user-assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="/admin-user-assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="/admin-user-assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#table-deposit-history').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "order": [],
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+                "columnDefs": [
+                    {
+                        "targets": 0, // Cột chứa LocalDateTime
+                        "render": function (data, type, row, meta) {
+                            if (type === 'display') {
+                                // Chuyển đổi chuỗi ISO 8601 sang định dạng dd/MM/yyyy HH:mm
+                                var date = new Date(data); // Giả sử data là chuỗi ISO 8601
+                                var day = ("0" + date.getDate()).slice(-2);
+                                var month = ("0" + (date.getMonth() + 1)).slice(-2);
+                                var year = date.getFullYear();
+                                var hours = ("0" + date.getHours()).slice(-2);
+                                var minutes = ("0" + date.getMinutes()).slice(-2);
+                                return hours + ":" + minutes + " " + day + "/" + month + "/" + year;
+                            }
+                            return data; // Giữ nguyên giá trị gốc cho sắp xếp và các mục đích khác
+                        }
+                    },
+                    {
+                        "targets": [3, 4 ,5], // Cột chứa số tiền đã định dạng
+                        "render": function (data, type, row, meta) {
+                            if (type === 'display') {
+                                return data.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ"; // Định dạng lại số tiền để hiển thị
+                            }
+                            return data; // Giữ nguyên giá trị số cho các hoạt động khác (sort, etc.)
+                        }
+                    },
+
+                ]
+            });
+        });
+
+    </script>
+</th:block>
+</body>
+
+</html>
