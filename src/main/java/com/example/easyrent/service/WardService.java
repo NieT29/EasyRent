@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface WardService {
     List<Ward> getWardsByDistrict(Integer districtId);
+    Ward getWardById(Integer id);
 }

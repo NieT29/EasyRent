@@ -1,4 +1,4 @@
-package com.example.movieapp.exception;
+package com.example.easyrent.exception;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {

@@ -88,7 +88,7 @@
                                 <h3>Thông tin mô tả</h3>
                             </div>
                             <div class="section-detail-content">
-                                <p th:text="${room.description}">Có ban công rộng, ra vào vân tay</p>
+                                <div th:utext="${#strings.replace(room.description, '\n', '<br />')}" style="white-space: pre-wrap;"></div>
                             </div>
                         </section>
 

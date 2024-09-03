@@ -21,8 +21,8 @@ public class CustomExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
     //2. xử lý ResourceNotFoundException
-    @ExceptionHandler(com.example.movieapp.exception.ResourceNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlerResourceNotFoundException(com.example.movieapp.exception.ResourceNotFoundException e) {
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handlerResourceNotFoundException(ResourceNotFoundException e) {
 
         ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);

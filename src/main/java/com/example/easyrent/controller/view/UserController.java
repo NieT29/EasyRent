@@ -3,7 +3,9 @@ package com.example.easyrent.controller.view;
 import com.example.easyrent.entity.Deposit;
 import com.example.easyrent.entity.User;
 import com.example.easyrent.model.enums.DepositStatus;
+import com.example.easyrent.model.enums.SubjectRent;
 import com.example.easyrent.repository.DepositRepository;
+import com.example.easyrent.service.CategoryService;
 import com.example.easyrent.service.DepositService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import java.util.List;
 public class UserController {
     private final DepositRepository depositRepository;
     private final DepositService depositService;
+    private final CategoryService categoryService;
 
     @GetMapping
     public String getHome() {
@@ -107,7 +110,9 @@ public class UserController {
 
 
     @GetMapping("/dang-tin-moi")
-    public String createPost() {
+    public String createPost(Model model) {
+        model.addAttribute("categories",categoryService.getAllCategories());
+        model.addAttribute("subjectRent", SubjectRent.values());
         return "user/pages/create-post";
     }
 }

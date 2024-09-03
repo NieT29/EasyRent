@@ -10,38 +10,56 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Service
 public class FileServerService {
-    public static final String uploadDir = "image_uploads";
+    public static final String imageUploadDir = "image_uploads";
+    public static final String videoUploadDir = "video_uploads";
 
-    public String saveFile(MultipartFile file, Integer userId) {
-        validateFile(file);  // Validate file trước khi lưu
+    public String saveAvatarUser(MultipartFile file, Integer userId) {
+        Path userDirPath = Paths.get(imageUploadDir, userId.toString());
+        return saveFileToDir(file, userDirPath, this::validateImage);
+    }
+
+    // Hàm lưu ảnh phòng
+    public String saveImagesRoom(MultipartFile file, Integer userId, Integer roomId) {
+        Path roomDirPath = Paths.get(imageUploadDir, userId.toString(), "room" + roomId);
+        return saveFileToDir(file, roomDirPath, this::validateImage);
+    }
+
+    // Hàm lưu video phòng
+    public String saveVideosRoom(MultipartFile file, Integer userId, Integer roomId) {
+        Path roomDirPath = Paths.get(videoUploadDir, userId.toString(), "room" + roomId);
+        return saveFileToDir(file, roomDirPath, this::validateVideo);
+    }
+    
+    private String saveFileToDir(MultipartFile file, Path dirPath, Consumer<MultipartFile> validator ) {
+        validator.accept(file);  // Validate file trước khi lưu
 
         try {
-            // Tạo thư mục cho user nếu chưa có
-            Path userPath = Paths.get(uploadDir, userId.toString());
-            System.out.println(userPath);
-            Files.createDirectories(userPath);
+            Files.createDirectories(dirPath);
 
             // Tạo tên file duy nhất
-
             String fileName = System.currentTimeMillis() + "_" + UUID.randomUUID().toString() + "." + getFileExtension(Objects.requireNonNull(file.getOriginalFilename()));
 
-            Path filePath = userPath.resolve(fileName);
+            Path filePath = dirPath.resolve(fileName);
 
             // Lưu file vào thư mục
             Files.copy(file.getInputStream(), filePath);
 
             // Trả về đường dẫn URL để lưu vào DB
-            return "/" + uploadDir + "/" + userId + "/" + fileName;
+            String relativePath = filePath.toString().replace(System.getProperty("user.dir") + "/", "").replace("\\", "/");
+
+            return "/" + relativePath;
         } catch (IOException e) {
-            throw new RuntimeException("Could not store file. Error: " + e.getMessage());
+            throw new RuntimeException("Không thể lưu file. Lỗi: " + e.getMessage());
         }
     }
 
+
     // Xác thực file
-    private void validateFile(MultipartFile file) {
+    private void validateImage(MultipartFile file) {
         String fileName = file.getOriginalFilename();
 
         // Kiểm tra tên file có hợp lệ không
@@ -62,9 +80,36 @@ public class FileServerService {
         }
     }
 
+    private void validateVideo(MultipartFile file) {
+        String fileName = file.getOriginalFilename();
+        System.out.println("Validating video: " + fileName);
+
+        // Kiểm tra tên file có hợp lệ không
+        if (fileName == null || fileName.isEmpty()) {
+            throw new RuntimeException("Tên file không hợp lệ");
+        }
+
+        // Kiểm tra phần mở rộng có hợp lệ không
+        String fileExtension = getFileExtension(fileName);
+        if (!isAllowedVideoExtension(fileExtension)) {
+            throw new RuntimeException("Phần mở rộng file không hợp lệ");
+        }
+
+        // Kiểm tra kích thước file
+        double fileSizeMB = (double) (file.getSize() / 1_048_576);
+        if (fileSizeMB > 100) {  // Giới hạn 50MB cho video
+            throw new RuntimeException("Kích thước video vượt quá giới hạn cho phép (50MB)");
+        }
+    }
+
     // Kiểm tra phần mở rộng hợp lệ
     private boolean isAllowedExtension(String fileExtension) {
         List<String> allowedExtensions = List.of("png", "jpg", "jpeg");
+        return allowedExtensions.contains(fileExtension.toLowerCase());
+    }
+
+    private boolean isAllowedVideoExtension(String fileExtension) {
+        List<String> allowedExtensions = List.of("mp4", "avi", "mov", "wmv", "flv", "mkv");
         return allowedExtensions.contains(fileExtension.toLowerCase());
     }
 

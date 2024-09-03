@@ -1,6 +1,8 @@
 package com.example.easyrent.entity;
 
 import com.example.easyrent.model.enums.OrderServiceStatus;
+import com.example.easyrent.model.enums.PaymentStatus;
+import com.example.easyrent.model.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -21,6 +23,10 @@ public class OrderService {
     Integer id;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    TransactionType transactionType;
+
+    @Column(nullable = false)
     int totalDay;
 
     @Column(nullable = false)
@@ -29,6 +35,10 @@ public class OrderService {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     OrderServiceStatus status;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    PaymentStatus paymentStatus;
 
     LocalDateTime orderDate;
     LocalDateTime startDate;

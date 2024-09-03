@@ -8,6 +8,6 @@ import lombok.Getter;
 public enum OrderServiceStatus {
     PENDING_APPROVAL, // Đang chờ duyệt
     ACTIVE,           // Đang hiển thị
-    EXPIRED,          // Đã hết hạn
-    CANCELED           // Đã bị hủy
+    EXPIRED,          // Đã hết hạ
+    PENDING_PAYMENT    // Chờ thanh toán
 }

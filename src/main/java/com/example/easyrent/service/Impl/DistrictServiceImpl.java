@@ -1,9 +1,9 @@
 package com.example.easyrent.service.Impl;
 
 import com.example.easyrent.entity.District;
+import com.example.easyrent.exception.ResourceNotFoundException;
 import com.example.easyrent.repository.DistrictRepository;
 import com.example.easyrent.service.DistrictService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,5 +17,11 @@ public class DistrictServiceImpl implements DistrictService {
     @Override
     public List<District> getDistrictsByProvince(Integer provinceId) {
         return districtRepository.findByProvinceId(provinceId);
+    }
+
+    @Override
+    public District getDistrictById(Integer id) {
+        return districtRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("District not found with id: " + id));
     }
 }

@@ -7,7 +7,7 @@
 
     <th:block id="css">
         <link rel="stylesheet" href="/admin-user-assets/plugins/select2/css/select2.min.css"/>
-<!--        <link rel="stylesheet" href="/admin-user-assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css" />-->
+        <link rel="stylesheet" href="/admin-user-assets/plugins/dropzone/min/dropzone.min.css"/>
     </th:block>
 </head>
 
@@ -28,7 +28,7 @@
                                 <a href="/quan-ly">Quản lý</a>
                             </li>
                             <li class="breadcrumb-item active">
-                                Đăng tin ới
+                                Đăng tin mới
                             </li>
                         </ol>
                     </div>
@@ -41,9 +41,9 @@
 
         <!-- Main content -->
         <section class="content">
-            <div class="container-fluid pb-5 pb-5">
+            <div class="container-fluid pb-5">
                 <div class="note alert alert-danger mb-5" role="alert">
-                    <p class="m-0">Nếu bạn đã từng đăng tin, hãy sử dụng chức năng GIA HẠN/NÂNG CẤP VIP trong mục QUẢN LÝ TIN ĐĂNG để làm mới, đẩy tin lên cao thay vì dăng tin mới. Tin đăng trùng nhau sẽ không được duyệt</p>
+                    <p class="m-0">Nếu bạn đã từng đăng tin, hãy sử dụng chức năng GIA HẠN/NÂNG CẤP VIP trong mục QUẢN LÝ TIN ĐĂNG để làm mới, đẩy tin lên cao thay vì đăng tin mới. Tin đăng trùng nhau sẽ không được duyệt</p>
                 </div>
                 <form id="form-create-post">
                     <div class="row">
@@ -59,9 +59,6 @@
                                         <label for="province">Tỉnh/Thành phố</label>
                                         <select id="province" class="form-control select2 select2-hidden-accessible" style="width: 100%;" required  tabindex="-1" aria-hidden="true">
                                             <option>-- Chọn Tỉnh/TP --</option>
-                                            <option>Hồ Chí Minh</option>
-                                            <option>Hà Nội</option>
-                                            <option>Đà Nẵng</option>
                                         </select>
                                     </div>
                                 </div>
@@ -71,10 +68,7 @@
                                     <div class="form-group">
                                         <label for="district">Quận/Huyện</label>
                                         <select id="district" class="form-control select2 select2-hidden-accessible" style="width: 100%;" required  tabindex="-1" aria-hidden="true">
-                                            <option>-- Chọn Tỉnh/TP --</option>
-                                            <option>Hồ Chí Minh</option>
-                                            <option>Hà Nội</option>
-                                            <option>Đà Nẵng</option>
+                                            <option>-- Chọn Quận/Huyện --</option>
                                         </select>
                                     </div>
                                 </div>
@@ -84,12 +78,176 @@
                                     <div class="form-group">
                                         <label for="ward">Phường/Xã</label>
                                         <select id="ward" class="form-control select2 select2-hidden-accessible" style="width: 100%;" required  tabindex="-1" aria-hidden="true">
-                                            <option>-- Chọn Tỉnh/TP --</option>
-                                            <option>Hồ Chí Minh</option>
-                                            <option>Hà Nội</option>
-                                            <option>Đà Nẵng</option>
+                                            <option>-- Chọn Phường/Xã --</option>
                                         </select>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="street-detail" class="col-form-label">Số nhà, tên đường</label>
+                                        <input type="text" class="form-control" name="street-detail" id="street-detail" value="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="exact-address" class="col-form-label">Địa chỉ chính xác</label>
+                                        <input type="text" readonly="" class="form-control" name="exact-address" id="exact-address" required="" data-msg-required="Chưa chọn khu vực đăng tin">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-5">
+                                <div class="col-md-12">
+                                    <h4>Thông tin mô tả</h4>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-3">
+                                <label for="room-category" class="col-md-12">Loại chuyên mục</label>
+                                <div class="col-md-6">
+                                    <select id="room-category" class="form-control select2 select2-hidden-accessible" style="width: 100%;" required  tabindex="-1" aria-hidden="true">
+                                        <option value="">-- Chọn loại chuyên mục --</option>
+                                        <th:block th:each="category : ${categories}">
+                                            <option th:value="${category.id}" th:text="${category.name}"></option>
+                                        </th:block>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="room-title" class="col-md-12 col-form-label">Tiêu đề</label>
+                                <div class="col-md-12">
+                                    <input type="text" class="form-control js-title" name="room-title" id="room-title" value="" minlength="30" maxlength="120" required="" data-msg-required="Tiêu đề không được để trống" data-msg-minlength="Tiêu đề quá ngắn" data-msg-maxlength="Tiêu đề quá dài">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="room-description" class="col-md-12 col-form-label">Nội dung mô tả</label>
+                                <div class="col-md-12">
+                                    <textarea class="form-control " name="room-description" id="room-description" rows="10" required="" minlength="100" data-msg-required="Bạn chưa nhập nội dung" data-msg-minlength="Nội dung tối thiểu 100 kí tự"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="user-name" class="col-md-12 col-form-label">Thông tin liên hệ</label>
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <input id="user-name" type="text" name="user-name" class="form-control" readonly="readonly" required="" data-msg-required="Tên liên hệ" th:value="${#authentication.principal.user.name}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="user-phone" class="col-md-12 col-form-label">Điện thoại</label>
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <input id="user-phone" type="number" name="user-phone" class="form-control" readonly="readonly" required="" data-msg-required="Số điện thoại" th:value="${#authentication.principal.user.phoneNumber}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="room-price" class="col-md-12 col-form-label">Giá cho thuê</label>
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <input id="room-price" name="gia" pattern="[0-9.]+" type="text" class="form-control js-gia-cho-thue" required="" data-msg-required="Bạn chưa nhập giá phòng" data-msg-min="Giá phòng chưa đúng">
+                                        <div class="input-group-append">
+
+                                            <select class="form-control js-unit" name="don_vi" id="don_vi">
+                                                <option value="0">đồng/tháng</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <small class="form-text text-muted">Nhập đầy đủ số, ví dụ 1 triệu thì nhập là 1000000</small>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="room-acreage" class="col-md-12 col-form-label">Diện tích</label>
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <input id="room-acreage" type="number" attern="[0-9.]+" name="dien_tich" max="1000" class="form-control" required="" data-msg-required="Bạn chưa nhập diện tích">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">m<sup>2</sup></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="room-subject-rent" class="col-md-12 col-form-label">Đối tượng cho thuê</label>
+                                <div class="col-md-6">
+                                    <div class="input-group mb-3">
+                                        <select class="form-control valid" id="room-subject-rent" name="doi_tuong" aria-invalid="false">
+                                            <option th:each="subjectRent : ${subjectRent}"
+                                                    th:value="${subjectRent}"
+                                                    th:text="${subjectRent.value}"
+                                                    th:selected="${subjectRent.name() == 'ALL'}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-5">
+                                <div class="col-md-12">
+                                    <h4>Hình ảnh</h4>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <p>Cập nhật hình ảnh rõ ràng sẽ cho thuê nhanh hơn</p>
+                                    <div class="form-group">
+                                        <div for="browse_photos" class="browse_photos js-browse-photos">
+                                            <i class="icon-upload-image"></i>
+                                            <span class="js-btn-chon-anh">Thêm Ảnh</span>
+                                            <input type="file" id="images-room" multiple style="display: none;">
+                                        </div>
+                                    </div>
+                                    <div class="list_photos row dropzone-previews" id="list-photos-dropzone-previews"></div>
+                                    <div id="tpl" style="display:none">
+                                        <div class="photo_item col-md-2 col-3 js-photo-manual">
+                                            <div class="photo">
+                                                <img data-dz-thumbnail="">
+                                            </div>
+                                            <div class="dz-progress">
+                                                <span class="dz-upload" data-dz-uploadprogress=""></span>
+                                            </div>
+                                            <div class="bottom">
+                                                <span class="photo_name" data-dz-name=""></span>
+                                                <span class="photo_delete" data-dz-remove=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Xóa</span>
+                                            </div>
+                                            <input name="" value="" type="hidden">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-5">
+                                <div class="col-md-12">
+                                    <h4>Video</h4>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <p>Upload Video từ máy của bạn</p>
+                                    <div class="form-group">
+                                        <div for="browse_photos" class="browse_photos js-dropzone-video dz-clickable"><i class="icon-upload-video"></i><span class="js-btn-chon-video">Thêm Video</span></div>
+                                    </div>
+                                    <div class="list_photos row dropzone-previews" id="list-videos-dropzone-previews"></div>
+                                    <div id="tpl-video" style="display:none">
+                                        <div class="photo_item col-md-2 col-3 js-video-manual">
+                                            <div class="photo">
+                                                <video width="100%" height="100%" controls="" id="video">
+                                                    <source src="">
+                                                </video>
+                                            </div>
+                                            <div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress=""></span></div>
+                                            <div class="bottom clearfix">
+                                                <span class="photo_name" data-dz-name=""></span>
+                                                <span class="photo_delete" data-dz-remove=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Xóa</span>
+                                            </div>
+                                            <input name="" value="" type="hidden">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row mt-5">
+                                <div class="col-md-12">
+                                    <button id="btn-create-room" type="submit" class="btn btn-success mb-5 btn-lg btn-block ">Tiếp tục</button>
                                 </div>
                             </div>
                         </div>
@@ -116,9 +274,8 @@
 </div>
 <th:block id="js">
     <script src="/admin-user-assets/plugins/select2/js/select2.full.min.js"></script>
-    <script>
-        $('.select2').select2()
-    </script>
+    <script src="/admin-user-assets/plugins/dropzone/min/dropzone.min.js"></script>
+    <script src="/admin-user-assets/dist/js/user-create-post.js"></script>
 </th:block>
 </body>
 

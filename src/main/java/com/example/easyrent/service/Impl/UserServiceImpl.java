@@ -46,11 +46,11 @@ public class UserServiceImpl implements UserService {
         User currentUser = SecurityUtils.getCurrentUser();
 
         // Lưu file avatar và trả về URL
-        String avatarUrl = fileServerService.saveFile(avatar, currentUser.getId());
+        String avatarUrl = fileServerService.saveAvatarUser(avatar, currentUser.getId());
 
         // Nếu người dùng đã có avatar cũ, xóa avatar cũ
         if (currentUser.getAvatar() != null && !currentUser.getAvatar().isEmpty()) {
-            if (currentUser.getAvatar().startsWith("/" + FileServerService.uploadDir + "/")) {
+            if (currentUser.getAvatar().startsWith("/" + FileServerService.imageUploadDir + "/")) {
                 fileServerService.deleteFile(currentUser.getAvatar());
             }
         }

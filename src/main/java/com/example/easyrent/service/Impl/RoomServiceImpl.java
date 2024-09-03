@@ -3,19 +3,31 @@ package com.example.easyrent.service.Impl;
 import com.example.easyrent.entity.*;
 import com.example.easyrent.model.dto.ServiceTypeAttributesDTO;
 import com.example.easyrent.model.enums.OrderServiceStatus;
-import com.example.easyrent.repository.RoomRepository;
-import com.example.easyrent.service.RoomService;
+import com.example.easyrent.model.enums.PaymentStatus;
+import com.example.easyrent.model.enums.TransactionType;
+import com.example.easyrent.model.request.UpsertRoomRequest;
+import com.example.easyrent.repository.*;
+import com.example.easyrent.security.SecurityUtils;
+import com.example.easyrent.service.*;
+import com.github.slugify.Slugify;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.query.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class RoomServiceImpl implements RoomService {
     private final RoomRepository roomRepository;
+    private final OrderServiceRepository orderServiceRepository;
+    private final CategoryService categoryService;
+    private final ProvinceService provinceService;
+    private final DistrictService districtService;
+    private final WardService wardService;
 
 
     @Override
@@ -61,6 +73,7 @@ public class RoomServiceImpl implements RoomService {
 
         return categoryCounts;
     }
+
 
     @Override
     public Room getRoom(Integer id, String slug, OrderServiceStatus status) {
@@ -175,5 +188,41 @@ public class RoomServiceImpl implements RoomService {
     public Page<Room> getRoomListNewExcludingCurrent(OrderServiceStatus status, Integer currentRoomId, int page, int pageSize) {
         PageRequest pageRequest = PageRequest.of(page -1, pageSize);
         return roomRepository.findByOrderServiceStatusAndIdNotOrderByStartDateDesc(status, currentRoomId, pageRequest);
+    }
+
+    @Override
+    public Integer createRoom(UpsertRoomRequest request) {
+        User currentUser = SecurityUtils.getCurrentUser();
+
+        Slugify slugify = Slugify.builder().build();
+
+        Room room = Room.builder()
+                .title(request.getTitle())
+                .slug(slugify.slugify(request.getTitle()))
+                .description(request.getDescription())
+                .subjectRent(request.getSubjectRent())
+                .price(request.getPrice())
+                .acreage(request.getAcreage())
+                .category(categoryService.getCategoryById(request.getCategoryId()))
+                .province(provinceService.getProvinceById(request.getProvinceId()))
+                .district(districtService.getDistrictById(request.getDistrictId()))
+                .ward(wardService.getWardById(request.getWardId()))
+                .streetDetail(request.getStreetDetail())
+                .exactAddress(request.getExactAddress())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .user(currentUser)
+                .build();
+        roomRepository.save(room);
+
+        OrderService orderService = OrderService.builder()
+                .room(room)
+                .transactionType(TransactionType.NEW_POST)
+                .status(OrderServiceStatus.PENDING_PAYMENT)
+                .paymentStatus(PaymentStatus.UNPAID)
+                .build();
+
+        orderServiceRepository.save(orderService);
+        return room.getId();
     }
 }

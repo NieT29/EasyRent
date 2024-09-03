@@ -5,6 +5,7 @@ import com.example.easyrent.entity.District;
 import com.example.easyrent.entity.Room;
 import com.example.easyrent.model.dto.ServiceTypeAttributesDTO;
 import com.example.easyrent.model.enums.OrderServiceStatus;
+import com.example.easyrent.model.request.UpsertRoomRequest;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
@@ -32,4 +33,6 @@ public interface RoomService {
     Page<Room> getRoomsFiltered(String province, String district, String ward, String categoryName ,OrderServiceStatus status, int page, int pageSize, Integer gia_tu, Integer gia_den, Double dien_tich_tu, Double dien_tich_den, String orderBy);
 
     Map<String, Integer> getCategoryCounts();
+
+    Integer createRoom(UpsertRoomRequest request);
 }
