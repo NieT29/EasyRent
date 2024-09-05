@@ -1,11 +1,8 @@
 package com.example.easyrent;
 
-import com.example.easyrent.model.enums.OrderServiceStatus;
-import com.example.easyrent.model.enums.PriceType;
+import com.example.easyrent.model.enums.*;
 import com.example.easyrent.utils.RandomColorUtils;
 import com.example.easyrent.entity.*;
-import com.example.easyrent.model.enums.SubjectRent;
-import com.example.easyrent.model.enums.UserRole;
 import com.example.easyrent.repository.*;
 import com.github.javafaker.Faker;
 import com.github.slugify.Slugify;
@@ -207,6 +204,7 @@ class EasyRentApplicationTests {
         List<ServicePrice> servicePriceList = servicePriceRepository.findAll();
 
         OrderServiceStatus[] statuses = {OrderServiceStatus.ACTIVE, OrderServiceStatus.PENDING_APPROVAL, OrderServiceStatus.EXPIRED};
+        TransactionType[] transactionTypes = {TransactionType.NEW_POST, TransactionType.UPGRADE_TO_VIP, TransactionType.RENEW_POST};
 
         for (Room room : roomList) {
             ServiceType serviceTypeRd = serviceTypeList.get(random.nextInt(serviceTypeList.size()));
@@ -227,8 +225,18 @@ class EasyRentApplicationTests {
             LocalDateTime startDate = orderDate;
             LocalDateTime endDate = startDate.plusDays(totalDay);
 
-            OrderServiceStatus status = statuses[random.nextInt(statuses.length)];
 
+            OrderServiceStatus status = statuses[random.nextInt(statuses.length)];
+            TransactionType transactionType = transactionTypes[random.nextInt(transactionTypes.length)];
+
+            PaymentStatus paymentStatus;
+            if (status == OrderServiceStatus.PENDING_APPROVAL ||
+                    status == OrderServiceStatus.ACTIVE ||
+                    status == OrderServiceStatus.EXPIRED) {
+                paymentStatus = PaymentStatus.COMPLETED;
+            } else {
+                paymentStatus = PaymentStatus.PENDING;
+            }
 
             OrderService orderService = OrderService.builder()
                     .totalDay(totalDay)
@@ -239,6 +247,8 @@ class EasyRentApplicationTests {
                     .room(room)
                     .serviceType(serviceTypeRd)
                     .servicePrice(servicePriceRd)
+                    .transactionType(transactionType)
+                    .paymentStatus(paymentStatus)
                     .status(status)
                     .build();
 

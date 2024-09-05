@@ -1,8 +1,11 @@
 package com.example.easyrent.controller.rest;
 
+import com.example.easyrent.entity.ServicePrice;
+import com.example.easyrent.model.enums.PriceType;
 import com.example.easyrent.model.request.UpsertRoomRequest;
 import com.example.easyrent.service.ImageRoomService;
 import com.example.easyrent.service.RoomService;
+import com.example.easyrent.service.ServicePriceService;
 import com.example.easyrent.service.VideoRoomService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +22,7 @@ public class RoomApi {
     private final RoomService roomService;
     private final ImageRoomService imageRoomService;
     private final VideoRoomService videoRoomService;
+    private final ServicePriceService servicePriceService;
 
 
     @PostMapping("/createRoom")
@@ -38,5 +42,6 @@ public class RoomApi {
         List<String> videUrls = videoRoomService.uploadRoomVideo(videos, roomId);
         return ResponseEntity.ok(videUrls);
     }
+
 }
 

@@ -6,7 +6,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum PriceType {
-    DAILY,
-    WEEKLY,
-    MONTHLY
+    DAILY("ngày"),
+    WEEKLY("tuần"),
+    MONTHLY("tháng");
+
+    private final String value;
 }

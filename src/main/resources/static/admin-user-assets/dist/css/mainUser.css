@@ -171,6 +171,18 @@
     vertical-align: text-bottom;
 }
 
+.hidden-note {
+    display: none;
+}
+
+.bds_icon {
+    background: url('/admin-user-assets/dist/img/VnPayLogo.png') center no-repeat;
+    display: inline-block;
+    background-size: contain;
+    width: 65px;
+    height: 40px;
+}
+
 
 
 

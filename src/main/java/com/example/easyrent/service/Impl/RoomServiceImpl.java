@@ -1,6 +1,7 @@
 package com.example.easyrent.service.Impl;
 
 import com.example.easyrent.entity.*;
+import com.example.easyrent.exception.ResourceNotFoundException;
 import com.example.easyrent.model.dto.ServiceTypeAttributesDTO;
 import com.example.easyrent.model.enums.OrderServiceStatus;
 import com.example.easyrent.model.enums.PaymentStatus;
@@ -224,5 +225,11 @@ public class RoomServiceImpl implements RoomService {
 
         orderServiceRepository.save(orderService);
         return room.getId();
+    }
+
+    @Override
+    public Room getRoomById(Integer id) {
+        return roomRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Room not found with id: " + id));
     }
 }

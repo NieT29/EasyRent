@@ -7,26 +7,21 @@ $(document).ready(function() {
         const provinceId = $(this).val();
         console.log('Province selected:', provinceId);
 
-        // Đặt lại quận/huyện và phường/xã khi chọn tỉnh khác
         $('#district').html('<option value="">-- Chọn Quận/Huyện --</option>').trigger('change');
         $('#ward').html('<option value="">-- Chọn Phường/Xã --</option>').trigger('change');
 
-        // Kiểm tra nếu provinceId là giá trị hợp lệ trước khi gọi API
         if (provinceId && provinceId !== '-- Chọn Tỉnh/TP --') {
             loadDistricts(provinceId);
         }
     });
 
 
-    // Khi người dùng chọn quận/huyện
     $('#district').on('change', function() {
         const districtId = $(this).val();
         console.log('District selected:', districtId);
 
-        // Đặt lại phường/xã khi chọn quận/huyện khác
         $('#ward').html('<option value="">-- Chọn Phường/Xã --</option>').trigger('change');
 
-        // Kiểm tra nếu districtId là giá trị hợp lệ trước khi gọi API
         if (districtId && districtId !== '-- Chọn Quận/Huyện --') {
             loadWards(districtId);
         }
@@ -72,7 +67,6 @@ $(document).ready(function() {
     });
 });
 
-// Hàm loadProvinces để tải danh sách tỉnh
 async function loadProvinces() {
     try {
         const response = await axios.get('/api/location/provinces');
@@ -86,7 +80,6 @@ async function loadProvinces() {
             provinceSelect.add(option);
         });
 
-        // Cập nhật select2 sau khi thêm các tùy chọn mới
         $('#province').select2();
 
     } catch (error) {
@@ -94,7 +87,6 @@ async function loadProvinces() {
     }
 }
 
-// Hàm loadDistricts để tải danh sách quận/huyện theo tỉnh
 async function loadDistricts(provinceId) {
     try {
         const response = await axios.get('/api/location/districts', {
@@ -111,7 +103,6 @@ async function loadDistricts(provinceId) {
             districtSelect.add(option);
         });
 
-        // Cập nhật select2 sau khi thêm các tùy chọn mới
         $('#district').select2();
 
     } catch (error) {
@@ -119,7 +110,6 @@ async function loadDistricts(provinceId) {
     }
 }
 
-// Hàm loadWards để tải danh sách phường/xã theo quận/huyện
 async function loadWards(districtId) {
     try {
         const response = await axios.get('/api/location/wards', {
@@ -136,7 +126,6 @@ async function loadWards(districtId) {
             wardSelect.add(option);
         });
 
-        // Cập nhật select2 sau khi thêm các tùy chọn mới
         $('#ward').select2();
 
     } catch (error) {
@@ -148,22 +137,21 @@ async function loadWards(districtId) {
 Dropzone.autoDiscover = false;
 
 var myDropzone = new Dropzone("#images-room", {
-    url: "/url", // URL cho upload, nếu bạn muốn tự quản lý thì để trống
-    paramName: "images", // Tên tham số truyền file lên server
-    maxFilesize: 2, // MB
+    url: "/url",
+    paramName: "images",
+    maxFilesize: 2,
     acceptedFiles: "image/*",
-    autoProcessQueue: false, // Không tự động upload, bạn sẽ xử lý bằng tay
-    previewsContainer: "#list-photos-dropzone-previews", // Container để hiển thị các ảnh
-    clickable: false, // Không sử dụng mặc định, bạn sẽ tự kiểm soát
-    previewTemplate: document.getElementById("tpl").innerHTML, // Sử dụng template của bạn
+    autoProcessQueue: false,
+    previewsContainer: "#list-photos-dropzone-previews",
+    clickable: false,
+    previewTemplate: document.getElementById("tpl").innerHTML,
     init: function () {
         var dz = this;
         var fileNames = [];
 
-        // Xử lý khi thêm file mới
         dz.on("addedfile", function(file) {
             if (fileNames.includes(file.name)) {
-                dz.removeFile(file); // Xóa file nếu trùng
+                dz.removeFile(file);
                 toastr.error("Ảnh này đã được chọn. Vui lòng chọn ảnh khác.");
             } else {
                 fileNames.push(file.name);
@@ -172,7 +160,6 @@ var myDropzone = new Dropzone("#images-room", {
         });
 
         dz.on("removedfile", function(file) {
-            // Loại bỏ tên file khỏi danh sách fileNames khi file bị xóa
             fileNames = fileNames.filter(function(name) {
                 return name !== file.name;
             });
@@ -187,21 +174,162 @@ var myDropzone = new Dropzone("#images-room", {
             console.error("Upload thất bại:", errorMessage);
         });
 
-        // Khi người dùng click vào nút thêm ảnh
         document.querySelector(".js-browse-photos").addEventListener("click", function() {
             document.getElementById("images-room").click();
         });
 
-        // Khi người dùng chọn ảnh từ file input
         document.getElementById("images-room").addEventListener("change", function(event) {
             var files = event.target.files;
             for (var i = 0; i < files.length; i++) {
-                dz.addFile(files[i]); // Thêm file vào Dropzone
+                dz.addFile(files[i]);
             }
-
-            // Reset input để đảm bảo sự kiện `change` luôn được kích hoạt
             event.target.value = '';
         });
+    }
+});
+
+var myDropzoneVideo = new Dropzone("#videos-room", {
+    url: "url",
+    paramName: "videos",
+    maxFilesize: 100,
+    acceptedFiles: "video/*",
+    autoProcessQueue: false,
+    previewsContainer: "#list-videos-dropzone-previews",
+    clickable: false,
+    previewTemplate: document.getElementById("tpl-video").innerHTML,
+    init: function () {
+        var dzVideo = this;
+        var videoNames = [];
+
+        dzVideo.on("addedfile", function(file) {
+            if (videoNames.includes(file.name)) {
+                dzVideo.removeFile(file); // Xóa file nếu trùng
+                toastr.error("Video này đã được chọn. Vui lòng chọn video khác.");
+            } else {
+                videoNames.push(file.name);
+
+                var videoElement = file.previewElement.querySelector("video");
+                var videoSource = videoElement.querySelector("source");
+
+                if (videoSource) {
+                    var videoURL = URL.createObjectURL(file);
+                    videoSource.src = videoURL;
+                    videoElement.load();
+                }
+
+                console.log("Đã thêm video:", file);
+            }
+        });
+
+        dzVideo.on("removedfile", function(file) {
+            videoNames = videoNames.filter(function(name) {
+                return name !== file.name;
+            });
+            console.log("Đã xóa video:", file);
+        });
+
+        dzVideo.on("success", function(file, response) {
+            console.log("Upload thành công:", response);
+        });
+
+        dzVideo.on("error", function(file, errorMessage) {
+            console.error("Upload thất bại:", errorMessage);
+        });
+
+        document.querySelector(".js-dropzone-video").addEventListener("click", function() {
+            document.getElementById("videos-room").click();
+        });
+
+        document.getElementById("videos-room").addEventListener("change", function(event) {
+            var files = event.target.files;
+            for (var i = 0; i < files.length; i++) {
+                dzVideo.addFile(files[i]);
+            }
+
+
+            event.target.value = '';
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const priceInput = document.querySelector('#room-price');
+
+    priceInput.addEventListener('input', function() {
+        let value = priceInput.value.replace(/[^\d]/g, '');
+
+        if (value) {
+            priceInput.value = new Intl.NumberFormat('de-DE').format(value);
+        } else {
+            priceInput.value = '';
+        }
+    });
+});
+
+
+$('#form-create-post').validate({
+    rules: {
+        province: {
+            required: true,
+        },
+        district: {
+            required: true,
+        },
+        ward: {
+            required: true,
+        },
+        streetDetail: {
+            required: true,
+        },
+        category: {
+            required: true,
+        },
+        roomTitle: {
+            required: true,
+            minlength: 30,
+            maxlength: 100
+        },
+        roomDescription: {
+            required: true,
+            minlength: 100,
+        }
+    },
+    messages: {
+        province: {
+            required: "Vui lòng chọn tỉnh/thành phố."
+        },
+        district: {
+            required: "Vui lòng chọn quận/huyện."
+        },
+        ward: {
+            required: "Vui lòng chọn phường/xã."
+        },
+        streetDetail: {
+            required: "Vui lòng chọn vui lòng nhập số nhà, tên đường."
+        },
+        category: {
+            required: "Vui lòng chọn loại chuyên mục cho thuê."
+        },
+        roomTitle: {
+            required: "Vui lòng nhập tiêu đề.",
+            minlength: "Tiêu đề quá ngắn.",
+            maxlength: "Tiêu đề quá dài."
+        },
+        roomDescription: {
+            required: "Vui lòng nhập mô tả.",
+            minlength: "Mô tả tối thiểu 100 kí tự"
+        }
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+        $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+        $(element).removeClass('is-invalid');
     }
 });
 
@@ -222,6 +350,10 @@ const btnCreateEl = document.getElementById('btn-create-room');
 btnCreateEl.addEventListener('click', async (e) => {
     e.preventDefault();
 
+    if (!$('#form-create-post').valid()){
+        return;
+    }
+
     const data = {
         provinceId: provinceEl.value,
         districtId: districtEl.value,
@@ -231,7 +363,7 @@ btnCreateEl.addEventListener('click', async (e) => {
         categoryId: categoryEl.value,
         title: roomTitleEl.value,
         description: roomDescriptionEl.value,
-        price: roomPriceEl.value,
+        price: roomPriceEl.value.replace(/\./g, ''),
         acreage: roomAcreageEl.value,
         subjectRent: roomSubjectRentEl.value,
     }
@@ -259,20 +391,35 @@ btnCreateEl.addEventListener('click', async (e) => {
             }
         });
 
-        const imageUrls = imageResponse.data;
 
-        console.log("Phòng và ảnh đã được đăng thành công:", roomId, imageUrls);
+        const videos = myDropzoneVideo.getAcceptedFiles();
+        if (videos.length > 0) {
+            const formDataVideo = new FormData();
+            formDataVideo.append("roomId", roomId);
+            videos.forEach(video => {
+                formDataVideo.append("videos", video);
+            });
 
-        setTimeout(() => {
-            window.location.href = "/";
-        }, 1000)
+            const videoResponse = await axios.post("/api/rooms/upload-videoRoom", formDataVideo, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });
+
+            const videoUrls = videoResponse.data;
+        } else {
+            console.log("Không có video.");
+        }
+        // setTimeout(() => {
+        //     window.location.href = "/quan-ly/tin-dang/thanh-toan-tin/roomId";
+        // }, 1000)
+
     } catch (error) {
         if (error.message === "Vui lòng cập nhật ảnh phòng") {
             toastr.error(error.message);
         } else if (error.response && error.response.data && error.response.data.message) {
             const errorMessage = error.response.data.message;
 
-            // Hiển thị toastr cho từng lỗi cụ thể
             if (typeof errorMessage === 'object') {
                 Object.keys(errorMessage).forEach(key => {
                     toastr.error(errorMessage[key]);
@@ -281,7 +428,6 @@ btnCreateEl.addEventListener('click', async (e) => {
                 toastr.error(errorMessage);
             }
 
-            // Log lỗi đơn giản hơn để theo dõi
             console.error("Error response from API:", errorMessage);
         } else {
             toastr.error("Có lỗi xảy ra, vui lòng thử lại.");

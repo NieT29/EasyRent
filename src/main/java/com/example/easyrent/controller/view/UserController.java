@@ -1,16 +1,17 @@
 package com.example.easyrent.controller.view;
 
 import com.example.easyrent.entity.Deposit;
+import com.example.easyrent.entity.Room;
 import com.example.easyrent.entity.User;
 import com.example.easyrent.model.enums.DepositStatus;
 import com.example.easyrent.model.enums.SubjectRent;
 import com.example.easyrent.repository.DepositRepository;
-import com.example.easyrent.service.CategoryService;
-import com.example.easyrent.service.DepositService;
+import com.example.easyrent.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,6 +24,7 @@ public class UserController {
     private final DepositRepository depositRepository;
     private final DepositService depositService;
     private final CategoryService categoryService;
+    private final RoomService roomService;
 
     @GetMapping
     public String getHome() {
@@ -114,5 +116,13 @@ public class UserController {
         model.addAttribute("categories",categoryService.getAllCategories());
         model.addAttribute("subjectRent", SubjectRent.values());
         return "user/pages/create-post";
+    }
+
+    @GetMapping("/tin-dang/thanh-toan-tin/{roomId}")
+    public String paymentForService(@PathVariable("roomId") Integer id, Model model) {
+        Room room = roomService.getRoomById(id);
+
+        model.addAttribute("room", room);
+        return "user/pages/payment-for-service";
     }
 }

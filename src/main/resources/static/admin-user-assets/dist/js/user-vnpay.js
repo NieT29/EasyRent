@@ -40,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 $.validator.addMethod("validateAmount", function(value, element) {
-    // Loại bỏ dấu chấm để kiểm tra giá trị thực tế
     let amount = value.replace(/\./g, '');
     return this.optional(element) || (!isNaN(amount) && parseInt(amount, 10) >= 10000);
 }, "Vui lòng nhập số tiền hợp lệ và số tiền nạp tối thiểu là 10.000đ");

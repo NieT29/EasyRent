@@ -20,7 +20,7 @@ public class DepositScheduleTask {
     @Scheduled(fixedRate = 60000) // Chạy mỗi phút
     public void checkPendingDeposit() {
         LocalDateTime now = LocalDateTime.now();
-        List<Deposit> pendingDeposits = depositRepository.findByStatusAndCreatedAtBefore(DepositStatus.PENDING, now.minusMinutes(2));
+        List<Deposit> pendingDeposits = depositRepository.findByStatusAndCreatedAtBefore(DepositStatus.PENDING, now.minusMinutes(10));
 
         for (Deposit deposit : pendingDeposits) {
             deposit.setStatus(DepositStatus.FAILED);

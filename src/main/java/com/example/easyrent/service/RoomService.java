@@ -35,4 +35,6 @@ public interface RoomService {
     Map<String, Integer> getCategoryCounts();
 
     Integer createRoom(UpsertRoomRequest request);
+
+    Room getRoomById(Integer id);
 }

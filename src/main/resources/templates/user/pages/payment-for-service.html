@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{user/layout/layout  ::  layout(~{:: title}, ~{:: #css}, ~{:: .content-wrapper}, ~{:: #js})}">
+
+<head>
+    <title>Thanh toán tin</title>
+
+    <th:block id="css">
+    </th:block>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2 border-bottom pb-3">
+                    <div class="col-sm-12 mb-4">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item">
+                                <a href="/">Trang chủ</a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="/quan-ly">Quản lý</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Thanh toán tin
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="col-sm-12">
+                        <h1>Thanh toán tin</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid pb-5">
+                <div class="note alert alert-danger mb-5" role="alert">
+                    <p class="m-0">Nếu bạn đã từng đăng tin, hãy sử dụng chức năng GIA HẠN/NÂNG CẤP VIP trong mục QUẢN LÝ TIN ĐĂNG để làm mới, đẩy tin lên cao thay vì đăng tin mới. Tin đăng trùng nhau sẽ không được duyệt</p>
+                </div>
+                <form class="form-horizontal frm-manage-post js-frm-manage-post">
+                    <h2 th:text="${room.title}"></h2>
+                    <div class="row">
+                        <div class="col-md-8 pb-5">
+                            <div class="row mt-3">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="post-package-type" class="col-form-label font-weight-normal">Chọn loại tin</label>
+                                        <select class="form-control" name="package" id="post-package-type">
+                                            <option value="">Tin thường</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="post-package-priceType" class="col-form-label font-weight-normal" id="time-label">Gói thời gian</label>
+                                        <select class="form-control" name="package" id="post-package-priceType">
+                                            <option value="DAILY">Đăng theo ngày</option>
+                                            <option value="WEEKLY">Đăng theo tuần</option>
+                                            <option value="MONTHLY">Đăng theo tháng</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="post_package-time" class="col-form-label font-weight-normal" id="time-unit-label">Số ngày</label>
+                                        <select class="form-control" name="package" id="post_package-time">
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-title float-none" style="font-weight: bold; font-size: 21px; margin-bottom: 20px; margin-top: 30px;">Chọn phương thức thanh toán</div>
+                            <div class="form-group payment_method_group">
+                                <div class="form-check js-payment-item js-payment-account mb-2">
+                                    <input type="radio" name="payment_method" id="payment_from_account" value="account" checked="checked" class="form-check-input">
+                                    <label for="payment_from_account" class="form-check-label">
+                                        Trừ tiền trong tài khoản PhongtroVIP (Bạn đang có: TK Chính <span th:text="${@moneyUtils.formatCurrency(#authentication.principal.user.accountBalance)}"></span>)
+                                        <p style="color: red;" class="js-note-outofmoney hidden-note">Số tiền trong tài khoản của bạn không đủ để thực hiện thanh toán, vui lòng
+                                            <a href="/quan-ly/nap-tien">nạp thêm</a>
+                                            hoặc chọn phương thức khác bên dưới
+                                        </p>
+                                    </label>
+                                </div>
+                                <div class="form-check js-payment-item  mb-2">
+                                    <input type="radio" name="payment_method" id="payment_from_vnpay" value="vnpay" class="form-check-input">
+                                    <label for="payment_from_vnpay" class="form-check-label">
+                                        Thanh toán qua VNPay
+                                        <span class="bds_icon" style="display: block;"></span>
+                                    </label>
+                                </div>
+                                <div class="d-flex mt-5">
+                                    <a href="#" type="button" class="btn btn-gray btn-secondary btn-lg d-flex btn-block align-items-center justify-content-center mr-1">Quay lại</a>
+                                    <button type="submit" class="btn btn-primary btn-lg d-flex btn-block align-items-center justify-content-center mt-0 ml-1 " disabled>Thanh toán:
+                                        <span style="margin-left: 5px;" class="package-grand-total">10.000đ</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card mb-5 mt-4" style="color: #856404; background-color: #fff3cd; border-color: #ffeeba;">
+                                <div class="card-body">
+                                    <h5>Lưu ý khi đăng tin</h5>
+                                    <ul class=" pl-0" >
+                                        <li style="list-style-type: square; margin-left: 15px;">Nội dung phải viết bằng tiếng Việt có dấu</li>
+                                        <li style="list-style-type: square; margin-left: 15px;">Tiêu đề tin không dài quá 100 kí tự</li>
+                                        <li style="list-style-type: square; margin-left: 15px;">Các bạn nên điền đầy đủ thông tin vào các mục để tin đăng có hiệu quả hơn.</li>
+                                        <li style="list-style-type: square; margin-left: 15px;">Để tăng độ tin cậy và tin rao được nhiều người quan tâm hơn, hãy sửa vị trí tin rao của bạn trên bản đồ bằng cách kéo icon tới đúng vị trí của tin rao.</li>
+                                        <li style="list-style-type: square; margin-left: 15px;">Tin đăng có hình ảnh rõ ràng sẽ được xem và gọi gấp nhiều lần so với tin rao không có ảnh. Hãy đăng ảnh để được giao dịch nhanh chóng!</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</div>
+<th:block id="js">
+    <script th:inline="javascript">
+        const userBalance = [[${#authentication.principal.user.accountBalance}]];
+    </script>
+    <script src="/admin-user-assets/dist/js/payment-for-service.js"></script>
+</th:block>
+</body>
+
+</html>
