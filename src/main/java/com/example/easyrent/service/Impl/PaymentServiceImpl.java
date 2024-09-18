@@ -2,29 +2,36 @@ package com.example.easyrent.service.Impl;
 
 import com.example.easyrent.config.VNPayConfig;
 import com.example.easyrent.entity.Deposit;
+import com.example.easyrent.entity.OrderService;
 import com.example.easyrent.entity.User;
-import com.example.easyrent.exception.BadRequestException;
+import com.example.easyrent.exception.ResourceNotFoundException;
+import com.example.easyrent.model.enums.OrderServiceStatus;
+import com.example.easyrent.model.enums.PaymentMethod;
+import com.example.easyrent.model.enums.PaymentStatus;
 import com.example.easyrent.model.request.DepositRequest;
+import com.example.easyrent.model.request.PaymentOrderServiceRequest;
 import com.example.easyrent.model.response.PaymentResponse;
-import com.example.easyrent.security.CustomUserDetails;
+import com.example.easyrent.repository.OrderServiceRepository;
+import com.example.easyrent.repository.UserRepository;
 import com.example.easyrent.security.SecurityUtils;
 import com.example.easyrent.service.DepositService;
 import com.example.easyrent.service.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
     private final DepositService depositService;
+    private final OrderServiceRepository orderServiceRepository;
+    private final UserRepository userRepository;
 
     @Override
     public PaymentResponse createPaymentResponse(DepositRequest depositRequest, HttpServletRequest request) {
@@ -97,5 +104,34 @@ public class PaymentServiceImpl implements PaymentService {
                 .build();
 
         return paymentResponse;
+    }
+
+    @Override
+    public String paymentFromAccount(Integer orderServiceId) {
+        User currentUser = SecurityUtils.getCurrentUser();
+
+        OrderService orderService = orderServiceRepository.findById(orderServiceId)
+                .orElseThrow(() -> new ResourceNotFoundException("Không tìm thấy OrderService."));
+
+        if (orderService.getPaymentStatus() == PaymentStatus.COMPLETED) {
+            return "Dịch vụ đã được thanh toán.";
+        }
+
+        if (currentUser.getAccountBalance() < orderService.getTotalPrice()) {
+            return "Số dư không đủ.";
+        }
+
+        currentUser.setAccountBalance(currentUser.getAccountBalance() - orderService.getTotalPrice());
+        userRepository.save(currentUser);
+        orderService.setPaymentStatus(PaymentStatus.COMPLETED);
+        orderService.setStatus(OrderServiceStatus.ACTIVE);
+        orderService.setPaymentMethod(PaymentMethod.ACCOUNT_BALANCE);
+        orderService.setOrderDate(LocalDateTime.now());
+        orderService.setStartDate(LocalDateTime.now());
+        orderService.setEndDate(LocalDateTime.now().plusDays(orderService.getTotalDay()));
+
+        orderServiceRepository.save(orderService);
+
+        return "Thanh toán thành công";
     }
 }

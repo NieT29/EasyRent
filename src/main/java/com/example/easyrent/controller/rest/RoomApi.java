@@ -1,7 +1,5 @@
 package com.example.easyrent.controller.rest;
 
-import com.example.easyrent.entity.ServicePrice;
-import com.example.easyrent.model.enums.PriceType;
 import com.example.easyrent.model.request.UpsertRoomRequest;
 import com.example.easyrent.service.ImageRoomService;
 import com.example.easyrent.service.RoomService;

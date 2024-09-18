@@ -1,6 +1,7 @@
 package com.example.easyrent.entity;
 
 import com.example.easyrent.model.enums.OrderServiceStatus;
+import com.example.easyrent.model.enums.PaymentMethod;
 import com.example.easyrent.model.enums.PaymentStatus;
 import com.example.easyrent.model.enums.TransactionType;
 import jakarta.persistence.*;
@@ -39,6 +40,10 @@ public class OrderService {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     PaymentStatus paymentStatus;
+
+    @Column(nullable = true)
+    @Enumerated(EnumType.STRING)
+    PaymentMethod paymentMethod;
 
     LocalDateTime orderDate;
     LocalDateTime startDate;

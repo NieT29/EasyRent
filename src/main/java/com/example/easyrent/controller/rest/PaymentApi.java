@@ -1,6 +1,7 @@
 package com.example.easyrent.controller.rest;
 
 import com.example.easyrent.model.request.DepositRequest;
+import com.example.easyrent.model.request.PaymentOrderServiceRequest;
 import com.example.easyrent.model.response.PaymentResponse;
 import com.example.easyrent.service.PaymentService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,5 +21,11 @@ public class PaymentApi {
     public ResponseEntity<?> createDeposit(@Valid @RequestBody DepositRequest depositRequest, HttpServletRequest request) {
         PaymentResponse paymentResponse = paymentService.createPaymentResponse(depositRequest, request);
         return new ResponseEntity<>(paymentResponse, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/payment-from-account")
+    public ResponseEntity<?> paymentFromAccount(@Valid @RequestBody PaymentOrderServiceRequest request) {
+        String paymentResult = paymentService.paymentFromAccount(request.getOrderServiceId());
+        return ResponseEntity.ok(paymentResult);
     }
 }

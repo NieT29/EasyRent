@@ -73,22 +73,19 @@ $('#depositForm').validate({
 });
 
 document.getElementById('depositForm').addEventListener('submit', function (event) {
-    event.preventDefault(); // Ngăn chặn hành động mặc định của form (submit)
+    event.preventDefault();
 
     if (!$("#depositForm").valid()) {
         return;
     }
 
-    // Lấy giá trị từ ô input
     let amountInput = document.querySelector('input[name="amount_input"]').value.replace(/[^0-9]/g, '');
 
 
-    // Tạo đối tượng DepositRequest
     const depositRequest = {
         amount: parseInt(amountInput, 10)
     };
 
-    // Gửi dữ liệu lên API bằng Axios
     axios.post('/api/payments/create_payment', depositRequest)
         .then(function (response) {
             if (response.data.paymentUrl) {

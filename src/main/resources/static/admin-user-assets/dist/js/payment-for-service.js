@@ -1,106 +1,103 @@
+let totalPrice = 0;
 document.addEventListener('DOMContentLoaded', () => {
     const packageTypeSelect = document.getElementById('post-package-type');
     const priceTypeSelect = document.getElementById('post-package-priceType');
     const timeSelect = document.getElementById('post_package-time');
-    const paymentButton = document.querySelector('.package-grand-total'); // Nút hiển thị tổng tiền
-    const outOfMoneyWarning = document.querySelector('.js-note-outofmoney'); // Thẻ cảnh báo hết tiền
+    const paymentButton = document.querySelector('.package-grand-total');
+    const outOfMoneyWarning = document.querySelector('.js-note-outofmoney');
     const submitButton = document.querySelector('button[type="submit"]');
     const paymentMethodAccount = document.getElementById('payment_from_account');
     const paymentMethodVNPay = document.getElementById('payment_from_vnpay');
 
-    let serviceTypes = []; // Lưu dữ liệu dịch vụ để tính toán
+    let serviceTypes = [];
 
-    // Gọi API lấy danh sách dịch vụ khi trang tải lên
+
     function loadServiceTypes(priceType) {
-        const selectedServiceId = packageTypeSelect.value; // Lưu lại dịch vụ đã chọn
+        const selectedServiceTypeId = document.querySelector('#post-package-type option:checked')?.getAttribute('data-service-type-id');  // Lưu lại serviceTypeId đã chọn
 
         axios.get(`/api/service-price/get-price-by-type?priceType=${priceType}`)
             .then(function(response) {
-                serviceTypes = response.data; // Lưu dữ liệu dịch vụ
-                populateServiceTypes(selectedServiceId); // Đổ dữ liệu vào dropdown
-                updateTotalPrice(); // Tính toán tổng giá khi tải trang
+                serviceTypes = response.data;
+
+
+                const selectedService = serviceTypes.find(service => service.id == selectedServiceTypeId);
+
+                populateServiceTypes(selectedService?.servicePriceId || serviceTypes[0]?.servicePriceId);
+                updateTotalPrice();
             })
             .catch(function(error) {
                 console.error('Lỗi khi lấy danh sách dịch vụ:', error);
             });
     }
 
-    // Hàm đổ dữ liệu dịch vụ vào dropdown
-    function populateServiceTypes(selectedServiceId) {
+    function populateServiceTypes(selectedServicePriceId) {
         const packageTypeSelect = document.getElementById('post-package-type');
         packageTypeSelect.innerHTML = '';
 
         serviceTypes.forEach(function(service) {
             const option = document.createElement('option');
-            option.value = service.id;
+            option.value = service.servicePriceId;
             option.textContent = `${service.name} (${(service.price).toLocaleString('vi-VN')}đ/${service.priceType})`;
+            option.setAttribute('data-service-type-id', service.id);
             packageTypeSelect.appendChild(option);
         });
 
-        // Nếu dịch vụ đã chọn tồn tại, giữ lại dịch vụ đó. Nếu không, chọn dịch vụ đầu tiên
-        if (serviceTypes.some(service => service.id == selectedServiceId)) {
-            packageTypeSelect.value = selectedServiceId;
+        if (serviceTypes.some(service => service.servicePriceId == selectedServicePriceId)) {
+            packageTypeSelect.value = selectedServicePriceId;
         } else {
-            packageTypeSelect.value = serviceTypes[0].id; // Đặt dịch vụ đầu tiên làm mặc định nếu không có dịch vụ đã chọn
+            packageTypeSelect.value = serviceTypes[0].servicePriceId;
         }
     }
 
-    // Hàm tính toán tổng giá tiền
     function updateTotalPrice() {
         const selectedServiceId = packageTypeSelect.value;
         const quantity = timeSelect.value;
-        const selectedService = serviceTypes.find(service => service.id == selectedServiceId);
+        const selectedService = serviceTypes.find(service => service.servicePriceId == selectedServiceId);
 
         if (selectedService && quantity) {
-            const totalPrice = selectedService.price * quantity;
-            paymentButton.textContent = `${totalPrice.toLocaleString('vi-VN')}đ`; // Hiển thị giá tiền
+            totalPrice = selectedService.price * quantity;
+            paymentButton.textContent = `${totalPrice.toLocaleString('vi-VN')}đ`;
 
-            // Kiểm tra nếu phương thức thanh toán là "Trừ tiền trong tài khoản"
+
             if (paymentMethodAccount.checked) {
                 if (totalPrice > userBalance) {
-                    // Số dư không đủ, disable nút thanh toán và hiển thị cảnh báo
                     outOfMoneyWarning.classList.remove('hidden-note');
                     submitButton.disabled = true;
                 } else {
-                    // Số dư đủ, enable nút thanh toán và ẩn cảnh báo
                     outOfMoneyWarning.classList.add('hidden-note');
                     submitButton.disabled = false;
                 }
             } else {
-                // Nếu không chọn "Trừ tiền trong tài khoản", enable nút thanh toán và ẩn cảnh báo
                 outOfMoneyWarning.classList.add('hidden-note');
                 submitButton.disabled = false;
             }
         } else {
             paymentButton.textContent = '0đ';
-            submitButton.disabled = true;// Hiển thị giá trị mặc định nếu chưa đủ điều kiện
+            submitButton.disabled = true;
         }
     }
+
 
     document.querySelectorAll('input[name="payment_method"]').forEach(function(paymentMethod) {
         paymentMethod.addEventListener('change', updateTotalPrice);
     });
 
-    // Lắng nghe sự kiện thay đổi trên các dropdown và tính toán lại giá tiền
     packageTypeSelect.addEventListener('change', updateTotalPrice);
     priceTypeSelect.addEventListener('change', function() {
-        loadServiceTypes(this.value); // Tải lại dịch vụ khi chọn gói thời gian
+        loadServiceTypes(this.value);
     });
     timeSelect.addEventListener('change', updateTotalPrice);
 
-    // Khi trang vừa tải, mặc định chọn gói "theo ngày" và tải dịch vụ tương ứng
     loadServiceTypes('DAILY');
 });
 
-// Trigger change event on page load to populate initial values
+
 document.getElementById('post-package-priceType').dispatchEvent(new Event('change'));
 
 
-
-// Tự động chọn gói "theo ngày" khi trang tải lần đầu tiên
 window.addEventListener('DOMContentLoaded', function() {
     const priceTypeSelect = document.getElementById('post-package-priceType');
-    priceTypeSelect.value = 'DAILY';  // Đặt giá trị mặc định là theo ngày
+    priceTypeSelect.value = 'DAILY';
 
     priceTypeSelect.dispatchEvent(new Event('change'));
 });
@@ -110,13 +107,11 @@ document.getElementById('post-package-priceType').addEventListener('change', fun
     const timeLabel = document.getElementById('time-unit-label');
     const timeSelect = document.getElementById('post_package-time');
 
-    // Clear existing options
+
     timeSelect.innerHTML = '';
 
     if (priceType === 'DAILY') {
-        timeLabel.textContent = 'Số ngày';  // Update label to 'Số ngày'
-
-        // Add options for days
+        timeLabel.textContent = 'Số ngày';
         for (let i = 1; i <= 30; i++) {
             const option = document.createElement('option');
             option.value = i;
@@ -125,9 +120,9 @@ document.getElementById('post-package-priceType').addEventListener('change', fun
         }
 
     } else if (priceType === 'WEEKLY') {
-        timeLabel.textContent = 'Số tuần';  // Update label to 'Số tuần'
+        timeLabel.textContent = 'Số tuần';
 
-        // Add options for weeks
+
         for (let i = 1; i <= 10; i++) {
             const option = document.createElement('option');
             option.value = i;
@@ -136,9 +131,8 @@ document.getElementById('post-package-priceType').addEventListener('change', fun
         }
 
     } else if (priceType === 'MONTHLY') {
-        timeLabel.textContent = 'Số tháng';  // Update label to 'Số tháng'
+        timeLabel.textContent = 'Số tháng';
 
-        // Add options for months
         for (let i = 1; i <= 12; i++) {
             const option = document.createElement('option');
             option.value = i;
@@ -147,6 +141,80 @@ document.getElementById('post-package-priceType').addEventListener('change', fun
         }
     }
 });
+
+
+document.getElementById('btn-payment-service').addEventListener('click', function(e) {
+    e.preventDefault()
+
+    const urlParts = window.location.pathname.split('/');
+    const roomId = urlParts[urlParts.length - 1];
+
+    const selectedServicePriceId = document.getElementById('post-package-type').value;  // Lấy ID của servicePrice đã chọn
+    const selectedServiceTypeId = document.querySelector('#post-package-type option:checked').getAttribute('data-service-type-id');  // Lấy ID của serviceType đã chọn
+    const selectedDays = document.getElementById('post_package-time').value;  // Số ngày đã chọn
+    const paymentMethodAccount = document.getElementById('payment_from_account');
+    const selectedPaymentMethod = paymentMethodAccount.checked ? 'ACCOUNT_BALANCE' : 'VNPAY';
+
+    const priceType = document.getElementById('post-package-priceType').value;
+
+    function calculateTotalDays(selectedDays, priceType) {
+        if (priceType === 'DAILY') {
+            return selectedDays;
+        } else if (priceType === 'WEEKLY') {
+            return selectedDays * 7;
+        } else if (priceType === 'MONTHLY') {
+            return selectedDays * 30;
+        }
+        return 0;
+    }
+
+    const totalDay = calculateTotalDays(selectedDays, priceType);
+
+    axios.put('/api/order-service/update', {
+        roomId: roomId,
+        serviceTypeId: selectedServiceTypeId,
+        servicePriceId: selectedServicePriceId,
+        totalDay: totalDay,
+        totalPrice: totalPrice,
+        paymentMethod: selectedPaymentMethod
+    })
+        .then(function (response) {
+            console.log('Full API response:', response.data);
+
+            const orderServiceId = response.data.id;
+
+            if (!orderServiceId) {
+                throw new Error('orderServiceId không tồn tại trong phản hồi');
+            }
+
+            let paymentPromise;
+            if (selectedPaymentMethod === 'ACCOUNT_BALANCE') {
+                paymentPromise = axios.post('/api/payments/payment-from-account', {
+                    orderServiceId: orderServiceId,
+                    totalPrice: totalPrice
+                });
+            } else {
+                console.log('Thanh toán qua VNPay, xử lý ngoài hệ thống');
+                paymentPromise = Promise.resolve();
+            }
+
+            return paymentPromise;
+        })
+        .then(function (paymentResponse) {
+            if (paymentResponse && paymentResponse.data) {
+                console.log('Thanh toán thành công:', paymentResponse.data);
+            }
+            alert('Thanh toán và cập nhật dịch vụ hoàn tất!');
+        })
+        .catch(function (error) {
+            console.error('Có lỗi xảy ra trong quá trình thanh toán hoặc cập nhật:', error);
+            alert('Có lỗi xảy ra. Vui lòng thử lại!');
+        });
+});
+
+
+
+
 
 
 

@@ -25,30 +25,23 @@ public class CustomFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        // Lấy ra email trong session
         String email = (String) request.getSession().getAttribute("currentUser");
         log.info("email = {}", email);
 
-        // Kiểm tra email và chưa có thông tin xác thực
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // Lấy ra thông tin của user
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
 
-            // Tạo đối tượng phân quyền
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userDetails,
                     null,
                     userDetails.getAuthorities()
             );
 
-            // Lưu thông tin request (IP, session, ...) vào trong đối tượng phân quyền
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-            // Lưu thông tin đối tượng vào trong SecurityContextHolder
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         }
 
-        // Chuyển request và response cho filter tiếp theo
         filterChain.doFilter(request, response);
     }
 }

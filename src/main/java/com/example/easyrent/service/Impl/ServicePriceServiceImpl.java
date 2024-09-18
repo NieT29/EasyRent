@@ -32,6 +32,7 @@ public class ServicePriceServiceImpl implements ServicePriceService {
                 ServiceTypeResponse response = new ServiceTypeResponse();
                 response.setId(serviceType.getId());
                 response.setName(serviceType.getName());
+                response.setServicePriceId(servicePrice.getId());
                 response.setPrice(servicePrice.getDiscountPrice());
                 response.setPriceType(priceType);
                 responseList.add(response);

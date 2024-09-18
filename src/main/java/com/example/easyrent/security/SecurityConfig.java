@@ -44,22 +44,21 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
 
-        // cấu hình path
+
         http.authorizeHttpRequests(auth -> {
 
             auth.anyRequest().permitAll();
         });
 
-        // cấu hình logout
+
         http.logout(logout -> {
-            logout.logoutSuccessUrl("/"); // nếu logout thành công thì chuyển hướng về trang chủ
-            logout.deleteCookies("JSESSIONID"); // xóa cookie
-            logout.invalidateHttpSession(true); // hủy session
-            logout.clearAuthentication(true); // xóa thông tin xác thực
-            logout.permitAll(); // tất cả đều được truy cập vào trang logout
+            logout.logoutSuccessUrl("/");
+            logout.deleteCookies("JSESSIONID");
+            logout.invalidateHttpSession(true);
+            logout.clearAuthentication(true);
+            logout.permitAll();
         });
 
-        // cấu hình xác thực
         http.authenticationProvider(authenticationProvider());
         http.addFilterBefore(customFilter, UsernamePasswordAuthenticationFilter.class);
 
